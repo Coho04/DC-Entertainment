@@ -3,7 +3,6 @@ package de._coho04_.discord.activity;
 import de._Coho04_.mysql.MYSQL;
 import de._Coho04_.mysql.entities.Database;
 import de._Coho04_.mysql.entities.MysqlTypes;
-import de._Coho04_.mysql.entities.Row;
 import de._Coho04_.mysql.entities.Table;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -18,6 +17,11 @@ public class Main {
 
     public static JDA bot;
     public static MYSQL mysql;
+    public static String dbName = "Discord_Entetainment_Bot";
+    public static String serienTName = "Serien";
+    public static String movieTName = "Filme";
+    public static String gameTName = "Games";
+    public static String jokeTName = "Jokes";
 
     public static void main(String[] args) {
         BotCreate();
@@ -39,28 +43,50 @@ public class Main {
                             GatewayIntent.GUILD_WEBHOOKS, GatewayIntent.GUILD_MEMBERS,
                             GatewayIntent.GUILD_MESSAGE_TYPING)
                     .addEventListeners(
-//                            new AllEvents(),
+                            new Events()
                     )
                     .setAutoReconnect(true)
                     .build();
+            commands();
         } catch (LoginException e) {
             e.printStackTrace();
         }
     }
 
+    public static void commands() {
+        bot.upsertCommand("random", "Wähle aus welches Entertainment du haben möchtest!").queue();
+    }
+
     public static void mysqlConnect() {
         mysql = new MYSQL(ID.hostname, ID.username, ID.password, 3306);
-        String dbName = "";
-        String serienTName = "";
-        String movieTName = "";
-        String gameTName = "";
+        String dbName = "Discord_Entetainment_Bot";
+
         if (!mysql.existsDatabase(dbName)) {
             mysql.createDatabase(dbName);
         }
         Database db = mysql.getDatabase(dbName);
+
         createTables(db, serienTName);
         createTables(db, movieTName);
+        createTables(db, jokeTName);
         createTables(db, gameTName);
+
+        Table table = db.getTable(gameTName);
+        if (table.isEmpty()) {
+            FillTableIfisEmpty.fillGameTable(db, table);
+        }
+        table = db.getTable(jokeTName);
+        if (table.isEmpty()) {
+            FillTableIfisEmpty.fillJokeTable(db, table);
+        }
+        table = db.getTable(movieTName);
+        if (table.isEmpty()) {
+            FillTableIfisEmpty.fillMovieTable(db, table);
+        }
+        table = db.getTable(serienTName);
+        if (table.isEmpty()) {
+            FillTableIfisEmpty.fillSerienTable(db, table);
+        }
     }
 
     public static void createTables(Database db, String tableName) {
@@ -71,10 +97,5 @@ public class Main {
         if (!table.existsColumn("name")) {
             table.addColumn("name", MysqlTypes.VARCHAR, 20);
         }
-
-        FillTableIfisEmpty.fillGameTable(db,table);
-        FillTableIfisEmpty.fillJokeTable(db,table);
-        FillTableIfisEmpty.fillMovieTable(db,table);
-        FillTableIfisEmpty.fillSerienTable(db,table);
     }
 }
