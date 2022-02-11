@@ -1,4 +1,4 @@
-package de._coho04_.discord.activity;
+package de._coho04_.discord.entertainment;
 
 import de._Coho04_.mysql.entities.Database;
 import de._Coho04_.mysql.entities.Row;

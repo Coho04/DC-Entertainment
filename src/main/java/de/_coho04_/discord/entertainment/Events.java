@@ -1,4 +1,4 @@
-package de._coho04_.discord.activity;
+package de._coho04_.discord.entertainment;
 
 import de._Coho04_.mysql.entities.Table;
 import net.dv8tion.jda.api.EmbedBuilder;

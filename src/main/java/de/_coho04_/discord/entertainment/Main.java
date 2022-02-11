@@ -1,4 +1,4 @@
-package de._coho04_.discord.activity;
+package de._coho04_.discord.entertainment;
 
 import de._Coho04_.mysql.MYSQL;
 import de._Coho04_.mysql.entities.Database;
@@ -17,7 +17,7 @@ public class Main {
 
     public static JDA bot;
     public static MYSQL mysql;
-    public static String dbName = "Discord_Entetainment_Bot";
+    public static String dbName = "Discord_Entertainment_Bot";
     public static String serienTName = "Serien";
     public static String movieTName = "Filme";
     public static String gameTName = "Games";
@@ -55,7 +55,6 @@ public class Main {
 
     public static void mysqlConnect() {
         mysql = new MYSQL(ID.hostname, ID.username, ID.password, 3306);
-        String dbName = "Discord_Entetainment_Bot";
 
         if (!mysql.existsDatabase(dbName)) {
             mysql.createDatabase(dbName);
