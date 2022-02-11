@@ -47,14 +47,10 @@ public class Main {
                     )
                     .setAutoReconnect(true)
                     .build();
-            commands();
+            bot.upsertCommand("random", "Wähle aus welches Entertainment du haben möchtest!").queue();
         } catch (LoginException e) {
             e.printStackTrace();
         }
-    }
-
-    public static void commands() {
-        bot.upsertCommand("random", "Wähle aus welches Entertainment du haben möchtest!").queue();
     }
 
     public static void mysqlConnect() {
@@ -87,15 +83,16 @@ public class Main {
         if (table.isEmpty()) {
             FillTableIfisEmpty.fillSerienTable(db, table);
         }
+        System.out.println("MYSQL Fertig");
     }
 
     public static void createTables(Database db, String tableName) {
         if (!db.existsTable(tableName)) {
-            db.createTable(tableName, "name", MysqlTypes.VARCHAR, 20);
+            db.createTable(tableName, "name", MysqlTypes.VARCHAR, 250);
         }
         Table table = db.getTable(tableName);
         if (!table.existsColumn("name")) {
-            table.addColumn("name", MysqlTypes.VARCHAR, 20);
+            table.addColumn("name", MysqlTypes.VARCHAR, 250);
         }
     }
 }

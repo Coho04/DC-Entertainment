@@ -1,6 +1,5 @@
 package de._coho04_.discord.activity;
 
-import de._Coho04_.mysql.MYSQL;
 import de._Coho04_.mysql.entities.Table;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -8,9 +7,6 @@ import net.dv8tion.jda.api.events.interaction.ButtonClickEvent;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.components.Button;
-import net.dv8tion.jda.api.interactions.components.Component;
-
-import java.util.Random;
 
 public class Events extends ListenerAdapter {
 
@@ -24,8 +20,7 @@ public class Events extends ListenerAdapter {
         String cmd = e.getName();
         if (cmd.equalsIgnoreCase("random")) {
             MessageEmbed embed = new EmbedBuilder()
-                    .setTitle("Wähle aus welches Entertainment du haben möchtest!")
-                    .addBlankField(false)
+                    .setTitle("Wähle aus welches Entertainment Programm du haben möchtest!")
                     .build();
             e.getInteraction().replyEmbeds(embed).addActionRow(
                     Button.danger(movie, "Filme"),
@@ -38,15 +33,17 @@ public class Events extends ListenerAdapter {
 
     @Override
     public void onButtonClick(ButtonClickEvent e) {
-        String id = e.getId();
-        if (id.equalsIgnoreCase(movie)) {
-            e.getInteraction().reply("Wir empfehlen dir den Film [" + getItem(movie) + "]!").queue();
-        } else if (id.equalsIgnoreCase(serien)) {
-            e.getInteraction().reply("Wir empfehlen dir die Serie [" + getItem(serien) + "]!").queue();
-        } else if (id.equalsIgnoreCase(games)) {
-            e.getInteraction().reply("Wir empfehlen dir das Game [" + getItem(games) + "]!").queue();
-        } else if (id.equalsIgnoreCase(jokes)) {
-            e.getInteraction().reply(getItem(jokes)).queue();
+        String id = e.getButton().getId();
+        if (id != null) {
+            if (id.equalsIgnoreCase(serien)) {
+                e.getInteraction().reply("Wir empfehlen dir die Serie [" + getItem(serien) + "]!").queue();
+            } else if (id.equalsIgnoreCase(movie)) {
+                e.getInteraction().reply("Wir empfehlen dir den Film [" + getItem(movie) + "]!").queue();
+            } else if (id.equalsIgnoreCase(games)) {
+                e.getInteraction().reply("Wir empfehlen dir das Game [" + getItem(games) + "]!").queue();
+            } else if (id.equalsIgnoreCase(jokes)) {
+                e.getInteraction().reply(getItem(jokes)).queue();
+            }
         }
     }
 
