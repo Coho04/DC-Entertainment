@@ -25,12 +25,12 @@ public class Main {
 
     public static void main(String[] args) {
         BotCreate();
-        mysqlConnect();
+//        mysqlConnect();
     }
 
     public static void BotCreate() {
         try {
-            bot = JDABuilder.createDefault(ID.token)
+            JDABuilder.createDefault(ID.token)
                     .setChunkingFilter(ChunkingFilter.ALL)
                     .setMemberCachePolicy(MemberCachePolicy.ALL)
                     .enableCache(CacheFlag.MEMBER_OVERRIDES, CacheFlag.ROLE_TAGS, CacheFlag.EMOTE, CacheFlag.ACTIVITY, CacheFlag.CLIENT_STATUS, CacheFlag.ONLINE_STATUS)

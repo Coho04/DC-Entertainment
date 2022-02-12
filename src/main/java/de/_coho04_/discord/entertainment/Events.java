@@ -3,10 +3,10 @@ package de._coho04_.discord.entertainment;
 import de._Coho04_.mysql.entities.Table;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.events.interaction.ButtonClickEvent;
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import net.dv8tion.jda.api.interactions.components.Button;
+import net.dv8tion.jda.api.interactions.components.buttons.Button;
 
 public class Events extends ListenerAdapter {
 
@@ -16,7 +16,7 @@ public class Events extends ListenerAdapter {
     public static final String games = "games";
 
     @Override
-    public void onSlashCommand(SlashCommandEvent e) {
+    public void onSlashCommandInteraction(SlashCommandInteractionEvent e) {
         String cmd = e.getName();
         if (cmd.equalsIgnoreCase("random")) {
             MessageEmbed embed = new EmbedBuilder()
@@ -32,7 +32,7 @@ public class Events extends ListenerAdapter {
     }
 
     @Override
-    public void onButtonClick(ButtonClickEvent e) {
+    public void onButtonInteraction(ButtonInteractionEvent e) {
         String id = e.getButton().getId();
         if (id != null) {
             if (id.equalsIgnoreCase(serien)) {
