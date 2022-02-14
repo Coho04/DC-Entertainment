@@ -1,1 +1,1 @@
-# Discord-Activity-Bot
+# Discord-Entertainment-Bot
