@@ -6,6 +6,7 @@
     <artifactId>GD-Entertainment</artifactId>
     <version>1.0</version>
 
+    <name>GD-Entertainment</name>
     <build>
         <resources>
             <resource>

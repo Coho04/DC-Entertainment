@@ -11,8 +11,6 @@ import net.dv8tion.jda.api.utils.ChunkingFilter;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 
-import javax.security.auth.login.LoginException;
-
 public class Main {
 
     public static JDA bot;
@@ -30,7 +28,7 @@ public class Main {
 
     public static void BotCreate() {
         try {
-            JDABuilder.createDefault(ID.token)
+            bot = JDABuilder.createDefault(ID.token)
                     .setChunkingFilter(ChunkingFilter.ALL)
                     .setMemberCachePolicy(MemberCachePolicy.ALL)
                     .enableCache(CacheFlag.MEMBER_OVERRIDES, CacheFlag.ROLE_TAGS, CacheFlag.EMOTE, CacheFlag.ACTIVITY, CacheFlag.CLIENT_STATUS, CacheFlag.ONLINE_STATUS)
@@ -48,7 +46,7 @@ public class Main {
                     .setAutoReconnect(true)
                     .build();
             bot.upsertCommand("random", "Wähle aus welches Entertainment du haben möchtest!").queue();
-        } catch (LoginException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
