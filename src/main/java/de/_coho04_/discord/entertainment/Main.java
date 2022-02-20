@@ -20,10 +20,11 @@ public class Main {
     public static String movieTName = "Filme";
     public static String gameTName = "Games";
     public static String jokeTName = "Jokes";
+    public static String factTName = "Fakt";
 
     public static void main(String[] args) {
         BotCreate();
-//        mysqlConnect();
+        mysqlConnect();
     }
 
     public static void BotCreate() {
@@ -63,6 +64,7 @@ public class Main {
         createTables(db, movieTName);
         createTables(db, jokeTName);
         createTables(db, gameTName);
+        createTables(db, factTName);
 
         Table table = db.getTable(gameTName);
         if (table.isEmpty()) {
@@ -79,6 +81,10 @@ public class Main {
         table = db.getTable(serienTName);
         if (table.isEmpty()) {
             FillTableIfisEmpty.fillSerienTable(db, table);
+        }
+        table = db.getTable(factTName);
+        if (table.isEmpty()) {
+            FillTableIfisEmpty.fillFactTable(db, table);
         }
         System.out.println("MYSQL Fertig");
     }

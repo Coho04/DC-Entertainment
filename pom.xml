@@ -86,11 +86,6 @@
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
-<!--    <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-    </properties>-->
-
     <repositories>
         <repository>
             <id>dv8tion</id>
@@ -107,12 +102,12 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.7.33</version>
+            <version>1.7.36</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
-            <version>1.7.5</version>
+            <version>1.7.36</version>
         </dependency>
         <dependency>
             <groupId>de._Coho04_</groupId>

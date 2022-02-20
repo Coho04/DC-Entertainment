@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
+import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
 
 public class Events extends ListenerAdapter {
 
@@ -14,6 +15,7 @@ public class Events extends ListenerAdapter {
     public static final String serien = "serien";
     public static final String jokes = "jokes";
     public static final String games = "games";
+    public static final String fact = "facts";
 
     @Override
     public void onSlashCommandInteraction(SlashCommandInteractionEvent e) {
@@ -26,7 +28,8 @@ public class Events extends ListenerAdapter {
                     Button.danger(movie, "Filme"),
                     Button.primary(serien, "Serien"),
                     Button.secondary(jokes, "Jokes"),
-                    Button.success(games, "Games")
+                    Button.success(games, "Games"),
+                    Button.primary(fact, "Fakten")
             ).queue();
         }
     }
@@ -41,6 +44,8 @@ public class Events extends ListenerAdapter {
                 e.getInteraction().reply("Wir empfehlen dir den Film [" + getItem(movie) + "]!").queue();
             } else if (id.equalsIgnoreCase(games)) {
                 e.getInteraction().reply("Wir empfehlen dir das Game [" + getItem(games) + "]!").queue();
+            } else if (id.equalsIgnoreCase(fact)) {
+                e.getInteraction().reply(getItem(fact)).queue();
             } else if (id.equalsIgnoreCase(jokes)) {
                 e.getInteraction().reply(getItem(jokes)).queue();
             }
@@ -54,6 +59,7 @@ public class Events extends ListenerAdapter {
             case serien -> table = Main.mysql.getDatabase(Main.dbName).getTable(Main.serienTName);
             case games -> table = Main.mysql.getDatabase(Main.dbName).getTable(Main.gameTName);
             case jokes -> table = Main.mysql.getDatabase(Main.dbName).getTable(Main.jokeTName);
+            case fact -> table = Main.mysql.getDatabase(Main.dbName).getTable(Main.factTName);
         }
         if (table != null) {
             return table.getRandomFromColumn("name").toString();
