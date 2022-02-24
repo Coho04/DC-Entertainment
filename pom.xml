@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>de._Coho04_</groupId>
@@ -93,8 +94,8 @@
             <url>https://m2.dv8tion.net/releases</url>
         </repository>
         <repository>
-            <id>maven-release</id>
-            <url>https://repo.coho04.de/repository/maven-releases</url>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
         </repository>
     </repositories>
 
@@ -110,9 +111,9 @@
             <version>1.7.36</version>
         </dependency>
         <dependency>
-            <groupId>de._Coho04_</groupId>
+            <groupId>com.github.Golden-Developer</groupId>
             <artifactId>MYSQL-Api</artifactId>
-            <version>1.6</version>
+            <version>1.0</version>
         </dependency>
         <dependency>
             <groupId>net.dv8tion</groupId>

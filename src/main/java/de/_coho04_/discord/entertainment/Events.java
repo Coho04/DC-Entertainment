@@ -6,8 +6,11 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.interactions.commands.Command;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
-import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
+
+import java.awt.*;
+import java.util.List;
 
 public class Events extends ListenerAdapter {
 
@@ -31,6 +34,17 @@ public class Events extends ListenerAdapter {
                     Button.success(games, "Games"),
                     Button.primary(fact, "Fakten")
             ).queue();
+        } else if (cmd.equalsIgnoreCase("help")) {
+            List<Command> cmds = Main.bot.retrieveCommands().complete();
+            EmbedBuilder embed = new EmbedBuilder();
+            embed.setTitle("**Help Commands**");
+            embed.setColor(Color.MAGENTA);
+            embed.setFooter("@_Coho04_#6380", e.getJDA().getSelfUser().getAvatarUrl());
+            for (Command cm : cmds) {
+                embed.addField("/" + cm.getName(), cm.getDescription(), true);
+            }
+            e.getInteraction().replyEmbeds(embed.build()).addActionRow(Button.link("https://wiki.coho04.de/bots/discord/", "Online Übersicht"))
+                    .addActionRow(Button.link("https://support.coho04.de", "Support Anfragen")).queue();
         }
     }
 
