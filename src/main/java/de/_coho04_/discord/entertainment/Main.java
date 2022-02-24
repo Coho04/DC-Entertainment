@@ -47,7 +47,7 @@ public class Main {
                     .setAutoReconnect(true)
                     .build();
             bot.upsertCommand("random", "Wähle aus welches Entertainment du haben möchtest!").queue();
-            bot.upsertCommand("help", "Zeigt dir eine Liste möglichen Befehle!").queue();
+            bot.upsertCommand("help", "Zeigt dir eine Liste möglichen Befehle an!").queue();
         } catch (Exception e) {
             e.printStackTrace();
         }
