@@ -55,7 +55,7 @@ public class Main {
 
     public static void mysqlConnect() {
         mysql = new MYSQL(ID.hostname, ID.username, ID.password, 3306);
-
+        mysql.connect();
         if (!mysql.existsDatabase(dbName)) {
             mysql.createDatabase(dbName);
         }
@@ -87,12 +87,13 @@ public class Main {
         if (table.isEmpty()) {
             FillTableIfisEmpty.fillFactTable(db, table);
         }
+        mysql.disconnect();
         System.out.println("MYSQL Fertig");
     }
 
     public static void createTables(Database db, String tableName) {
         if (!db.existsTable(tableName)) {
-            db.createTable(tableName, "name", MysqlTypes.VARCHAR, 250);
+            db.createTable(tableName);
         }
         Table table = db.getTable(tableName);
         if (!table.existsColumn("name")) {

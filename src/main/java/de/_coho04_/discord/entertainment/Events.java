@@ -67,6 +67,7 @@ public class Events extends ListenerAdapter {
     }
 
     public static String getItem(String ID) {
+        Main.mysql.connect();
         Table table = null;
         switch (ID) {
             case movie -> table = Main.mysql.getDatabase(Main.dbName).getTable(Main.movieTName);
@@ -76,7 +77,9 @@ public class Events extends ListenerAdapter {
             case fact -> table = Main.mysql.getDatabase(Main.dbName).getTable(Main.factTName);
         }
         if (table != null) {
-            return table.getRandomFromColumn("name").toString();
+            String object = table.getRandomFromColumn("name").toString();
+            Main.mysql.disconnect();
+            return object;
         }
         return "";
     }

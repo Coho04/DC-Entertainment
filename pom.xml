@@ -111,9 +111,9 @@
             <version>1.7.36</version>
         </dependency>
         <dependency>
-            <groupId>com.github.Golden-Developer</groupId>
-            <artifactId>MYSQL-Api</artifactId>
-            <version>1.0</version>
+            <groupId>com.github.golden-developer</groupId>
+            <artifactId>mysql-api</artifactId>
+            <version>1.7</version>
         </dependency>
         <dependency>
             <groupId>net.dv8tion</groupId>
