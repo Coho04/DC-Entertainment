@@ -1,9 +1,9 @@
-package de._coho04_.discord.entertainment;
+package de.goldendeveloper.discord.entertainment;
 
-import de._Coho04_.mysql.MYSQL;
-import de._Coho04_.mysql.entities.Database;
-import de._Coho04_.mysql.entities.MysqlTypes;
-import de._Coho04_.mysql.entities.Table;
+import de.goldendeveloper.mysql.MYSQL;
+import de.goldendeveloper.mysql.entities.Database;
+import de.goldendeveloper.mysql.entities.MysqlTypes;
+import de.goldendeveloper.mysql.entities.Table;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.requests.GatewayIntent;
@@ -41,11 +41,9 @@ public class Main {
                             GatewayIntent.GUILD_MESSAGE_TYPING, GatewayIntent.GUILD_VOICE_STATES,
                             GatewayIntent.GUILD_WEBHOOKS, GatewayIntent.GUILD_MEMBERS,
                             GatewayIntent.GUILD_MESSAGE_TYPING)
-                    .addEventListeners(
-                            new Events()
-                    )
+                    .addEventListeners(new Events())
                     .setAutoReconnect(true)
-                    .build();
+                    .build().awaitReady();
             bot.upsertCommand("random", "Wähle aus welches Entertainment du haben möchtest!").queue();
             bot.upsertCommand("help", "Zeigt dir eine Liste möglicher Befehle an!").queue();
         } catch (Exception e) {

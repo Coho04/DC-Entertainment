@@ -1,4 +1,4 @@
-package de._coho04_.discord.entertainment;
+package de.goldendeveloper.discord.entertainment;
 
 public class ID {
 

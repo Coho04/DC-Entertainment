@@ -1,6 +1,6 @@
-package de._coho04_.discord.entertainment;
+package de.goldendeveloper.discord.entertainment;
 
-import de._Coho04_.mysql.entities.Table;
+import de.goldendeveloper.mysql.entities.Table;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;

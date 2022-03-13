@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>de._Coho04_</groupId>
+    <groupId>de.goldendeveloper</groupId>
     <artifactId>GD-Entertainment</artifactId>
     <version>1.0</version>
 
@@ -65,7 +65,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>de._coho04_.discord.entertainment.Main</mainClass>
+                            <mainClass>de.goldendeveloper.discord.entertainment.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -89,17 +89,22 @@
 
     <repositories>
         <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+        <repository>
             <id>dv8tion</id>
             <name>m2-dv8tion</name>
             <url>https://m2.dv8tion.net/releases</url>
         </repository>
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
     </repositories>
 
     <dependencies>
+        <dependency>
+            <groupId>com.github.Golden-Developer</groupId>
+            <artifactId>MYSQL-Api</artifactId>
+            <version>2.3</version>
+        </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -109,11 +114,6 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
             <version>1.7.36</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.golden-developer</groupId>
-            <artifactId>mysql-api</artifactId>
-            <version>1.7</version>
         </dependency>
         <dependency>
             <groupId>net.dv8tion</groupId>
