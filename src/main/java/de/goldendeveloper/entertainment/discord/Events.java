@@ -1,9 +1,14 @@
 package de.goldendeveloper.entertainment.discord;
 
 import de.goldendeveloper.entertainment.Main;
+import de.goldendeveloper.mysql.entities.Column;
+import de.goldendeveloper.mysql.entities.Database;
+import de.goldendeveloper.mysql.entities.Row;
 import de.goldendeveloper.mysql.entities.Table;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -11,6 +16,7 @@ import net.dv8tion.jda.api.interactions.commands.Command;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 
 import java.awt.*;
+import java.util.HashMap;
 import java.util.List;
 
 public class Events extends ListenerAdapter {
@@ -34,7 +40,39 @@ public class Events extends ListenerAdapter {
                     Button.primary(fact, "Fakten")
             ).queue();
         } else if (cmd.equalsIgnoreCase(Discord.cmdGameStart)) {
+            if (e.isFromGuild()) {
+                Main.getMysql().connect();
+                if (Main.getMysql().existsDatabase(Main.dbName)) {
+                    Database db = Main.getMysql().getDatabase(Main.dbName);
+                    if (db.existsTable(Main.DiscordTable)) {
+                        Table table = db.getTable(Main.DiscordTable);
+                        if (table.existsColumn(Main.DiscordID)) {
+                            Column column = table.getColumn(Main.DiscordID);
+                            if (column.getAll().contains(e.getGuild().getId())) {
+                                HashMap map = table.getRow(table.getColumn(Main.DiscordID), e.getGuild().getId());
+                                if (map.containsKey(Main.ChannelID)) {
+                                    String Channel = map.get(Main.ChannelID).toString();
+                                    if (!Channel.isEmpty() && !Channel.isBlank()) {
+                                       TextChannel channel =  e.getGuild().getTextChannelById(Channel);
+                                       MessageEmbed embed = new EmbedBuilder()
+                                               .setTitle("Emoji Quiz")
 
+                                               .build();
+                                    }
+                                }
+                            } else {
+                                Guild guild = e.getGuild();
+                                guild.createTextChannel("emojiquiz").queue(channel -> {
+                                    table.insert(new Row(table, table.getDatabase())
+                                            .with(Main.DiscordID, e.getGuild().getId())
+                                            .with(Main.ChannelID, channel.getId())
+                                    );
+                                });
+                            }
+                        }
+                    }
+                }
+            }
         } else if (cmd.equalsIgnoreCase(Discord.cmdHelp)) {
             List<Command> cmds = Main.getDiscord().getBot().retrieveCommands().complete();
             EmbedBuilder embed = new EmbedBuilder();

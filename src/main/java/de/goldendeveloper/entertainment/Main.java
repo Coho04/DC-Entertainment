@@ -16,8 +16,11 @@ public class Main {
     public static String jokeTName = "Jokes";
     public static String factTName = "Fakt";
     public static String columnName = "Name";
+    public static String DiscordID = "DiscordServerID";
+    public static String ChannelID = "DiscordChannelID";
 
     public static String GameTable = "EmojiGame";
+    public static String DiscordTable = "DiscordServer";
     public static String columnGameBegriff = "begriff";
     public static String GameDifficulty = "difficulty";
     public static String GameEmojiOne = "emojione";
@@ -45,17 +48,25 @@ public class Main {
             mysql.createDatabase(dbName);
         }
         Database db = mysql.getDatabase(dbName);
-
         createTables(db, serienTName);
         createTables(db, movieTName);
         createTables(db, jokeTName);
         createTables(db, gameTName);
         createTables(db, factTName);
-
         if (!db.existsTable(GameTable)) {
             db.createTable(GameTable);
         }
-        Table table = db.getTable(GameTable);
+        if (!db.existsTable(DiscordTable)) {
+            db.createTable(DiscordTable);
+        }
+        Table table = db.getTable(DiscordTable);
+        if (!table.hasColumn(DiscordID)) {
+            table.addColumn(DiscordID, MysqlTypes.VARCHAR, 50);
+        }
+        if (!table.existsColumn(ChannelID)) {
+            table.addColumn(ChannelID, MysqlTypes.VARCHAR, 50);
+        }
+        table = db.getTable(GameTable);
         if (!table.existsColumn(GameDifficulty)) {
             table.addColumn(GameDifficulty, MysqlTypes.VARCHAR, 50);
         }
