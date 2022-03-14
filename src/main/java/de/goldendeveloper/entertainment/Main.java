@@ -1,6 +1,7 @@
 package de.goldendeveloper.entertainment;
 
 import de.goldendeveloper.entertainment.discord.Discord;
+import de.goldendeveloper.entertainment.util.*;
 import de.goldendeveloper.mysql.MYSQL;
 import de.goldendeveloper.mysql.entities.Database;
 import de.goldendeveloper.mysql.entities.MysqlTypes;
@@ -80,27 +81,27 @@ public class Main {
             table.addColumn(GameEmojiTwo, MysqlTypes.VARCHAR, 50);
         }
         if (table.isEmpty()) {
-            FillTableIfisEmpty.fillEmojiGame(table);
+            EmojiGame emojiGame = new EmojiGame(table);
         }
         table = db.getTable(gameTName);
         if (table.isEmpty()) {
-            FillTableIfisEmpty.fillGameTable(table);
+            Game game = new Game(table);
         }
         table = db.getTable(jokeTName);
         if (table.isEmpty()) {
-            FillTableIfisEmpty.fillJokeTable(table);
+            Joke joke = new Joke(table);
         }
         table = db.getTable(movieTName);
         if (table.isEmpty()) {
-            FillTableIfisEmpty.fillMovieTable(table);
+            Movie movie = new Movie(table);
         }
         table = db.getTable(serienTName);
         if (table.isEmpty()) {
-            FillTableIfisEmpty.fillSerienTable(table);
+            Serie serie = new Serie(table);
         }
         table = db.getTable(factTName);
         if (table.isEmpty()) {
-            FillTableIfisEmpty.fillFactTable(table);
+            Fact fact = new Fact(table);
         }
         mysql.disconnect();
         System.out.println("MYSQL Fertig");

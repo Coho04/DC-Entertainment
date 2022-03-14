@@ -13,6 +13,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.Command;
+import net.dv8tion.jda.api.interactions.components.ActionRow;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 
 import java.awt.*;
@@ -38,6 +39,8 @@ public class Events extends ListenerAdapter {
                     Button.secondary(jokes, "Jokes"),
                     Button.success(games, "Games"),
                     Button.primary(fact, "Fakten")
+            ).addActionRow(
+                    Button.link("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "P*rno")
             ).queue();
         } else if (cmd.equalsIgnoreCase(Discord.cmdGameStart)) {
             if (e.isFromGuild()) {
@@ -49,20 +52,29 @@ public class Events extends ListenerAdapter {
                         if (table.existsColumn(Main.DiscordID)) {
                             Column column = table.getColumn(Main.DiscordID);
                             if (column.getAll().contains(e.getGuild().getId())) {
-                                HashMap map = table.getRow(table.getColumn(Main.DiscordID), e.getGuild().getId());
+                                HashMap<String, Object> map = table.getRow(table.getColumn(Main.DiscordID), e.getGuild().getId());
                                 if (map.containsKey(Main.ChannelID)) {
                                     String Channel = map.get(Main.ChannelID).toString();
                                     if (!Channel.isEmpty() && !Channel.isBlank()) {
-                                       TextChannel channel =  e.getGuild().getTextChannelById(Channel);
-                                       MessageEmbed embed = new EmbedBuilder()
-                                               .setTitle("Emoji Quiz")
-
-                                               .build();
+                                        TextChannel channel = e.getGuild().getTextChannelById(Channel);
+                                        if (channel != null) {
+                                            EmbedBuilder embed = new EmbedBuilder();
+                                            embed.setTitle("Emoji Quiz");
+                                            embed.addField("", "Schwierigkeit: <SCHWIERIGKEIT>", true);
+                                            embed.addField("", "Tipp: <TIPP>", true);
+                                            embed.setFooter("» Dir fällt der Begriff nicht ein? Nutze den Überspringen-Button, um das Quiz zu überspringen.");
+                                            channel.sendMessageEmbeds(embed.build()).setActionRows(
+                                                    ActionRow.of(
+                                                            Button.danger("skip", "Überspringen"),
+                                                            Button.primary("firstLetter", "Erster Buchstabe")
+                                                    )
+                                            ).queue();
+                                        }
                                     }
                                 }
                             } else {
                                 Guild guild = e.getGuild();
-                                guild.createTextChannel("emojiquiz").queue(channel -> {
+                                guild.createTextChannel("emoji-quiz").queue(channel -> {
                                     table.insert(new Row(table, table.getDatabase())
                                             .with(Main.DiscordID, e.getGuild().getId())
                                             .with(Main.ChannelID, channel.getId())
@@ -74,16 +86,18 @@ public class Events extends ListenerAdapter {
                 }
             }
         } else if (cmd.equalsIgnoreCase(Discord.cmdHelp)) {
-            List<Command> cmds = Main.getDiscord().getBot().retrieveCommands().complete();
+            List<Command> commands = Main.getDiscord().getBot().retrieveCommands().complete();
             EmbedBuilder embed = new EmbedBuilder();
             embed.setTitle("**Help Commands**");
             embed.setColor(Color.MAGENTA);
-            embed.setFooter("@_Coho04_#6380", e.getJDA().getSelfUser().getAvatarUrl());
-            for (Command cm : cmds) {
+            embed.setFooter("@Golden-Developer", e.getJDA().getSelfUser().getAvatarUrl());
+            for (Command cm : commands) {
                 embed.addField("/" + cm.getName(), cm.getDescription(), true);
             }
-            e.getInteraction().replyEmbeds(embed.build()).addActionRow(Button.link("https://wiki.coho04.de/bots/discord/", "Online Übersicht"))
-                    .addActionRow(Button.link("https://support.coho04.de", "Support Anfragen")).queue();
+            e.getInteraction().replyEmbeds(embed.build()).addActionRow(
+                    Button.link("https://wiki.coho04.de/bots/discord/", "Online Übersicht"),
+                    Button.link("https://support.coho04.de", "Support Anfragen")
+            ).queue();
         }
     }
 
