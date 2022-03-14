@@ -7,6 +7,9 @@ import org.jetbrains.annotations.NotNull;
 
 public class EmojiGame {
 
+//    public static final int EASY = 1;
+//    public enum Difficulty {EASY, STRONG}
+
     public EmojiGame(Table table) {
         insert(table, Main.columnGameBegriff, "Fernbedienung", Main.GameDifficulty, "easy", Main.GameEmojiOne, "", Main.GameEmojiTwo, "");
         insert(table, Main.columnGameBegriff, "Rasierschaum", Main.GameDifficulty, "easy", Main.GameEmojiOne, "", Main.GameEmojiTwo, "");
