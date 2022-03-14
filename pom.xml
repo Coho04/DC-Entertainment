@@ -65,7 +65,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>de.goldendeveloper.discord.entertainment.Main</mainClass>
+                            <mainClass>de.goldendeveloper.entertainment.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

@@ -1,5 +1,6 @@
-package de.goldendeveloper.discord.entertainment;
+package de.goldendeveloper.entertainment.discord;
 
+import de.goldendeveloper.entertainment.Main;
 import de.goldendeveloper.mysql.entities.Table;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -23,10 +24,8 @@ public class Events extends ListenerAdapter {
     @Override
     public void onSlashCommandInteraction(SlashCommandInteractionEvent e) {
         String cmd = e.getName();
-        if (cmd.equalsIgnoreCase("random")) {
-            MessageEmbed embed = new EmbedBuilder()
-                    .setTitle("Wähle aus welches Entertainment Programm du haben möchtest!")
-                    .build();
+        if (cmd.equalsIgnoreCase(Discord.cmdRandom)) {
+            MessageEmbed embed = new EmbedBuilder().setTitle("Wähle aus welches Entertainment Programm du haben möchtest!").build();
             e.getInteraction().replyEmbeds(embed).addActionRow(
                     Button.danger(movie, "Filme"),
                     Button.primary(serien, "Serien"),
@@ -34,8 +33,10 @@ public class Events extends ListenerAdapter {
                     Button.success(games, "Games"),
                     Button.primary(fact, "Fakten")
             ).queue();
-        } else if (cmd.equalsIgnoreCase("help")) {
-            List<Command> cmds = Main.bot.retrieveCommands().complete();
+        } else if (cmd.equalsIgnoreCase(Discord.cmdGameStart)) {
+
+        } else if (cmd.equalsIgnoreCase(Discord.cmdHelp)) {
+            List<Command> cmds = Main.getDiscord().getBot().retrieveCommands().complete();
             EmbedBuilder embed = new EmbedBuilder();
             embed.setTitle("**Help Commands**");
             embed.setColor(Color.MAGENTA);
@@ -67,18 +68,18 @@ public class Events extends ListenerAdapter {
     }
 
     public static String getItem(String ID) {
-        Main.mysql.connect();
+        Main.getMysql().connect();
         Table table = null;
         switch (ID) {
-            case movie -> table = Main.mysql.getDatabase(Main.dbName).getTable(Main.movieTName);
-            case serien -> table = Main.mysql.getDatabase(Main.dbName).getTable(Main.serienTName);
-            case games -> table = Main.mysql.getDatabase(Main.dbName).getTable(Main.gameTName);
-            case jokes -> table = Main.mysql.getDatabase(Main.dbName).getTable(Main.jokeTName);
-            case fact -> table = Main.mysql.getDatabase(Main.dbName).getTable(Main.factTName);
+            case movie -> table = Main.getMysql().getDatabase(Main.dbName).getTable(Main.movieTName);
+            case serien -> table = Main.getMysql().getDatabase(Main.dbName).getTable(Main.serienTName);
+            case games -> table = Main.getMysql().getDatabase(Main.dbName).getTable(Main.gameTName);
+            case jokes -> table = Main.getMysql().getDatabase(Main.dbName).getTable(Main.jokeTName);
+            case fact -> table = Main.getMysql().getDatabase(Main.dbName).getTable(Main.factTName);
         }
         if (table != null) {
             String object = table.getRandomFromColumn("name").toString();
-            Main.mysql.disconnect();
+            Main.getMysql().disconnect();
             return object;
         }
         return "";
