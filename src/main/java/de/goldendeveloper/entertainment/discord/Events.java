@@ -6,7 +6,9 @@ import de.goldendeveloper.mysql.entities.Database;
 import de.goldendeveloper.mysql.entities.Row;
 import de.goldendeveloper.mysql.entities.Table;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -19,6 +21,7 @@ import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 public class Events extends ListenerAdapter {
 
@@ -27,6 +30,8 @@ public class Events extends ListenerAdapter {
     public static final String jokes = "jokes";
     public static final String games = "games";
     public static final String fact = "facts";
+    public static final String skip = "skip";
+    public static final String firstLetter = "firstLetter";
 
     @Override
     public void onSlashCommandInteraction(SlashCommandInteractionEvent e) {
@@ -44,42 +49,39 @@ public class Events extends ListenerAdapter {
             ).queue();
         } else if (cmd.equalsIgnoreCase(Discord.cmdGameStart)) {
             if (e.isFromGuild()) {
-                Main.getMysql().connect();
-                if (Main.getMysql().existsDatabase(Main.dbName)) {
-                    Database db = Main.getMysql().getDatabase(Main.dbName);
-                    if (db.existsTable(Main.DiscordTable)) {
-                        Table table = db.getTable(Main.DiscordTable);
-                        if (table.existsColumn(Main.DiscordID)) {
-                            Column column = table.getColumn(Main.DiscordID);
-                            if (column.getAll().contains(e.getGuild().getId())) {
-                                HashMap<String, Object> map = table.getRow(table.getColumn(Main.DiscordID), e.getGuild().getId());
-                                if (map.containsKey(Main.ChannelID)) {
-                                    String Channel = map.get(Main.ChannelID).toString();
-                                    if (!Channel.isEmpty() && !Channel.isBlank()) {
-                                        TextChannel channel = e.getGuild().getTextChannelById(Channel);
-                                        if (channel != null) {
-                                            EmbedBuilder embed = new EmbedBuilder();
-                                            embed.setTitle("Emoji Quiz");
-                                            embed.addField("", "Schwierigkeit: <SCHWIERIGKEIT>", true);
-                                            embed.addField("", "Tipp: <TIPP>", true);
-                                            embed.setFooter("» Dir fällt der Begriff nicht ein? Nutze den Überspringen-Button, um das Quiz zu überspringen.");
-                                            channel.sendMessageEmbeds(embed.build()).setActionRows(
-                                                    ActionRow.of(
-                                                            Button.danger("skip", "Überspringen"),
-                                                            Button.primary("firstLetter", "Erster Buchstabe")
-                                                    )
-                                            ).queue();
+                if (e.getMember().hasPermission(Permission.ADMINISTRATOR)) {
+                    Main.getMysql().connect();
+                    if (Main.getMysql().existsDatabase(Main.dbName)) {
+                        Database db = Main.getMysql().getDatabase(Main.dbName);
+                        if (db.existsTable(Main.DiscordTable)) {
+                            Table table = db.getTable(Main.DiscordTable);
+                            if (table.existsColumn(Main.DiscordID)) {
+                                Column column = table.getColumn(Main.DiscordID);
+                                if (column.getAll().contains(e.getGuild().getId())) {
+                                    HashMap<String, Object> map = table.getRow(table.getColumn(Main.DiscordID), e.getGuild().getId());
+                                    if (map.containsKey(Main.ChannelID)) {
+                                        String Channel = map.get(Main.ChannelID).toString();
+                                        if (!Channel.isEmpty() && !Channel.isBlank()) {
+                                            TextChannel channel = e.getGuild().getTextChannelById(Channel);
+                                            if (channel != null) {
+                                                channel.sendMessageEmbeds(EmojiEmbed()).setActionRows(
+                                                        ActionRow.of(
+                                                                Button.danger(skip, "Überspringen"),
+                                                                Button.primary(firstLetter, "Erster Buchstabe")
+                                                        )
+                                                ).queue();
+                                            }
                                         }
                                     }
+                                } else {
+                                    Guild guild = e.getGuild();
+                                    guild.createTextChannel("emoji-quiz").queue(channel -> {
+                                        table.insert(new Row(table, table.getDatabase())
+                                                .with(Main.DiscordID, e.getGuild().getId())
+                                                .with(Main.ChannelID, channel.getId())
+                                        );
+                                    });
                                 }
-                            } else {
-                                Guild guild = e.getGuild();
-                                guild.createTextChannel("emoji-quiz").queue(channel -> {
-                                    table.insert(new Row(table, table.getDatabase())
-                                            .with(Main.DiscordID, e.getGuild().getId())
-                                            .with(Main.ChannelID, channel.getId())
-                                    );
-                                });
                             }
                         }
                     }
@@ -103,18 +105,25 @@ public class Events extends ListenerAdapter {
 
     @Override
     public void onButtonInteraction(ButtonInteractionEvent e) {
-        String id = e.getButton().getId();
-        if (id != null) {
-            if (id.equalsIgnoreCase(serien)) {
+        String button = e.getButton().getId();
+        if (button != null) {
+            if (button.equalsIgnoreCase(serien)) {
                 e.getInteraction().reply("Wir empfehlen dir die Serie [" + getItem(serien) + "]!").queue();
-            } else if (id.equalsIgnoreCase(movie)) {
+            } else if (button.equalsIgnoreCase(movie)) {
                 e.getInteraction().reply("Wir empfehlen dir den Film [" + getItem(movie) + "]!").queue();
-            } else if (id.equalsIgnoreCase(games)) {
+            } else if (button.equalsIgnoreCase(games)) {
                 e.getInteraction().reply("Wir empfehlen dir das Game [" + getItem(games) + "]!").queue();
-            } else if (id.equalsIgnoreCase(fact)) {
+            } else if (button.equalsIgnoreCase(fact)) {
                 e.getInteraction().reply(getItem(fact)).queue();
-            } else if (id.equalsIgnoreCase(jokes)) {
+            } else if (button.equalsIgnoreCase(jokes)) {
                 e.getInteraction().reply(getItem(jokes)).queue();
+            } else if (button.equalsIgnoreCase(skip)) {
+                Message msg = e.getChannel().getHistory().getMessageById(e.getChannel().getLatestMessageId());
+                if (msg != null) {
+                    msg.editMessageEmbeds(EmojiEmbed()).queue();
+                }
+            } else if (button.equalsIgnoreCase(firstLetter)) {
+
             }
         }
     }
@@ -130,10 +139,34 @@ public class Events extends ListenerAdapter {
             case fact -> table = Main.getMysql().getDatabase(Main.dbName).getTable(Main.factTName);
         }
         if (table != null) {
-            String object = table.getRandomFromColumn("name").toString();
+            String object = table.getRandomFromColumn(Main.columnName).toString();
             Main.getMysql().disconnect();
             return object;
         }
         return "";
+    }
+
+    public static MessageEmbed EmojiEmbed() {
+        Main.getMysql().connect();
+        if (Main.getMysql().existsDatabase(Main.dbName)) {
+            Database db = Main.getMysql().getDatabase(Main.dbName);
+            if (db.existsTable(Main.GameTable)) {
+                Table table = db.getTable(Main.GameTable);
+                if (table.existsColumn("id")) {
+                    Column id = table.getColumn("id");
+                    HashMap<String, Object> row = table.getRow(id, Integer.toString(new Random().nextInt(id.getAll().size())));
+                    EmbedBuilder builder = new EmbedBuilder();
+                    builder.setTitle("Emoji Quiz");
+                    builder.addField("", "Gesuchter Begriff: " + row.get(Main.GameEmojiOne).toString() + " " + row.get(Main.GameEmojiTwo).toString(), true);
+                    builder.addField("Schwierigkeit: ", row.get(Main.GameDifficulty).toString(), true);
+                    builder.addField("Tipp: ", row.get(Main.GameHint).toString(), true);
+                    builder.setFooter("» Dir fällt der Begriff nicht ein? Nutze den Überspringen-Button, um das Quiz zu überspringen.");
+                    Main.getMysql().disconnect();
+                    return builder.build();
+                }
+            }
+        }
+        Main.getMysql().disconnect();
+        return null;
     }
 }

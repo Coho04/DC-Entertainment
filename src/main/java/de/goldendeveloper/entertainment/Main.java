@@ -25,6 +25,7 @@ public class Main {
     public static String columnGameBegriff = "begriff";
     public static String GameDifficulty = "difficulty";
     public static String GameEmojiOne = "emojione";
+    public static String GameHint = "hint";
     public static String GameEmojiTwo = "emojitwo";
 
     public static Discord discord;
@@ -70,6 +71,9 @@ public class Main {
         table = db.getTable(GameTable);
         if (!table.existsColumn(GameDifficulty)) {
             table.addColumn(GameDifficulty, MysqlTypes.VARCHAR, 50);
+        }
+        if (!table.existsColumn(GameHint)) {
+            table.addColumn(GameHint, MysqlTypes.VARCHAR, 50);
         }
         if (!table.existsColumn(columnGameBegriff)) {
             table.addColumn(columnGameBegriff, MysqlTypes.VARCHAR, 50);
