@@ -1,18 +1,17 @@
 package de.goldendeveloper.entertainment.discord;
 
 import de.goldendeveloper.entertainment.Main;
+import de.goldendeveloper.mysql.MYSQL;
 import de.goldendeveloper.mysql.entities.Column;
 import de.goldendeveloper.mysql.entities.Database;
 import de.goldendeveloper.mysql.entities.Row;
 import de.goldendeveloper.mysql.entities.Table;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.Command;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
@@ -122,8 +121,36 @@ public class Events extends ListenerAdapter {
                 if (msg != null) {
                     msg.editMessageEmbeds(EmojiEmbed()).queue();
                 }
-            } else if (button.equalsIgnoreCase(firstLetter)) {
+            //} else if (button.equalsIgnoreCase(firstLetter)) {
 
+            }
+        }
+    }
+
+    @Override
+    public void onMessageReceived(MessageReceivedEvent e) {
+        if (e.isFromGuild()) {
+            Main.getMysql().connect();
+            if (Main.getMysql().existsDatabase(Main.dbName)) {
+                Database db = Main.getMysql().getDatabase(Main.dbName);
+                if (db.existsTable(Main.DiscordTable)) {
+                    Table table = db.getTable(Main.DiscordID);
+                    if (table.existsColumn(Main.DiscordID)) {
+                        if (table.getColumn(Main.DiscordID).getAll().contains(e.getGuild().getId())) {
+                            HashMap<String, Object> map = table.getRow(table.getColumn(Main.DiscordID), e.getGuild().getId());
+                            if (e.getChannel().getId().equalsIgnoreCase(map.get(Main.ChannelID).toString())) {
+                                //if (e.getMessage().getContentRaw().equalsIgnoreCase("")) {
+                                TextChannel channel = e.getTextChannel();
+                                Message message = channel.getHistory().getMessageById(channel.getLatestMessageId());
+                                e.getMessage().delete().queue();
+                                if (message != null) {
+                                    message.editMessageEmbeds(EmojiEmbed()).queue();
+                                }
+                                //}
+                            }
+                        }
+                    }
+                }
             }
         }
     }
