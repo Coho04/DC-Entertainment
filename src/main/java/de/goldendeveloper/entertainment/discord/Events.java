@@ -49,7 +49,6 @@ public class Events extends ListenerAdapter {
         } else if (cmd.equalsIgnoreCase(Discord.cmdGameStart)) {
             if (e.isFromGuild()) {
                 if (e.getMember().hasPermission(Permission.ADMINISTRATOR)) {
-                    Main.getMysql().connect();
                     if (Main.getMysql().existsDatabase(Main.dbName)) {
                         Database db = Main.getMysql().getDatabase(Main.dbName);
                         if (db.existsTable(Main.DiscordTable)) {
@@ -130,7 +129,6 @@ public class Events extends ListenerAdapter {
     @Override
     public void onMessageReceived(MessageReceivedEvent e) {
         if (e.isFromGuild()) {
-            Main.getMysql().connect();
             if (Main.getMysql().existsDatabase(Main.dbName)) {
                 Database db = Main.getMysql().getDatabase(Main.dbName);
                 if (db.existsTable(Main.DiscordTable)) {
@@ -156,7 +154,6 @@ public class Events extends ListenerAdapter {
     }
 
     public static String getItem(String ID) {
-        Main.getMysql().connect();
         Table table = null;
         switch (ID) {
             case movie -> table = Main.getMysql().getDatabase(Main.dbName).getTable(Main.movieTName);
@@ -167,14 +164,12 @@ public class Events extends ListenerAdapter {
         }
         if (table != null) {
             String object = table.getRandomFromColumn(Main.columnName).toString();
-            Main.getMysql().disconnect();
             return object;
         }
         return "";
     }
 
     public static MessageEmbed EmojiEmbed() {
-        Main.getMysql().connect();
         if (Main.getMysql().existsDatabase(Main.dbName)) {
             Database db = Main.getMysql().getDatabase(Main.dbName);
             if (db.existsTable(Main.GameTable)) {
@@ -188,12 +183,10 @@ public class Events extends ListenerAdapter {
                     builder.addField("Schwierigkeit: ", row.get(Main.GameDifficulty).toString(), true);
                     builder.addField("Tipp: ", row.get(Main.GameHint).toString(), true);
                     builder.setFooter("» Dir fällt der Begriff nicht ein? Nutze den Überspringen-Button, um das Quiz zu überspringen.");
-                    Main.getMysql().disconnect();
                     return builder.build();
                 }
             }
         }
-        Main.getMysql().disconnect();
         return null;
     }
 }

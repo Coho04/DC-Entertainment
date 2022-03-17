@@ -45,7 +45,6 @@ public class Main {
 
     public static void mysqlConnect() {
         mysql = new MYSQL(ID.hostname, ID.username, ID.password, 3306);
-        mysql.connect();
         if (!mysql.existsDatabase(dbName)) {
             mysql.createDatabase(dbName);
         }
@@ -107,7 +106,6 @@ public class Main {
         if (table.isEmpty()) {
             Fact fact = new Fact(table);
         }
-        mysql.disconnect();
         System.out.println("MYSQL Fertig");
     }
 
