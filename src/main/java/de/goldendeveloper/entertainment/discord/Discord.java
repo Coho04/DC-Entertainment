@@ -11,8 +11,11 @@ public class Discord {
 
     private JDA bot;
     public static String cmdRandom = "random";
-    public static String cmdGameStart = "gamestart";
+    public static String cmdEmojiStart = "emojistart";
+    public static String cmdGalgenStart = "galgenstart";
     public static String cmdHelp = "help";
+
+    public static String cmlActive = "help";
 
     public Discord(String Token) {
         try {
@@ -31,8 +34,8 @@ public class Discord {
                     .addEventListeners(new Events())
                     .setAutoReconnect(true)
                     .build().awaitReady();
-            bot.upsertCommand(cmdRandom, "Wähle aus welches Entertainment du haben möchtest!").queue();
-            bot.upsertCommand(cmdGameStart, "Erstellt einen GameChannel und Startet das Game!").queue();
+            bot.upsertCommand(cmdRandom, "Wähle aus wie du Entertaint werden möchtest!").queue();
+            bot.upsertCommand(cmdEmojiStart, "Erstellt einen Game Channel und Startet das Game!").queue();
             bot.upsertCommand(cmdHelp, "Zeigt dir eine Liste möglicher Befehle an!").queue();
         } catch (Exception e) {
             e.printStackTrace();

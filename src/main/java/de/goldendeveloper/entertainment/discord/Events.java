@@ -46,7 +46,46 @@ public class Events extends ListenerAdapter {
             ).addActionRow(
                     Button.link("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "P*rno")
             ).queue();
-        } else if (cmd.equalsIgnoreCase(Discord.cmdGameStart)) {
+        } else if (cmd.equalsIgnoreCase(Discord.cmdEmojiStart)) {
+            if (e.isFromGuild()) {
+                if (e.getMember().hasPermission(Permission.ADMINISTRATOR)) {
+                    if (Main.getMysql().existsDatabase(Main.dbName)) {
+                        Database db = Main.getMysql().getDatabase(Main.dbName);
+                        if (db.existsTable(Main.DiscordTable)) {
+                            Table table = db.getTable(Main.DiscordTable);
+                            if (table.existsColumn(Main.DiscordID)) {
+                                Column column = table.getColumn(Main.DiscordID);
+                                if (column.getAll().contains(e.getGuild().getId())) {
+                                    HashMap<String, Object> map = table.getRow(table.getColumn(Main.DiscordID), e.getGuild().getId());
+                                    if (map.containsKey(Main.ChannelID)) {
+                                        String Channel = map.get(Main.ChannelID).toString();
+                                        if (!Channel.isEmpty() && !Channel.isBlank()) {
+                                            TextChannel channel = e.getGuild().getTextChannelById(Channel);
+                                            if (channel != null) {
+                                                channel.sendMessageEmbeds(EmojiEmbed()).setActionRows(
+                                                        ActionRow.of(
+                                                                Button.danger(skip, "Überspringen"),
+                                                                Button.primary(firstLetter, "Erster Buchstabe")
+                                                        )
+                                                ).queue();
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    Guild guild = e.getGuild();
+                                    guild.createTextChannel("emoji-quiz").queue(channel -> {
+                                        table.insert(new Row(table, table.getDatabase())
+                                                .with(Main.DiscordID, e.getGuild().getId())
+                                                .with(Main.ChannelID, channel.getId())
+                                        );
+                                    });
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        } else if (cmd.equalsIgnoreCase(Discord.cmdGalgenStart)) {
             if (e.isFromGuild()) {
                 if (e.getMember().hasPermission(Permission.ADMINISTRATOR)) {
                     if (Main.getMysql().existsDatabase(Main.dbName)) {
@@ -128,11 +167,11 @@ public class Events extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(MessageReceivedEvent e) {
-        if (e.isFromGuild()) {
+        /*if (e.isFromGuild()) {
             if (Main.getMysql().existsDatabase(Main.dbName)) {
                 Database db = Main.getMysql().getDatabase(Main.dbName);
                 if (db.existsTable(Main.DiscordTable)) {
-                    Table table = db.getTable(Main.DiscordID);
+                    Table table = db.getTable(Main.DiscordTable);
                     if (table.existsColumn(Main.DiscordID)) {
                         if (table.getColumn(Main.DiscordID).getAll().contains(e.getGuild().getId())) {
                             HashMap<String, Object> map = table.getRow(table.getColumn(Main.DiscordID), e.getGuild().getId());
@@ -150,7 +189,7 @@ public class Events extends ListenerAdapter {
                     }
                 }
             }
-        }
+        }*/
     }
 
     public static String getItem(String ID) {
