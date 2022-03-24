@@ -31,7 +31,7 @@ public class Main {
     public static Discord discord;
 
     public static void main(String[] args) {
-        discord = new Discord(ID.token);
+        discord = new Discord(ID.DiscordBotToken);
         mysqlConnect();
     }
 
@@ -44,7 +44,7 @@ public class Main {
     }
 
     public static void mysqlConnect() {
-        mysql = new MYSQL(ID.hostname, ID.username, ID.password, 3306);
+        mysql = new MYSQL(ID.MysqlHostname, ID.MysqlUsername, ID.MysqlPassword, ID.MysqlPort);
         if (!mysql.existsDatabase(dbName)) {
             mysql.createDatabase(dbName);
         }
