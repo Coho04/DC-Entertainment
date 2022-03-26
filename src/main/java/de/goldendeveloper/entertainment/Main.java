@@ -47,7 +47,7 @@ public class Main {
     }
 
     public static void mysqlConnect() {
-        mysql = new MYSQL(ID.MysqlHostname, ID.MysqlUsername, ID.MysqlPassword, 3306);
+        mysql = new MYSQL(ID.MysqlHostname, ID.MysqlUsername, ID.MysqlPassword, ID.MysqlPort);
         if (!mysql.existsDatabase(dbName)) {
             mysql.createDatabase(dbName);
         }
