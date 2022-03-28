@@ -19,6 +19,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.Command;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -37,14 +38,13 @@ public class Events extends ListenerAdapter {
     public static final String firstLetter = "firstLetter";
 
     @Override
-    public void onShutdown(ShutdownEvent e) {
-        WebhookClientBuilder builder = new WebhookClientBuilder(Main.getConfig().getDiscordWebhook());
+    public void onShutdown(@NotNull ShutdownEvent e) {
         WebhookEmbedBuilder embed = new WebhookEmbedBuilder();
-        embed.setAuthor(new WebhookEmbed.EmbedAuthor("DC-Logger", Main.getDiscord().getBot().getSelfUser().getAvatarUrl(), "https://Golden-Developer.de"));
+        embed.setAuthor(new WebhookEmbed.EmbedAuthor(Main.getDiscord().getBot().getSelfUser().getName(), Main.getDiscord().getBot().getSelfUser().getAvatarUrl(), "https://Golden-Developer.de"));
         embed.addField(new WebhookEmbed.EmbedField(false, "[Status]", "OFFLINE"));
         embed.setColor(0xFF0000);
         embed.setFooter(new WebhookEmbed.EmbedFooter("@Golden-Developer",  Main.getDiscord().getBot().getSelfUser().getAvatarUrl()));
-        builder.build().send(embed.build());
+        new WebhookClientBuilder(Main.getConfig().getDiscordWebhook()).build().send(embed.build());
     }
 
     @Override

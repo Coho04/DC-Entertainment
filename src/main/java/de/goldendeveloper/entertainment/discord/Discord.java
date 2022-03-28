@@ -47,13 +47,12 @@ public class Discord {
     }
 
     public void sendErrorMessage(String Error) {
-        WebhookClientBuilder builder = new WebhookClientBuilder(Main.getConfig().getDiscordWebhook());
         WebhookEmbedBuilder embed = new WebhookEmbedBuilder();
-        embed.setAuthor(new WebhookEmbed.EmbedAuthor("DC-Logger", getBot().getSelfUser().getAvatarUrl(), "https://Golden-Developer.de"));
+        embed.setAuthor(new WebhookEmbed.EmbedAuthor(getBot().getSelfUser().getName(), getBot().getSelfUser().getAvatarUrl(), "https://Golden-Developer.de"));
         embed.addField(new WebhookEmbed.EmbedField(false, "[ERROR]", Error));
         embed.setColor(0xFF0000);
         embed.setFooter(new WebhookEmbed.EmbedFooter("@Golden-Developer", getBot().getSelfUser().getAvatarUrl()));
-        builder.build().send(embed.build());
+        new WebhookClientBuilder(Main.getConfig().getDiscordWebhook()).build().send(embed.build());
     }
 
     public JDA getBot() {
@@ -61,12 +60,11 @@ public class Discord {
     }
 
     private void Online() {
-        WebhookClientBuilder builder = new WebhookClientBuilder(Main.getConfig().getDiscordWebhook());
         WebhookEmbedBuilder embed = new WebhookEmbedBuilder();
-        embed.setAuthor(new WebhookEmbed.EmbedAuthor("DC-Logger", getBot().getSelfUser().getAvatarUrl(), "https://Golden-Developer.de"));
+        embed.setAuthor(new WebhookEmbed.EmbedAuthor(getBot().getSelfUser().getName(), getBot().getSelfUser().getAvatarUrl(), "https://Golden-Developer.de"));
         embed.addField(new WebhookEmbed.EmbedField(false, "[Status]", "ONLINE"));
         embed.setColor(0x00FF00);
         embed.setFooter(new WebhookEmbed.EmbedFooter("@Golden-Developer", getBot().getSelfUser().getAvatarUrl()));
-        builder.build().send(embed.build());
+        new WebhookClientBuilder(Main.getConfig().getDiscordWebhook()).build().send(embed.build());
     }
 }
