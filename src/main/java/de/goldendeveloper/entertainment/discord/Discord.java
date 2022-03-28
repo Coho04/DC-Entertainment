@@ -1,5 +1,9 @@
 package de.goldendeveloper.entertainment.discord;
 
+import club.minnced.discord.webhook.WebhookClientBuilder;
+import club.minnced.discord.webhook.send.WebhookEmbed;
+import club.minnced.discord.webhook.send.WebhookEmbedBuilder;
+import de.goldendeveloper.entertainment.Main;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.requests.GatewayIntent;
@@ -36,12 +40,33 @@ public class Discord {
             bot.upsertCommand("test", "test Command").queue();
             bot.upsertCommand(cmdEmojiStart, "Erstellt einen Game Channel und Startet das Game!").queue();
             bot.upsertCommand(cmdHelp, "Zeigt dir eine Liste möglicher Befehle an!").queue();
+            Online();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    public void sendErrorMessage(String Error) {
+        WebhookClientBuilder builder = new WebhookClientBuilder(Main.getConfig().getDiscordWebhook());
+        WebhookEmbedBuilder embed = new WebhookEmbedBuilder();
+        embed.setAuthor(new WebhookEmbed.EmbedAuthor("DC-Logger", getBot().getSelfUser().getAvatarUrl(), "https://Golden-Developer.de"));
+        embed.addField(new WebhookEmbed.EmbedField(false, "[ERROR]", Error));
+        embed.setColor(0xFF0000);
+        embed.setFooter(new WebhookEmbed.EmbedFooter("@Golden-Developer", getBot().getSelfUser().getAvatarUrl()));
+        builder.build().send(embed.build());
+    }
+
     public JDA getBot() {
         return bot;
+    }
+
+    private void Online() {
+        WebhookClientBuilder builder = new WebhookClientBuilder(Main.getConfig().getDiscordWebhook());
+        WebhookEmbedBuilder embed = new WebhookEmbedBuilder();
+        embed.setAuthor(new WebhookEmbed.EmbedAuthor("DC-Logger", getBot().getSelfUser().getAvatarUrl(), "https://Golden-Developer.de"));
+        embed.addField(new WebhookEmbed.EmbedField(false, "[Status]", "ONLINE"));
+        embed.setColor(0x00FF00);
+        embed.setFooter(new WebhookEmbed.EmbedFooter("@Golden-Developer", getBot().getSelfUser().getAvatarUrl()));
+        builder.build().send(embed.build());
     }
 }

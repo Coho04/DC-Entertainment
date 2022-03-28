@@ -1,5 +1,8 @@
 package de.goldendeveloper.entertainment.discord;
 
+import club.minnced.discord.webhook.WebhookClientBuilder;
+import club.minnced.discord.webhook.send.WebhookEmbed;
+import club.minnced.discord.webhook.send.WebhookEmbedBuilder;
 import de.goldendeveloper.entertainment.Main;
 import de.goldendeveloper.mysql.entities.Column;
 import de.goldendeveloper.mysql.entities.Database;
@@ -8,6 +11,7 @@ import de.goldendeveloper.mysql.entities.Table;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.events.ShutdownEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -31,6 +35,17 @@ public class Events extends ListenerAdapter {
     public static final String fact = "facts";
     public static final String skip = "skip";
     public static final String firstLetter = "firstLetter";
+
+    @Override
+    public void onShutdown(ShutdownEvent e) {
+        WebhookClientBuilder builder = new WebhookClientBuilder(Main.getConfig().getDiscordWebhook());
+        WebhookEmbedBuilder embed = new WebhookEmbedBuilder();
+        embed.setAuthor(new WebhookEmbed.EmbedAuthor("DC-Logger", Main.getDiscord().getBot().getSelfUser().getAvatarUrl(), "https://Golden-Developer.de"));
+        embed.addField(new WebhookEmbed.EmbedField(false, "[Status]", "OFFLINE"));
+        embed.setColor(0xFF0000);
+        embed.setFooter(new WebhookEmbed.EmbedFooter("@Golden-Developer",  Main.getDiscord().getBot().getSelfUser().getAvatarUrl()));
+        builder.build().send(embed.build());
+    }
 
     @Override
     public void onSlashCommandInteraction(SlashCommandInteractionEvent e) {
