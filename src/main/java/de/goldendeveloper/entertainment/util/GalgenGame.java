@@ -1,13 +1,32 @@
 package de.goldendeveloper.entertainment.util;
 
 import de.goldendeveloper.entertainment.Main;
+import de.goldendeveloper.mysql.entities.Database;
+import de.goldendeveloper.mysql.entities.MysqlTypes;
 import de.goldendeveloper.mysql.entities.Row;
 import de.goldendeveloper.mysql.entities.Table;
 import org.jetbrains.annotations.NotNull;
 
 public class GalgenGame {
 
-    public GalgenGame(Table table) {
+    public GalgenGame(String Table) {
+        Database db = Main.getMysql().getDatabase(Main.dbName);
+        Table table = db.getTable(Table);
+        if (!table.existsColumn("difficulty")) {
+            table.addColumn("difficulty", MysqlTypes.VARCHAR, 50);
+        }
+        if (!table.existsColumn("active")) {
+            table.addColumn("active", MysqlTypes.VARCHAR, 50);
+        }
+        if (!table.existsColumn(Main.columnGameBegriff)) {
+            table.addColumn(Main.columnGameBegriff, MysqlTypes.VARCHAR, 50);
+        }
+        if (table.isEmpty()) {
+            fillTable(table);
+        }
+    }
+
+    public void fillTable(Table table) {
         insert(table, Main.columnGameBegriff, "Fernbedienung", "easy");
         insert(table, Main.columnGameBegriff, "Rasierschaum", "easy");
         insert(table, Main.columnGameBegriff, "Laderampe", "easy");
@@ -32,7 +51,7 @@ public class GalgenGame {
         insert(table, Main.columnGameBegriff, "Brillenputztuch", "easy");
         insert(table, Main.columnGameBegriff, "Hauptgewinn", "easy");
         insert(table, Main.columnGameBegriff, "Wäscheklammer", "easy");
-        insert(table, Main.columnGameBegriff, "Spiegelreflexkameraame", "Difficulty");
+        insert(table, Main.columnGameBegriff, "Spiegelreflexkameraame", "easy");
         insert(table, Main.columnGameBegriff, "Pralinenschachtel", "easy");
         insert(table, Main.columnGameBegriff, "Drehbuch", "easy");
         insert(table, Main.columnGameBegriff, "Kinderstuhl", "easy");
@@ -81,6 +100,9 @@ public class GalgenGame {
     }
 
     public static void insert(@NotNull Table table, String columnBegriff, String columnWert, String Difficulty) {
-        table.insert(new Row(table, table.getDatabase()).with(columnBegriff, columnWert).with("difficulty", Difficulty).with("active", ""));
+        table.insert(new Row(table, table.getDatabase())
+                .with(columnBegriff, columnWert)
+                .with("difficulty", Difficulty)
+                .with("active", ""));
     }
 }

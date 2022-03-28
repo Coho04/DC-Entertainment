@@ -18,8 +18,9 @@ public class Main {
     public static String factTName = "Fakt";
     public static String columnName = "Name";
     public static String DiscordID = "DiscordServerID";
-    public static String ChannelID = "DiscordChannelID";
-
+    public static String emojiGameChannelID = "EmojiGameChannelID";
+    public static String galgenGameChannelID = "GalgenGameChannelID";
+    public static String GalgenGameTable = "GalgenGame";
     public static String GameTable = "EmojiGame";
     public static String DiscordTable = "DiscordServer";
     public static String columnGameBegriff = "begriff";
@@ -27,6 +28,8 @@ public class Main {
     public static String GameEmojiOne = "emojione";
     public static String GameHint = "hint";
     public static String GameEmojiTwo = "emojitwo";
+    public static String EmojiGameActive = "Emoji";
+    public static String GalgenGameActive = "Galgen";
 
     private static Discord discord;
     private static Config config;
@@ -56,19 +59,38 @@ public class Main {
         createTables(db, jokeTName);
         createTables(db, gameTName);
         createTables(db, factTName);
+
         if (!db.existsTable(GameTable)) {
             db.createTable(GameTable);
         }
         if (!db.existsTable(DiscordTable)) {
             db.createTable(DiscordTable);
         }
+        if (!db.existsTable(GalgenGameTable)) {
+            db.createTable(GalgenGameTable);
+        }
+
+
+        new GalgenGame(Main.GalgenGameTable);
+
         Table table = db.getTable(DiscordTable);
         if (!table.hasColumn(DiscordID)) {
             table.addColumn(DiscordID, MysqlTypes.VARCHAR, 50);
         }
-        if (!table.existsColumn(ChannelID)) {
-            table.addColumn(ChannelID, MysqlTypes.VARCHAR, 50);
+        if (!table.existsColumn(emojiGameChannelID)) {
+            table.addColumn(emojiGameChannelID, MysqlTypes.VARCHAR, 50);
         }
+        if (!table.existsColumn(galgenGameChannelID)) {
+            table.addColumn(galgenGameChannelID, MysqlTypes.VARCHAR, 50);
+        }
+
+        if (!table.existsColumn(EmojiGameActive)) {
+            table.addColumn(EmojiGameActive, MysqlTypes.VARCHAR, 50);
+        }
+        if (!table.existsColumn(GalgenGameActive)) {
+            table.addColumn(GalgenGameActive, MysqlTypes.VARCHAR, 50);
+        }
+
         table = db.getTable(GameTable);
         if (!table.existsColumn(GameDifficulty)) {
             table.addColumn(GameDifficulty, MysqlTypes.VARCHAR, 50);

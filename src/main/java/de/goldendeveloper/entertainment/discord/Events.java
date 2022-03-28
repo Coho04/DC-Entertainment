@@ -1,7 +1,6 @@
 package de.goldendeveloper.entertainment.discord;
 
 import de.goldendeveloper.entertainment.Main;
-import de.goldendeveloper.mysql.MYSQL;
 import de.goldendeveloper.mysql.entities.Column;
 import de.goldendeveloper.mysql.entities.Database;
 import de.goldendeveloper.mysql.entities.Row;
@@ -20,6 +19,7 @@ import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 public class Events extends ListenerAdapter {
@@ -57,12 +57,12 @@ public class Events extends ListenerAdapter {
                                 Column column = table.getColumn(Main.DiscordID);
                                 if (column.getAll().contains(e.getGuild().getId())) {
                                     HashMap<String, Object> map = table.getRow(table.getColumn(Main.DiscordID), e.getGuild().getId());
-                                    if (map.containsKey(Main.ChannelID)) {
-                                        String Channel = map.get(Main.ChannelID).toString();
+                                    if (map.containsKey(Main.emojiGameChannelID)) {
+                                        String Channel = map.get(Main.emojiGameChannelID).toString();
                                         if (!Channel.isEmpty() && !Channel.isBlank()) {
                                             TextChannel channel = e.getGuild().getTextChannelById(Channel);
                                             if (channel != null) {
-                                                channel.sendMessageEmbeds(EmojiEmbed()).setActionRows(
+                                                channel.sendMessageEmbeds(Objects.requireNonNull(EmojiEmbed())).setActionRows(
                                                         ActionRow.of(
                                                                 Button.danger(skip, "Überspringen"),
                                                                 Button.primary(firstLetter, "Erster Buchstabe")
@@ -76,7 +76,7 @@ public class Events extends ListenerAdapter {
                                     guild.createTextChannel("emoji-quiz").queue(channel -> {
                                         table.insert(new Row(table, table.getDatabase())
                                                 .with(Main.DiscordID, e.getGuild().getId())
-                                                .with(Main.ChannelID, channel.getId())
+                                                .with(Main.emojiGameChannelID, channel.getId())
                                         );
                                     });
                                 }
@@ -96,8 +96,8 @@ public class Events extends ListenerAdapter {
                                 Column column = table.getColumn(Main.DiscordID);
                                 if (column.getAll().contains(e.getGuild().getId())) {
                                     HashMap<String, Object> map = table.getRow(table.getColumn(Main.DiscordID), e.getGuild().getId());
-                                    if (map.containsKey(Main.ChannelID)) {
-                                        String Channel = map.get(Main.ChannelID).toString();
+                                    if (map.containsKey(Main.emojiGameChannelID)) {
+                                        String Channel = map.get(Main.emojiGameChannelID).toString();
                                         if (!Channel.isEmpty() && !Channel.isBlank()) {
                                             TextChannel channel = e.getGuild().getTextChannelById(Channel);
                                             if (channel != null) {
@@ -115,7 +115,7 @@ public class Events extends ListenerAdapter {
                                     guild.createTextChannel("emoji-quiz").queue(channel -> {
                                         table.insert(new Row(table, table.getDatabase())
                                                 .with(Main.DiscordID, e.getGuild().getId())
-                                                .with(Main.ChannelID, channel.getId())
+                                                .with(Main.emojiGameChannelID, channel.getId())
                                         );
                                     });
                                 }
@@ -137,6 +137,19 @@ public class Events extends ListenerAdapter {
                     Button.link("https://wiki.coho04.de/bots/discord/", "Online Übersicht"),
                     Button.link("https://support.coho04.de", "Support Anfragen")
             ).queue();
+        } else if (cmd.equalsIgnoreCase("test")) {
+            EmbedBuilder builder = new EmbedBuilder();
+            builder.setDescription(
+                    "-------------\n" +
+                    "|/................ \\|\n" +
+                    "|.................. |\n" +
+                    "|.................. O\n" +
+                    "|.................. |/\n" +
+                    "|.................. |\\\n" +
+                    "|................../\\\n" +
+                    "-----------------------");
+            e.getInteraction().deferReply(true).queue();
+            e.getTextChannel().sendMessageEmbeds(builder.build()).queue();
         }
     }
 
@@ -159,14 +172,42 @@ public class Events extends ListenerAdapter {
                 if (msg != null) {
                     msg.editMessageEmbeds(EmojiEmbed()).queue();
                 }
-            //} else if (button.equalsIgnoreCase(firstLetter)) {
-
             }
         }
     }
 
     @Override
     public void onMessageReceived(MessageReceivedEvent e) {
+        if (e.isFromGuild()) {
+            if (Main.getMysql().existsDatabase(Main.dbName)) {
+                Database db = Main.getMysql().getDatabase(Main.dbName);
+                if (db.existsTable(Main.DiscordTable)) {
+                    Table table = db.getTable(Main.DiscordTable);
+                    if (table.existsColumn(Main.DiscordID)) {
+                        if (table.getColumn(Main.DiscordID).getAll().contains(e.getGuild().getId())) {
+                            if (table.existsColumn(Main.galgenGameChannelID)) {
+                                if (table.getColumn(Main.galgenGameChannelID).getAll().contains(e.getTextChannel().getId())) {
+                                    HashMap<String, Object> row = table.getRow(table.getColumn(Main.DiscordID), e.getGuild().getId());
+                                    if (row.containsKey(Main.galgenGameChannelID)) {
+                                        if (row.get(Main.galgenGameChannelID).toString().equalsIgnoreCase(e.getTextChannel().getId())) {
+                                            TextChannel channel = e.getTextChannel();
+                                            Message message = channel.getHistory().getMessageById(channel.getLatestMessageId());
+                                            if (message != null) {
+                                                if (!message.getEmbeds().isEmpty()) {
+                                                    for (MessageEmbed embed : message.getEmbeds()) {
+
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
         /*if (e.isFromGuild()) {
             if (Main.getMysql().existsDatabase(Main.dbName)) {
                 Database db = Main.getMysql().getDatabase(Main.dbName);

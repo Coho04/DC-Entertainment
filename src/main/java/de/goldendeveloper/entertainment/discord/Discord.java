@@ -15,8 +15,6 @@ public class Discord {
     public static String cmdGalgenStart = "galgenstart";
     public static String cmdHelp = "help";
 
-    public static String cmlActive = "help";
-
     public Discord(String Token) {
         try {
             bot = JDABuilder.createDefault(Token)
@@ -35,6 +33,7 @@ public class Discord {
                     .setAutoReconnect(true)
                     .build().awaitReady();
             bot.upsertCommand(cmdRandom, "Wähle aus wie du Entertaint werden möchtest!").queue();
+            bot.upsertCommand("test", "test Command").queue();
             bot.upsertCommand(cmdEmojiStart, "Erstellt einen Game Channel und Startet das Game!").queue();
             bot.upsertCommand(cmdHelp, "Zeigt dir eine Liste möglicher Befehle an!").queue();
         } catch (Exception e) {
