@@ -28,10 +28,12 @@ public class Main {
     public static String GameHint = "hint";
     public static String GameEmojiTwo = "emojitwo";
 
-    public static Discord discord;
+    private static Discord discord;
+    private static Config config;
 
     public static void main(String[] args) {
-        discord = new Discord(ID.DiscordBotToken);
+        config = new Config();
+        discord = new Discord(config.getDiscordToken());
         mysqlConnect();
     }
 
@@ -44,7 +46,7 @@ public class Main {
     }
 
     public static void mysqlConnect() {
-        mysql = new MYSQL(ID.MysqlHostname, ID.MysqlUsername, ID.MysqlPassword, ID.MysqlPort);
+        mysql = new MYSQL(config.getMysqlHostname(), config.getMysqlUsername(), config.getMysqlPassword(), config.getMysqlPort());
         if (!mysql.existsDatabase(dbName)) {
             mysql.createDatabase(dbName);
         }
@@ -84,27 +86,27 @@ public class Main {
             table.addColumn(GameEmojiTwo, MysqlTypes.VARCHAR, 50);
         }
         if (table.isEmpty()) {
-            EmojiGame emojiGame = new EmojiGame(table);
+            new EmojiGame(table);
         }
         table = db.getTable(gameTName);
         if (table.isEmpty()) {
-            Game game = new Game(table);
+            new Game(table);
         }
         table = db.getTable(jokeTName);
         if (table.isEmpty()) {
-            Joke joke = new Joke(table);
+            new Joke(table);
         }
         table = db.getTable(movieTName);
         if (table.isEmpty()) {
-            Movie movie = new Movie(table);
+            new Movie(table);
         }
         table = db.getTable(serienTName);
         if (table.isEmpty()) {
-            Serie serie = new Serie(table);
+            new Serie(table);
         }
         table = db.getTable(factTName);
         if (table.isEmpty()) {
-            Fact fact = new Fact(table);
+            new Fact(table);
         }
         System.out.println("MYSQL Fertig");
     }
@@ -117,5 +119,9 @@ public class Main {
         if (!table.existsColumn("name")) {
             table.addColumn("name", MysqlTypes.VARCHAR, 250);
         }
+    }
+
+    public static Config getConfig() {
+        return config;
     }
 }
