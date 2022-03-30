@@ -70,7 +70,6 @@ public class Main {
             db.createTable(GalgenGameTable);
         }
 
-
         new GalgenGame(Main.GalgenGameTable);
 
         Table table = db.getTable(DiscordTable);

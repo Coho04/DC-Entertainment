@@ -43,7 +43,7 @@ public class Events extends ListenerAdapter {
         embed.setAuthor(new WebhookEmbed.EmbedAuthor(Main.getDiscord().getBot().getSelfUser().getName(), Main.getDiscord().getBot().getSelfUser().getAvatarUrl(), "https://Golden-Developer.de"));
         embed.addField(new WebhookEmbed.EmbedField(false, "[Status]", "OFFLINE"));
         embed.setColor(0xFF0000);
-        embed.setFooter(new WebhookEmbed.EmbedFooter("@Golden-Developer",  Main.getDiscord().getBot().getSelfUser().getAvatarUrl()));
+        embed.setFooter(new WebhookEmbed.EmbedFooter("@Golden-Developer", Main.getDiscord().getBot().getSelfUser().getAvatarUrl()));
         new WebhookClientBuilder(Main.getConfig().getDiscordWebhook()).build().send(embed.build());
     }
 
@@ -149,22 +149,9 @@ public class Events extends ListenerAdapter {
                 embed.addField("/" + cm.getName(), cm.getDescription(), true);
             }
             e.getInteraction().replyEmbeds(embed.build()).addActionRow(
-                    Button.link("https://wiki.coho04.de/bots/discord/", "Online Übersicht"),
-                    Button.link("https://support.coho04.de", "Support Anfragen")
+                    Button.link("https://wiki.Golden-Developer.de/", "Online Übersicht"),
+                    Button.link("https://support.Golden-Developer.de", "Support Anfragen")
             ).queue();
-        } else if (cmd.equalsIgnoreCase("test")) {
-            EmbedBuilder builder = new EmbedBuilder();
-            builder.setDescription(
-                    "-------------\n" +
-                    "|/................ \\|\n" +
-                    "|.................. |\n" +
-                    "|.................. O\n" +
-                    "|.................. |/\n" +
-                    "|.................. |\\\n" +
-                    "|................../\\\n" +
-                    "-----------------------");
-            e.getInteraction().deferReply(true).queue();
-            e.getTextChannel().sendMessageEmbeds(builder.build()).queue();
         }
     }
 

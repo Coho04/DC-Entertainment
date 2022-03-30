@@ -37,8 +37,7 @@ public class Discord {
                     .setAutoReconnect(true)
                     .build().awaitReady();
             bot.upsertCommand(cmdRandom, "Wähle aus wie du Entertaint werden möchtest!").queue();
-            bot.upsertCommand("test", "test Command").queue();
-            bot.upsertCommand(cmdEmojiStart, "Erstellt einen Game Channel und Startet das Game!").queue();
+//            bot.upsertCommand(cmdEmojiStart, "Erstellt einen Game Channel und Startet das Game!").queue();
             bot.upsertCommand(cmdHelp, "Zeigt dir eine Liste möglicher Befehle an!").queue();
             Online();
         } catch (Exception e) {
