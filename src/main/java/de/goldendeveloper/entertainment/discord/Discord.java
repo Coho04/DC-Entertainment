@@ -14,7 +14,7 @@ import net.dv8tion.jda.api.utils.cache.CacheFlag;
 public class Discord {
 
     private JDA bot;
-    public static String cmdRandom = "random";
+    public static String cmdEntertainment = "entertainment";
     public static String cmdEmojiStart = "emojistart";
     public static String cmdGalgenStart = "galgenstart";
     public static String cmdHelp = "help";
@@ -36,7 +36,7 @@ public class Discord {
                     .addEventListeners(new Events())
                     .setAutoReconnect(true)
                     .build().awaitReady();
-            bot.upsertCommand(cmdRandom, "Wähle aus wie du Entertaint werden möchtest!").queue();
+            bot.upsertCommand(cmdEntertainment, "Wähle aus wie du Entertaint werden möchtest!").queue();
 //            bot.upsertCommand(cmdEmojiStart, "Erstellt einen Game Channel und Startet das Game!").queue();
             bot.upsertCommand(cmdHelp, "Zeigt dir eine Liste möglicher Befehle an!").queue();
             Online();

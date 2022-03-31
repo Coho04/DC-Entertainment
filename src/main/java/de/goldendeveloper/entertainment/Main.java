@@ -16,6 +16,7 @@ public class Main {
     public static String gameTName = "Games";
     public static String jokeTName = "Jokes";
     public static String factTName = "Fakt";
+    public static String eightBallTName = "EightBall";
     public static String columnName = "Name";
     public static String DiscordID = "DiscordServerID";
     public static String emojiGameChannelID = "EmojiGameChannelID";
@@ -57,6 +58,7 @@ public class Main {
         createTables(db, serienTName);
         createTables(db, movieTName);
         createTables(db, jokeTName);
+        createTables(db, eightBallTName);
         createTables(db, gameTName);
         createTables(db, factTName);
 
@@ -124,6 +126,10 @@ public class Main {
         table = db.getTable(serienTName);
         if (table.isEmpty()) {
             new Serie(table);
+        }
+        table = db.getTable(eightBallTName);
+        if (table.isEmpty()) {
+            new EightBall(table);
         }
         table = db.getTable(factTName);
         if (table.isEmpty()) {

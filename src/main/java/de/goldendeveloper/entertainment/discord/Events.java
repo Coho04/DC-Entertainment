@@ -33,6 +33,7 @@ public class Events extends ListenerAdapter {
     public static final String serien = "serien";
     public static final String jokes = "jokes";
     public static final String games = "games";
+    public static final String eightBall = "eight-ball";
     public static final String fact = "facts";
     public static final String skip = "skip";
     public static final String firstLetter = "firstLetter";
@@ -50,14 +51,15 @@ public class Events extends ListenerAdapter {
     @Override
     public void onSlashCommandInteraction(SlashCommandInteractionEvent e) {
         String cmd = e.getName();
-        if (cmd.equalsIgnoreCase(Discord.cmdRandom)) {
+        if (cmd.equalsIgnoreCase(Discord.cmdEntertainment)) {
             MessageEmbed embed = new EmbedBuilder().setTitle("Wähle aus welches Entertainment Programm du haben möchtest!").build();
             e.getInteraction().replyEmbeds(embed).addActionRow(
                     Button.danger(movie, "Filme"),
                     Button.primary(serien, "Serien"),
                     Button.secondary(jokes, "Jokes"),
                     Button.success(games, "Games"),
-                    Button.primary(fact, "Fakten")
+                    Button.primary(fact, "Fakten"),
+                    Button.secondary(eightBall, "Eight-Ball")
             ).addActionRow(
                     Button.link("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "P*rno")
             ).queue();
@@ -159,20 +161,18 @@ public class Events extends ListenerAdapter {
     public void onButtonInteraction(ButtonInteractionEvent e) {
         String button = e.getButton().getId();
         if (button != null) {
-            if (button.equalsIgnoreCase(serien)) {
-                e.getInteraction().reply("Wir empfehlen dir die Serie [" + getItem(serien) + "]!").queue();
-            } else if (button.equalsIgnoreCase(movie)) {
-                e.getInteraction().reply("Wir empfehlen dir den Film [" + getItem(movie) + "]!").queue();
-            } else if (button.equalsIgnoreCase(games)) {
-                e.getInteraction().reply("Wir empfehlen dir das Game [" + getItem(games) + "]!").queue();
-            } else if (button.equalsIgnoreCase(fact)) {
-                e.getInteraction().reply(getItem(fact)).queue();
-            } else if (button.equalsIgnoreCase(jokes)) {
-                e.getInteraction().reply(getItem(jokes)).queue();
-            } else if (button.equalsIgnoreCase(skip)) {
-                Message msg = e.getChannel().getHistory().getMessageById(e.getChannel().getLatestMessageId());
-                if (msg != null) {
-                    msg.editMessageEmbeds(EmojiEmbed()).queue();
+            switch (button) {
+                case serien -> e.getInteraction().reply("Wir empfehlen dir die Serie [" + getItem(serien) + "]!").queue();
+                case movie -> e.getInteraction().reply("Wir empfehlen dir den Film [" + getItem(movie) + "]!").queue();
+                case games -> e.getInteraction().reply("Wir empfehlen dir das Game [" + getItem(games) + "]!").queue();
+                case fact -> e.getInteraction().reply(getItem(fact)).queue();
+                case jokes -> e.getInteraction().reply(getItem(jokes)).queue();
+                case eightBall -> e.getInteraction().reply("Wir empfehlen dir die Serie [" + getItem(serien) + "]!").queue();
+                case skip -> {
+                    Message msg = e.getChannel().getHistory().getMessageById(e.getChannel().getLatestMessageId());
+                    if (msg != null) {
+                        msg.editMessageEmbeds(EmojiEmbed()).queue();
+                    }
                 }
             }
         }
@@ -243,10 +243,10 @@ public class Events extends ListenerAdapter {
             case games -> table = Main.getMysql().getDatabase(Main.dbName).getTable(Main.gameTName);
             case jokes -> table = Main.getMysql().getDatabase(Main.dbName).getTable(Main.jokeTName);
             case fact -> table = Main.getMysql().getDatabase(Main.dbName).getTable(Main.factTName);
+            case eightBall -> table = Main.getMysql().getDatabase(Main.dbName).getTable(Main.eightBallTName);
         }
         if (table != null) {
-            String object = table.getRandomFromColumn(Main.columnName).toString();
-            return object;
+            return table.getRandomFromColumn(Main.columnName).toString();
         }
         return "";
     }
