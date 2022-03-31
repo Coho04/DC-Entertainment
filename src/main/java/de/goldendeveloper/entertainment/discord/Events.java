@@ -191,7 +191,7 @@ public class Events extends ListenerAdapter {
                 case games -> e.getInteraction().reply("Wir empfehlen dir das Game [" + getItem(games) + "]!").queue();
                 case fact -> e.getInteraction().reply(getItem(fact)).queue();
                 case jokes -> e.getInteraction().reply(getItem(jokes)).queue();
-                case eightBall -> e.getInteraction().reply("Wir empfehlen dir die Serie [" + getItem(serien) + "]!").queue();
+                case eightBall -> e.getInteraction().reply(getItem(eightBall)).queue();
                 case skip -> {
                     Message msg = e.getChannel().getHistory().getMessageById(e.getChannel().getLatestMessageId());
                     if (msg != null) {
