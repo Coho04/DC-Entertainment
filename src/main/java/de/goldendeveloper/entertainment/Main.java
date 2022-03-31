@@ -86,30 +86,6 @@ public class Main {
         if (table.isEmpty()) {
             new EmojiGame(table);
         }
-        table = db.getTable(gameTName);
-        if (table.isEmpty()) {
-            new Game(table);
-        }
-        table = db.getTable(jokeTName);
-        if (table.isEmpty()) {
-            new Joke(table);
-        }
-        table = db.getTable(movieTName);
-        if (table.isEmpty()) {
-            new Movie(table);
-        }
-        table = db.getTable(serienTName);
-        if (table.isEmpty()) {
-            new Serie(table);
-        }
-        table = db.getTable(eightBallTName);
-        if (table.isEmpty()) {
-            new EightBall(table);
-        }
-        table = db.getTable(factTName);
-        if (table.isEmpty()) {
-            new Fact(table);
-        }
         System.out.println("MYSQL Fertig");
     }
 
