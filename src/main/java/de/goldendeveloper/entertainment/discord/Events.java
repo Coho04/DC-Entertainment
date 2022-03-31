@@ -46,11 +46,15 @@ public class Events extends ListenerAdapter {
         embed.setColor(0xFF0000);
         embed.setFooter(new WebhookEmbed.EmbedFooter("@Golden-Developer", Main.getDiscord().getBot().getSelfUser().getAvatarUrl()));
         new WebhookClientBuilder(Main.getConfig().getDiscordWebhook()).build().send(embed.build());
+
+        System.exit(0);
     }
 
     @Override
     public void onSlashCommandInteraction(SlashCommandInteractionEvent e) {
         String cmd = e.getName();
+        User _Coho04_ = e.getJDA().getUserById("513306244371447828");
+        User zRazzer = e.getJDA().getUserById("428811057700536331");
         if (cmd.equalsIgnoreCase(Discord.cmdEntertainment)) {
             MessageEmbed embed = new EmbedBuilder().setTitle("Wähle aus welches Entertainment Programm du haben möchtest!").build();
             e.getInteraction().replyEmbeds(embed).addActionRow(
@@ -58,9 +62,9 @@ public class Events extends ListenerAdapter {
                     Button.primary(serien, "Serien"),
                     Button.secondary(jokes, "Jokes"),
                     Button.success(games, "Games"),
-                    Button.primary(fact, "Fakten"),
-                    Button.secondary(eightBall, "Eight-Ball")
+                    Button.primary(fact, "Fakten")
             ).addActionRow(
+                    Button.secondary(eightBall, "Eight-Ball"),
                     Button.link("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "P*rno")
             ).queue();
         } else if (cmd.equalsIgnoreCase(Discord.cmdEmojiStart)) {
@@ -154,6 +158,26 @@ public class Events extends ListenerAdapter {
                     Button.link("https://wiki.Golden-Developer.de/", "Online Übersicht"),
                     Button.link("https://support.Golden-Developer.de", "Support Anfragen")
             ).queue();
+        } else if (e.getName().equalsIgnoreCase(Discord.getCmdShutdown)) {
+            if (e.getUser() == zRazzer || e.getUser() == _Coho04_) {
+                e.getInteraction().reply("Der Bot wird nun heruntergefahren").queue();
+                e.getJDA().shutdown();
+            } else {
+                e.getInteraction().reply("Dazu hast du keine Rechte du musst für diesen Befehl der Bot inhaber sein!").queue();
+            }
+        } else if (e.getName().equalsIgnoreCase(Discord.getCmdRestart)) {
+            if (e.getUser() == zRazzer || e.getUser() == _Coho04_) {
+                try {
+                    e.getInteraction().reply("Der Discord Bot wird nun neugestartet!").queue();
+                    Process p = Runtime.getRuntime().exec("screen -AmdS GD-Entertainment java -Xms1096M -Xmx1096M -jar GD-Entertainment-1.0.jar");
+                    p.waitFor();
+                    e.getJDA().shutdown();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            } else {
+                e.getInteraction().reply("Dazu hast du keine Rechte du musst für diesen Befehl der Bot inhaber sein!").queue();
+            }
         }
     }
 

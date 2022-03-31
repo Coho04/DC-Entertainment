@@ -17,6 +17,8 @@ public class Discord {
     public static String cmdEntertainment = "entertainment";
     public static String cmdEmojiStart = "emojistart";
     public static String cmdGalgenStart = "galgenstart";
+    public static String getCmdShutdown = "shutdown";
+    public static String getCmdRestart = "restart";
     public static String cmdHelp = "help";
 
     public Discord(String Token) {
@@ -37,6 +39,8 @@ public class Discord {
                     .setAutoReconnect(true)
                     .build().awaitReady();
             bot.upsertCommand(cmdEntertainment, "Wähle aus wie du Entertaint werden möchtest!").queue();
+            bot.upsertCommand(getCmdShutdown, "Fährt den Discord Bot herunter!").queue();
+            bot.upsertCommand(getCmdRestart, "Startet den Discord Bot neu!").queue();
 //            bot.upsertCommand(cmdEmojiStart, "Erstellt einen Game Channel und Startet das Game!").queue();
             bot.upsertCommand(cmdHelp, "Zeigt dir eine Liste möglicher Befehle an!").queue();
             Online();

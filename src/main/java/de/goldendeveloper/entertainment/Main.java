@@ -7,6 +7,9 @@ import de.goldendeveloper.mysql.entities.Database;
 import de.goldendeveloper.mysql.entities.MysqlTypes;
 import de.goldendeveloper.mysql.entities.Table;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Main {
 
     private static MYSQL mysql;
@@ -75,39 +78,11 @@ public class Main {
         new GalgenGame(Main.GalgenGameTable);
 
         Table table = db.getTable(DiscordTable);
-        if (!table.hasColumn(DiscordID)) {
-            table.addColumn(DiscordID, MysqlTypes.VARCHAR, 50);
-        }
-        if (!table.existsColumn(emojiGameChannelID)) {
-            table.addColumn(emojiGameChannelID, MysqlTypes.VARCHAR, 50);
-        }
-        if (!table.existsColumn(galgenGameChannelID)) {
-            table.addColumn(galgenGameChannelID, MysqlTypes.VARCHAR, 50);
-        }
-
-        if (!table.existsColumn(EmojiGameActive)) {
-            table.addColumn(EmojiGameActive, MysqlTypes.VARCHAR, 50);
-        }
-        if (!table.existsColumn(GalgenGameActive)) {
-            table.addColumn(GalgenGameActive, MysqlTypes.VARCHAR, 50);
-        }
+        createGame(table, DiscordID, emojiGameChannelID, galgenGameChannelID, EmojiGameActive, GalgenGameActive);
 
         table = db.getTable(GameTable);
-        if (!table.existsColumn(GameDifficulty)) {
-            table.addColumn(GameDifficulty, MysqlTypes.VARCHAR, 50);
-        }
-        if (!table.existsColumn(GameHint)) {
-            table.addColumn(GameHint, MysqlTypes.VARCHAR, 50);
-        }
-        if (!table.existsColumn(columnGameBegriff)) {
-            table.addColumn(columnGameBegriff, MysqlTypes.VARCHAR, 50);
-        }
-        if (!table.existsColumn(GameEmojiOne)) {
-            table.addColumn(GameEmojiOne, MysqlTypes.VARCHAR, 50);
-        }
-        if (!table.existsColumn(GameEmojiTwo)) {
-            table.addColumn(GameEmojiTwo, MysqlTypes.VARCHAR, 50);
-        }
+        createGame(table, GameDifficulty, GameHint, columnGameBegriff, GameEmojiOne, GameEmojiTwo);
+
         if (table.isEmpty()) {
             new EmojiGame(table);
         }
@@ -150,5 +125,20 @@ public class Main {
 
     public static Config getConfig() {
         return config;
+    }
+
+    public static void createGame(Table table, String ColumnOne, String ColumnTwo, String ColumnThree, String ColumnFour, String ColumnFive) {
+        List<String> columns = new ArrayList<>();
+        columns.add(ColumnOne);
+        columns.add(ColumnTwo);
+        columns.add(ColumnThree);
+        columns.add(ColumnFour);
+        columns.add(ColumnFive);
+
+        for (String clm : columns) {
+            if (!table.existsColumn(clm)) {
+                table.addColumn(clm, MysqlTypes.VARCHAR, 50);
+            }
+        }
     }
 }
