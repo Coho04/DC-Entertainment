@@ -19,6 +19,8 @@ public class Discord {
     public static String cmdPlay = "play";
     public static String cmdPlayOptionTrack = "trackurl";
     public static String cmdSkip = "skip";
+    public static String cmdPause = "pause";
+    public static String cmdResume = "resume";
     public static String cmdStop = "stop";
     public static String cmdEmojiStart = "emojistart";
     public static String cmdGalgenStart = "galgenstart";
@@ -49,6 +51,8 @@ public class Discord {
             bot.upsertCommand(cmdPlay, "Spielt YouTube-Musik!").addOption(OptionType.STRING, cmdPlayOptionTrack, "YouTube Video Link!", true).queue();
             bot.upsertCommand(cmdSkip, "Überspringt das momentane Lied!").queue();
             bot.upsertCommand(cmdStop, "Spielt keine Musik mehr ab!").queue();
+            bot.upsertCommand(cmdPause, "Pausiert die Musik!").queue();
+            bot.upsertCommand(cmdResume, "Spielt die Musik weiter ab!").queue();
 //            bot.upsertCommand(cmdEmojiStart, "Erstellt einen Game Channel und Startet das Game!").queue();
             bot.upsertCommand(cmdHelp, "Zeigt dir eine Liste möglicher Befehle an!").queue();
             Online();

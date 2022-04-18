@@ -214,6 +214,18 @@ public class Events extends ListenerAdapter {
             } else {
                 e.reply("Dieser Command ist nur auf einem Server möglich!").queue();
             }
+        } else if (cmd.equalsIgnoreCase(Discord.cmdResume)) {
+            if (e.isFromGuild()) {
+                resumeTrack(e);
+            } else {
+                e.reply("Dieser Command ist nur auf einem Server möglich!").queue();
+            }
+        } else if (cmd.equalsIgnoreCase(Discord.cmdPause)) {
+            if (e.isFromGuild()) {
+                pauseTrack(e);
+            } else {
+                e.reply("Dieser Command ist nur auf einem Server möglich!").queue();
+            }
         }
     }
 
@@ -355,6 +367,26 @@ public class Events extends ListenerAdapter {
                 e.getGuild().getAudioManager().closeAudioConnection();
                 e.reply("Ich beende die Vorstellung!").queue();
             }
+        } else {
+            e.reply("Es wird momentan nichts abgespielt!").queue();
+        }
+    }
+
+    private void resumeTrack(SlashCommandInteractionEvent e) {
+        GuildMusicManager musicManager = getGuildAudioPlayer(e.getGuild());
+        if (musicManager.getPlayer().isPaused()) {
+            musicManager.getPlayer().setPaused(false);
+            e.deferReply(true).queue();
+            e.reply("Die Musik wird weiter gespielt!").queue();
+        } else {
+            e.reply("Es konnte nichts Abgespielt werden!").queue();
+        }
+    }
+    private void pauseTrack(SlashCommandInteractionEvent e) {
+        GuildMusicManager musicManager = getGuildAudioPlayer(e.getGuild());
+        if (!musicManager.getPlayer().isPaused()) {
+            musicManager.getPlayer().setPaused(true);
+            e.reply("Die Musik wurde pausiert!").queue();
         } else {
             e.reply("Es wird momentan nichts abgespielt!").queue();
         }
