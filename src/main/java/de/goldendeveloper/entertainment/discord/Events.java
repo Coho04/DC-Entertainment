@@ -3,7 +3,15 @@ package de.goldendeveloper.entertainment.discord;
 import club.minnced.discord.webhook.WebhookClientBuilder;
 import club.minnced.discord.webhook.send.WebhookEmbed;
 import club.minnced.discord.webhook.send.WebhookEmbedBuilder;
+import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
+import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
+import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
+import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
+import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
+import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
+import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import de.goldendeveloper.entertainment.Main;
+import de.goldendeveloper.entertainment.discord.music.GuildMusicManager;
 import de.goldendeveloper.mysql.entities.Column;
 import de.goldendeveloper.mysql.entities.Database;
 import de.goldendeveloper.mysql.entities.Row;
@@ -19,13 +27,12 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.Command;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
+import net.dv8tion.jda.api.managers.AudioManager;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Objects;
-import java.util.Random;
 
 public class Events extends ListenerAdapter {
 
@@ -37,6 +44,16 @@ public class Events extends ListenerAdapter {
     public static final String fact = "facts";
     public static final String skip = "skip";
     public static final String firstLetter = "firstLetter";
+
+    private final AudioPlayerManager playerManager;
+    private final Map<Long, GuildMusicManager> musicManagers;
+
+    public Events() {
+        this.musicManagers = new HashMap<>();
+        this.playerManager = new DefaultAudioPlayerManager();
+        AudioSourceManagers.registerRemoteSources(playerManager);
+        AudioSourceManagers.registerLocalSource(playerManager);
+    }
 
     @Override
     public void onShutdown(@NotNull ShutdownEvent e) {
@@ -178,6 +195,25 @@ public class Events extends ListenerAdapter {
             } else {
                 e.getInteraction().reply("Dazu hast du keine Rechte du musst für diesen Befehl der Bot inhaber sein!").queue();
             }
+        } else if (cmd.equalsIgnoreCase(Discord.cmdPlay)) {
+            String TrackUrl = e.getOption(Discord.cmdPlayOptionTrack).getAsString();
+            if (e.isFromGuild()) {
+                loadAndPlay(e, TrackUrl);
+            } else {
+                e.reply("Dieser Command ist nur auf einem Server möglich!").queue();
+            }
+        } else if (cmd.equalsIgnoreCase(Discord.cmdSkip)) {
+            if (e.isFromGuild()) {
+                skipTrack(e);
+            } else {
+                e.reply("Dieser Command ist nur auf einem Server möglich!").queue();
+            }
+        } else if (cmd.equalsIgnoreCase(Discord.cmdStop)) {
+            if (e.isFromGuild()) {
+                stopTrack(e);
+            } else {
+                e.reply("Dieser Command ist nur auf einem Server möglich!").queue();
+            }
         }
     }
 
@@ -186,7 +222,8 @@ public class Events extends ListenerAdapter {
         String button = e.getButton().getId();
         if (button != null) {
             switch (button) {
-                case serien -> e.getInteraction().reply("Wir empfehlen dir die Serie [" + getItem(serien) + "]!").queue();
+                case serien ->
+                        e.getInteraction().reply("Wir empfehlen dir die Serie [" + getItem(serien) + "]!").queue();
                 case movie -> e.getInteraction().reply("Wir empfehlen dir den Film [" + getItem(movie) + "]!").queue();
                 case games -> e.getInteraction().reply("Wir empfehlen dir das Game [" + getItem(games) + "]!").queue();
                 case fact -> e.getInteraction().reply(getItem(fact)).queue();
@@ -257,6 +294,80 @@ public class Events extends ListenerAdapter {
                 }
             }
         }*/
+    }
+
+    private void loadAndPlay(final SlashCommandInteractionEvent e, final String trackUrl) {
+        GuildMusicManager musicManager = getGuildAudioPlayer(e.getGuild());
+
+        playerManager.loadItemOrdered(musicManager, trackUrl, new AudioLoadResultHandler() {
+            @Override
+            public void trackLoaded(AudioTrack track) {
+                e.reply(track.getInfo().title + " wurde der Warteschlange hinzugefügt!").queue();
+                play(e.getGuild(),e.getMember(), musicManager, track);
+            }
+
+            @Override
+            public void playlistLoaded(AudioPlaylist playlist) {
+                AudioTrack firstTrack = playlist.getSelectedTrack();
+                if (firstTrack == null) {
+                    firstTrack = playlist.getTracks().get(0);
+                }
+                e.reply(firstTrack.getInfo().title + " wurde der Warteschlange hinzugefügt! (Erster Song der Playlist: " + playlist.getName() + ")").queue();
+                play(e.getGuild(),e.getMember(), musicManager, firstTrack);
+            }
+
+            @Override
+            public void noMatches() {
+                e.reply("Es konnte nichts gefunden werden mit dem Link: " + trackUrl).queue();
+            }
+
+            @Override
+            public void loadFailed(FriendlyException exception) {
+                e.reply(exception.getMessage() + " konnte nicht abgespielt werden!").queue();
+            }
+        });
+    }
+
+    private void play(Guild guild, Member member, GuildMusicManager musicManager, AudioTrack track) {
+        connectToVoiceChannel(member, guild.getAudioManager());
+        musicManager.scheduler.queue(track);
+    }
+
+    private static void connectToVoiceChannel(Member member, AudioManager audioManager) {
+        if (!audioManager.isConnected()) {
+            if (member.getVoiceState().inAudioChannel()) {
+                audioManager.openAudioConnection(member.getVoiceState().getChannel());
+            }
+        }
+    }
+
+    private void skipTrack(SlashCommandInteractionEvent e) {
+        GuildMusicManager musicManager = getGuildAudioPlayer(e.getGuild());
+        musicManager.scheduler.nextTrack();
+        e.reply("Der nächste Song wird abgespielt!").queue();
+    }
+
+    private void stopTrack(SlashCommandInteractionEvent e) {
+        GuildMusicManager musicManager = getGuildAudioPlayer(e.getGuild());
+        if (musicManager.getPlayer().getPlayingTrack() != null) {
+            musicManager.getPlayer().stopTrack();
+            if (e.getGuild().getSelfMember().getVoiceState().inAudioChannel()) {
+                e.getGuild().getAudioManager().closeAudioConnection();
+                e.reply("Ich beende die Vorstellung!").queue();
+            }
+        } else {
+            e.reply("Es wird momentan nichts abgespielt!").queue();
+        }
+    }
+
+    private synchronized GuildMusicManager getGuildAudioPlayer(Guild guild) {
+        GuildMusicManager musicManager = musicManagers.get(guild.getIdLong());
+        if (musicManager == null) {
+            musicManager = new GuildMusicManager(playerManager);
+            musicManagers.put(guild.getIdLong(), musicManager);
+        }
+        guild.getAudioManager().setSendingHandler(musicManager.getSendHandler());
+        return musicManager;
     }
 
     public static String getItem(String ID) {

@@ -6,6 +6,7 @@ import club.minnced.discord.webhook.send.WebhookEmbedBuilder;
 import de.goldendeveloper.entertainment.Main;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.ChunkingFilter;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
@@ -15,6 +16,10 @@ public class Discord {
 
     private JDA bot;
     public static String cmdEntertainment = "entertainment";
+    public static String cmdPlay = "play";
+    public static String cmdPlayOptionTrack = "trackurl";
+    public static String cmdSkip = "skip";
+    public static String cmdStop = "stop";
     public static String cmdEmojiStart = "emojistart";
     public static String cmdGalgenStart = "galgenstart";
     public static String getCmdShutdown = "shutdown";
@@ -41,6 +46,9 @@ public class Discord {
             bot.upsertCommand(cmdEntertainment, "Wähle aus wie du Entertaint werden möchtest!").queue();
             bot.upsertCommand(getCmdShutdown, "Fährt den Discord Bot herunter!").queue();
             bot.upsertCommand(getCmdRestart, "Startet den Discord Bot neu!").queue();
+            bot.upsertCommand(cmdPlay, "Spielt YouTube-Musik!").addOption(OptionType.STRING, cmdPlayOptionTrack, "YouTube Video Link!", true).queue();
+            bot.upsertCommand(cmdSkip, "Überspringt das momentane Lied!").queue();
+            bot.upsertCommand(cmdStop, "Spielt keine Musik mehr ab!").queue();
 //            bot.upsertCommand(cmdEmojiStart, "Erstellt einen Game Channel und Startet das Game!").queue();
             bot.upsertCommand(cmdHelp, "Zeigt dir eine Liste möglicher Befehle an!").queue();
             Online();
