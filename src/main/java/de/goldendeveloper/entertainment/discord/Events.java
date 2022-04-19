@@ -32,9 +32,8 @@ import net.dv8tion.jda.api.managers.AudioManager;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
-import java.lang.reflect.Array;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 public class Events extends ListenerAdapter {
 
@@ -230,53 +229,36 @@ public class Events extends ListenerAdapter {
             }
         } else if (cmd.equalsIgnoreCase(Discord.cmdScissorsStonePapered)) {
             String wahl = e.getOption(Discord.cmdScissorsStonePaperedOptionObjekt).getAsString();
-            String[] options = {"Schere", "Stein", "Papier"};
-            String botWahl = options[new Random().nextInt(options.length)];
-            EmbedBuilder embedBuilder = new EmbedBuilder();
-            embedBuilder.setTitle("**Schere Stein Papier**");
-            embedBuilder.addField("Deine Auswahl:", wahl, false);
-            embedBuilder.addField("Mein Auswahl:", botWahl, false);
-
-            if (wahl == botWahl) {
-
-            } else if (wahl == "Schere" && botWahl == "Stein") {
-            } else if (wahl == "Stein" && botWahl == "Schere") {
-            } else if (wahl == "Papier" && botWahl == "Schere") {
-            } else if (wahl == "Schere" && botWahl == "Papier") {
-
+            List<String> options = new ArrayList<>();
+            options.add("Schere");
+            options.add("Stein");
+            options.add("Papier");
+            if (options.contains(wahl)) {
+                String botWahl = options.get(new Random().nextInt(options.size()));
+                EmbedBuilder embedBuilder = new EmbedBuilder();
+                embedBuilder.setTitle("**Schere Stein Papier**");
+                embedBuilder.addField("Deine Auswahl:", wahl, false);
+                embedBuilder.addField("Mein Auswahl:", botWahl, false);
+                if (wahl.equalsIgnoreCase(botWahl)) {
+                    embedBuilder.addField("Resultat", "Mhh, Sieht so aus als steht es Unentschieden!!", false);
+                } else if (wahl.equalsIgnoreCase("Stein") && botWahl.equalsIgnoreCase("Schere")) {
+                    embedBuilder.addField("Resultat", "Gratulation du hast Gewonnen!!", false);
+                } else if (wahl.equalsIgnoreCase("Stein") && botWahl.equalsIgnoreCase("Papier")) {
+                    embedBuilder.addField("Resultat", "Leider hast du Verloren, Versuch es am besten noch einmal!!", false);
+                } else if (wahl.equalsIgnoreCase("Schere") && botWahl.equalsIgnoreCase("Stein")) {
+                    embedBuilder.addField("Resultat", "Leider hast du Verloren, Versuch es am besten noch einmal!!", false);
+                } else if (wahl.equalsIgnoreCase("Schere") && botWahl.equalsIgnoreCase("Papier")) {
+                    embedBuilder.addField("Resultat", "Gratulation du hast Gewonnen!!", false);
+                } else if (wahl.equalsIgnoreCase("Papier") && botWahl.equalsIgnoreCase("Stein")) {
+                    embedBuilder.addField("Resultat", "Gratulation du hast Gewonnen!!", false);
+                } else if (wahl.equalsIgnoreCase("Papier") && botWahl.equalsIgnoreCase("Schere")) {
+                    embedBuilder.addField("Resultat", "Leider hast du Verloren, Versuch es am besten noch einmal!!", false);
+                }
+                embedBuilder.setFooter("@Golden-Developer", e.getJDA().getSelfUser().getAvatarUrl());
+                e.replyEmbeds(embedBuilder.build()).queue();
+            } else {
+                e.reply("ERROR: Deine Antwort muss eins der Folgenden Beispiele sein: Schere, Stein, Papier").queue();
             }
-
-            switch (botWahl) {
-                case "Schere": {
-                    switch (wahl) {
-                        case "Stein": embedBuilder.addField("Resultat", "Gratulation du hast Gewonnen!!", false);
-                        case "Papier": embedBuilder.addField("Resultat", "Leider hast du Verloren, Versuch es am besten noch einmal!!", false);
-                        case "Schere": embedBuilder.addField("Resultat", "Mhh, Sieht so aus als steht es Unentschieden!!", false);
-                    }
-                }
-                case "Stein": {
-                    switch (wahl) {
-                        case "Stein":
-                            embedBuilder.addField("Resultat", "Mhh, Sieht so aus als steht es Unentschieden!!", false);
-                        case "Papier":
-                            embedBuilder.addField("Resultat", "Gratulation du hast Gewonnen!!", false);
-                        case "Schere":
-                            embedBuilder.addField("Resultat", "Leider hast du Verloren, Versuch es am besten noch einmal!!", false);
-                    }
-                }
-                case "Papier": {
-                    switch (wahl) {
-                        case "Stein":
-                            embedBuilder.addField("Resultat", "Leider hast du Verloren, Versuch es am besten noch einmal!!", false);
-                        case "Papier":
-                            embedBuilder.addField("Resultat", "Mhh, Sieht so aus als steht es Unentschieden!!", false);
-                        case "Schere":
-                            embedBuilder.addField("Resultat", "Gratulation du hast Gewonnen!!", false);
-                    }
-                }
-            }
-            embedBuilder.setFooter("@Golden-Developer", e.getJDA().getSelfUser().getAvatarUrl());
-            e.replyEmbeds(embedBuilder.build()).queue();
         } else if (cmd.equalsIgnoreCase(Discord.cmdVolume)) {
             if (e.isFromGuild()) {
                 setVolume(e);
