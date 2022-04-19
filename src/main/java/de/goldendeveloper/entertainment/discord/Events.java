@@ -226,6 +226,12 @@ public class Events extends ListenerAdapter {
             } else {
                 e.reply("Dieser Command ist nur auf einem Server möglich!").queue();
             }
+        } else if (cmd.equalsIgnoreCase(Discord.cmdVolume)) {
+            if (e.isFromGuild()) {
+                setVolume(e);
+            } else {
+                e.reply("Dieser Command ist nur auf einem Server möglich!").queue();
+            }
         }
     }
 
@@ -324,6 +330,9 @@ public class Events extends ListenerAdapter {
                 if (firstTrack == null) {
                     firstTrack = playlist.getTracks().get(0);
                 }
+                for (AudioTrack track : playlist.getTracks()) {
+                    musicManager.scheduler.queue(track);
+                }
                 e.reply(firstTrack.getInfo().title + " wurde der Warteschlange hinzugefügt! (Erster Song der Playlist: " + playlist.getName() + ")").queue();
                 play(e.getGuild(),e.getMember(), musicManager, firstTrack);
             }
@@ -376,12 +385,23 @@ public class Events extends ListenerAdapter {
         GuildMusicManager musicManager = getGuildAudioPlayer(e.getGuild());
         if (musicManager.getPlayer().isPaused()) {
             musicManager.getPlayer().setPaused(false);
-            e.deferReply(true).queue();
             e.reply("Die Musik wird weiter gespielt!").queue();
         } else {
             e.reply("Es konnte nichts Abgespielt werden!").queue();
         }
     }
+
+    private void setVolume(SlashCommandInteractionEvent e) {
+        int volume = e.getOption(Discord.cmdVolumeOptionVolume).getAsInt();
+        GuildMusicManager musicManager = getGuildAudioPlayer(e.getGuild());
+        if (!musicManager.getPlayer().isPaused()) {
+            musicManager.getPlayer().setVolume(volume);
+            e.reply("Die Musik wird nun mit Lautstärke " + volume + "!").queue();
+        } else {
+            e.reply("Es konnte nichts Abgespielt werden!").queue();
+        }
+    }
+
     private void pauseTrack(SlashCommandInteractionEvent e) {
         GuildMusicManager musicManager = getGuildAudioPlayer(e.getGuild());
         if (!musicManager.getPlayer().isPaused()) {

@@ -24,13 +24,11 @@ public class AudioPlayerSendHandler implements AudioSendHandler {
 
     @Override
     public boolean canProvide() {
-        // returns true if audio was provided
         return audioPlayer.provide(frame);
     }
 
     @Override
     public ByteBuffer provide20MsAudio() {
-        // flip to make it a read buffer
         ((Buffer) buffer).flip();
         return buffer;
     }
