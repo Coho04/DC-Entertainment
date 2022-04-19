@@ -20,6 +20,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.ShutdownEvent;
+import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -31,6 +32,7 @@ import net.dv8tion.jda.api.managers.AudioManager;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
+import java.lang.reflect.Array;
 import java.util.*;
 import java.util.List;
 
@@ -226,7 +228,51 @@ public class Events extends ListenerAdapter {
             } else {
                 e.reply("Dieser Command ist nur auf einem Server möglich!").queue();
             }
+        } else if (cmd.equalsIgnoreCase(Discord.cmdScissorsStonePapered)) {
+            String wahl = e.getOption(Discord.cmdScissorsStonePaperedOptionObjekt).getAsString();
+            String[] options = {"Schere", "Stein", "Papier"};
+            String botWahl = options[new Random().nextInt(options.length)];
+            EmbedBuilder embedBuilder = new EmbedBuilder();
+            embedBuilder.setTitle("**Schere Stein Papier**");
+            embedBuilder.addField("Deine Auswahl:", wahl, false);
+            embedBuilder.addField("Mein Auswahl:", botWahl, false);
+            switch (botWahl) {
+                case "Schere": {
+                    switch (wahl) {
+                        case "Stein": win(embedBuilder);
+                        case "Papier": lose(embedBuilder);
+                        case "Schere": undecided(embedBuilder);
+                    }
+                }
+                case "Stein": {
+                    switch (wahl) {
+                        case "Stein": undecided(embedBuilder);
+                        case "Papier": win(embedBuilder);
+                        case "Schere": lose(embedBuilder);
+                    }
+                }
+                case "Papier": {
+                    switch (wahl) {
+                        case "Stein": lose(embedBuilder);
+                        case "Papier": undecided(embedBuilder);
+                        case "Schere": win(embedBuilder);
+                    }
+                }
+            }
+            embedBuilder.setFooter("@Golden-Developer", e.getJDA().getSelfUser().getAvatarUrl());
+            e.replyEmbeds(embedBuilder.build()).queue();
         }
+    }
+
+    private void win(EmbedBuilder embedBuilder) {
+        embedBuilder.addField("Resultat", "Gratulation du hast Gewonnen!!", false);
+    }
+
+    private void lose(EmbedBuilder embedBuilder) {
+        embedBuilder.addField("Resultat", "Leider hast du Verloren, Versuch es am besten noch einmal!!", false);
+    }
+    private void undecided(EmbedBuilder embedBuilder) {
+        embedBuilder.addField("Resultat", "Mhh, Sieht so aus als steht es Unentschieden!!", false);
     }
 
     @Override
@@ -247,6 +293,20 @@ public class Events extends ListenerAdapter {
                         msg.editMessageEmbeds(EmojiEmbed()).queue();
                     }
                 }
+            }
+        }
+    }
+
+    @Override
+    public void onCommandAutoCompleteInteraction(@NotNull CommandAutoCompleteInteractionEvent e) {
+        String cmd = e.getName();
+        if (cmd.equalsIgnoreCase(Discord.cmdScissorsStonePapered)) {
+            if (e.getFocusedOption().getName().equalsIgnoreCase(Discord.cmdScissorsStonePaperedOptionObjekt)) {
+                e.replyChoices(
+                        new Command.Choice("Schere", "Schere"),
+                        new Command.Choice("Stein", "Stein"),
+                        new Command.Choice("Papier", "Papier")
+                ).queue();
             }
         }
     }
@@ -315,7 +375,7 @@ public class Events extends ListenerAdapter {
             @Override
             public void trackLoaded(AudioTrack track) {
                 e.reply(track.getInfo().title + " wurde der Warteschlange hinzugefügt!").queue();
-                play(e.getGuild(),e.getMember(), musicManager, track);
+                play(e.getGuild(), e.getMember(), musicManager, track);
             }
 
             @Override
@@ -325,7 +385,7 @@ public class Events extends ListenerAdapter {
                     firstTrack = playlist.getTracks().get(0);
                 }
                 e.reply(firstTrack.getInfo().title + " wurde der Warteschlange hinzugefügt! (Erster Song der Playlist: " + playlist.getName() + ")").queue();
-                play(e.getGuild(),e.getMember(), musicManager, firstTrack);
+                play(e.getGuild(), e.getMember(), musicManager, firstTrack);
             }
 
             @Override
@@ -382,6 +442,7 @@ public class Events extends ListenerAdapter {
             e.reply("Es konnte nichts Abgespielt werden!").queue();
         }
     }
+
     private void pauseTrack(SlashCommandInteractionEvent e) {
         GuildMusicManager musicManager = getGuildAudioPlayer(e.getGuild());
         if (!musicManager.getPlayer().isPaused()) {
