@@ -236,26 +236,42 @@ public class Events extends ListenerAdapter {
             embedBuilder.setTitle("**Schere Stein Papier**");
             embedBuilder.addField("Deine Auswahl:", wahl, false);
             embedBuilder.addField("Mein Auswahl:", botWahl, false);
+
+            if (wahl == botWahl) {
+
+            } else if (wahl == "Schere" && botWahl == "Stein") {
+            } else if (wahl == "Stein" && botWahl == "Schere") {
+            } else if (wahl == "Papier" && botWahl == "Schere") {
+            } else if (wahl == "Schere" && botWahl == "Papier") {
+
+            }
+
             switch (botWahl) {
                 case "Schere": {
                     switch (wahl) {
-                        case "Stein": win(embedBuilder);
-                        case "Papier": lose(embedBuilder);
-                        case "Schere": undecided(embedBuilder);
+                        case "Stein": embedBuilder.addField("Resultat", "Gratulation du hast Gewonnen!!", false);
+                        case "Papier": embedBuilder.addField("Resultat", "Leider hast du Verloren, Versuch es am besten noch einmal!!", false);
+                        case "Schere": embedBuilder.addField("Resultat", "Mhh, Sieht so aus als steht es Unentschieden!!", false);
                     }
                 }
                 case "Stein": {
                     switch (wahl) {
-                        case "Stein": undecided(embedBuilder);
-                        case "Papier": win(embedBuilder);
-                        case "Schere": lose(embedBuilder);
+                        case "Stein":
+                            embedBuilder.addField("Resultat", "Mhh, Sieht so aus als steht es Unentschieden!!", false);
+                        case "Papier":
+                            embedBuilder.addField("Resultat", "Gratulation du hast Gewonnen!!", false);
+                        case "Schere":
+                            embedBuilder.addField("Resultat", "Leider hast du Verloren, Versuch es am besten noch einmal!!", false);
                     }
                 }
                 case "Papier": {
                     switch (wahl) {
-                        case "Stein": lose(embedBuilder);
-                        case "Papier": undecided(embedBuilder);
-                        case "Schere": win(embedBuilder);
+                        case "Stein":
+                            embedBuilder.addField("Resultat", "Leider hast du Verloren, Versuch es am besten noch einmal!!", false);
+                        case "Papier":
+                            embedBuilder.addField("Resultat", "Mhh, Sieht so aus als steht es Unentschieden!!", false);
+                        case "Schere":
+                            embedBuilder.addField("Resultat", "Gratulation du hast Gewonnen!!", false);
                     }
                 }
             }
@@ -264,16 +280,6 @@ public class Events extends ListenerAdapter {
         }
     }
 
-    private void win(EmbedBuilder embedBuilder) {
-        embedBuilder.addField("Resultat", "Gratulation du hast Gewonnen!!", false);
-    }
-
-    private void lose(EmbedBuilder embedBuilder) {
-        embedBuilder.addField("Resultat", "Leider hast du Verloren, Versuch es am besten noch einmal!!", false);
-    }
-    private void undecided(EmbedBuilder embedBuilder) {
-        embedBuilder.addField("Resultat", "Mhh, Sieht so aus als steht es Unentschieden!!", false);
-    }
 
     @Override
     public void onButtonInteraction(ButtonInteractionEvent e) {
