@@ -24,6 +24,8 @@ public class Discord {
     public static String cmdVolumeOptionVolume = "volume";
     public static String cmdResume = "resume";
     public static String cmdStop = "stop";
+    public static String cmdScissorsStonePapered = "scissors-stone-papered";
+    public static String cmdScissorsStonePaperedOptionObjekt = "objekt";
     public static String cmdEmojiStart = "emojistart";
     public static String cmdGalgenStart = "galgenstart";
     public static String getCmdShutdown = "shutdown";
@@ -54,6 +56,7 @@ public class Discord {
             bot.upsertCommand(cmdVolume, "Stellt die Lautstärke ein!").addOption(OptionType.INTEGER, cmdVolumeOptionVolume, "Musik Lautstärke", true).queue();
             bot.upsertCommand(cmdSkip, "Überspringt das momentane Lied!").queue();
             bot.upsertCommand(cmdStop, "Spielt keine Musik mehr ab!").queue();
+            bot.upsertCommand(cmdScissorsStonePapered, "Schere Stein Papier!").addOption(OptionType.STRING, cmdScissorsStonePaperedOptionObjekt, "Wähle Schere Stein oder Papier aus!", true, true).queue();
             bot.upsertCommand(cmdPause, "Pausiert die Musik!").queue();
             bot.upsertCommand(cmdResume, "Spielt die Musik weiter ab!").queue();
 //            bot.upsertCommand(cmdEmojiStart, "Erstellt einen Game Channel und Startet das Game!").queue();

@@ -20,6 +20,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.ShutdownEvent;
+import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -31,6 +32,7 @@ import net.dv8tion.jda.api.managers.AudioManager;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
+import java.lang.reflect.Array;
 import java.util.*;
 import java.util.List;
 
@@ -226,6 +228,55 @@ public class Events extends ListenerAdapter {
             } else {
                 e.reply("Dieser Command ist nur auf einem Server möglich!").queue();
             }
+        } else if (cmd.equalsIgnoreCase(Discord.cmdScissorsStonePapered)) {
+            String wahl = e.getOption(Discord.cmdScissorsStonePaperedOptionObjekt).getAsString();
+            String[] options = {"Schere", "Stein", "Papier"};
+            String botWahl = options[new Random().nextInt(options.length)];
+            EmbedBuilder embedBuilder = new EmbedBuilder();
+            embedBuilder.setTitle("**Schere Stein Papier**");
+            embedBuilder.addField("Deine Auswahl:", wahl, false);
+            embedBuilder.addField("Mein Auswahl:", botWahl, false);
+
+            if (wahl == botWahl) {
+
+            } else if (wahl == "Schere" && botWahl == "Stein") {
+            } else if (wahl == "Stein" && botWahl == "Schere") {
+            } else if (wahl == "Papier" && botWahl == "Schere") {
+            } else if (wahl == "Schere" && botWahl == "Papier") {
+
+            }
+
+            switch (botWahl) {
+                case "Schere": {
+                    switch (wahl) {
+                        case "Stein": embedBuilder.addField("Resultat", "Gratulation du hast Gewonnen!!", false);
+                        case "Papier": embedBuilder.addField("Resultat", "Leider hast du Verloren, Versuch es am besten noch einmal!!", false);
+                        case "Schere": embedBuilder.addField("Resultat", "Mhh, Sieht so aus als steht es Unentschieden!!", false);
+                    }
+                }
+                case "Stein": {
+                    switch (wahl) {
+                        case "Stein":
+                            embedBuilder.addField("Resultat", "Mhh, Sieht so aus als steht es Unentschieden!!", false);
+                        case "Papier":
+                            embedBuilder.addField("Resultat", "Gratulation du hast Gewonnen!!", false);
+                        case "Schere":
+                            embedBuilder.addField("Resultat", "Leider hast du Verloren, Versuch es am besten noch einmal!!", false);
+                    }
+                }
+                case "Papier": {
+                    switch (wahl) {
+                        case "Stein":
+                            embedBuilder.addField("Resultat", "Leider hast du Verloren, Versuch es am besten noch einmal!!", false);
+                        case "Papier":
+                            embedBuilder.addField("Resultat", "Mhh, Sieht so aus als steht es Unentschieden!!", false);
+                        case "Schere":
+                            embedBuilder.addField("Resultat", "Gratulation du hast Gewonnen!!", false);
+                    }
+                }
+            }
+            embedBuilder.setFooter("@Golden-Developer", e.getJDA().getSelfUser().getAvatarUrl());
+            e.replyEmbeds(embedBuilder.build()).queue();
         } else if (cmd.equalsIgnoreCase(Discord.cmdVolume)) {
             if (e.isFromGuild()) {
                 setVolume(e);
@@ -234,6 +285,7 @@ public class Events extends ListenerAdapter {
             }
         }
     }
+
 
     @Override
     public void onButtonInteraction(ButtonInteractionEvent e) {
@@ -253,6 +305,20 @@ public class Events extends ListenerAdapter {
                         msg.editMessageEmbeds(EmojiEmbed()).queue();
                     }
                 }
+            }
+        }
+    }
+
+    @Override
+    public void onCommandAutoCompleteInteraction(@NotNull CommandAutoCompleteInteractionEvent e) {
+        String cmd = e.getName();
+        if (cmd.equalsIgnoreCase(Discord.cmdScissorsStonePapered)) {
+            if (e.getFocusedOption().getName().equalsIgnoreCase(Discord.cmdScissorsStonePaperedOptionObjekt)) {
+                e.replyChoices(
+                        new Command.Choice("Schere", "Schere"),
+                        new Command.Choice("Stein", "Stein"),
+                        new Command.Choice("Papier", "Papier")
+                ).queue();
             }
         }
     }
@@ -321,7 +387,7 @@ public class Events extends ListenerAdapter {
             @Override
             public void trackLoaded(AudioTrack track) {
                 e.reply(track.getInfo().title + " wurde der Warteschlange hinzugefügt!").queue();
-                play(e.getGuild(),e.getMember(), musicManager, track);
+                play(e.getGuild(), e.getMember(), musicManager, track);
             }
 
             @Override
@@ -334,7 +400,7 @@ public class Events extends ListenerAdapter {
                     musicManager.scheduler.queue(track);
                 }
                 e.reply(firstTrack.getInfo().title + " wurde der Warteschlange hinzugefügt! (Erster Song der Playlist: " + playlist.getName() + ")").queue();
-                play(e.getGuild(),e.getMember(), musicManager, firstTrack);
+                play(e.getGuild(), e.getMember(), musicManager, firstTrack);
             }
 
             @Override
@@ -390,6 +456,7 @@ public class Events extends ListenerAdapter {
             e.reply("Es konnte nichts Abgespielt werden!").queue();
         }
     }
+
 
     private void setVolume(SlashCommandInteractionEvent e) {
         int volume = e.getOption(Discord.cmdVolumeOptionVolume).getAsInt();
