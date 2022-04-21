@@ -20,6 +20,7 @@ public class Config {
     private String MysqlHostname;
     private String MysqlUsername;
     private String MysqlPassword;
+    private String YtApiKey;
     private int MysqlPort;
 
     public Config() {
@@ -74,29 +75,19 @@ public class Config {
                     }
                 }
             }
+            list = doc.getElementsByTagName("YouTube");
+            for (int i = 0; i < list.getLength(); i++) {
+                if (list.item(i).getNodeType() == Node.ELEMENT_NODE) {
+                    Element element = (Element) list.item(i);
+                    String YtApiKey = doc.getElementsByTagName("ApiKey").item(0).getTextContent();
+                    if (!YtApiKey.isEmpty() || !YtApiKey.isBlank()) {
+                        this.YtApiKey = YtApiKey;
+                    }
+                }
+            }
         } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public void setDiscordToken(String discordToken) {
-        DiscordToken = discordToken;
-    }
-
-    public void setMysqlHostname(String mysqlHostname) {
-        MysqlHostname = mysqlHostname;
-    }
-
-    public void setMysqlPassword(String mysqlPassword) {
-        MysqlPassword = mysqlPassword;
-    }
-
-    public void setMysqlPort(int mysqlPort) {
-        MysqlPort = mysqlPort;
-    }
-
-    public void setMysqlUsername(String mysqlUsername) {
-        MysqlUsername = mysqlUsername;
     }
 
     public String getDiscordWebhook() {
@@ -105,6 +96,10 @@ public class Config {
 
     public int getMysqlPort() {
         return MysqlPort;
+    }
+
+    public String getYtApiKey() {
+        return YtApiKey;
     }
 
     public String getDiscordToken() {

@@ -9,4 +9,7 @@
         <Token>TOKEN</Token>
         <Webhook>WEBHOOK</Webhook>
     </Discord>
+    <YouTube>
+        <ApiKey>APIKEY</ApiKey>
+    </YouTube>
 </login>

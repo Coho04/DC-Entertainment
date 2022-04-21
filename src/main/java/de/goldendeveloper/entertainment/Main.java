@@ -37,9 +37,11 @@ public class Main {
 
     private static Discord discord;
     private static Config config;
+    private static Youtube youtube;
 
     public static void main(String[] args) {
         config = new Config();
+        youtube = new Youtube();
         discord = new Discord(config.getDiscordToken());
         mysqlConnect();
     }

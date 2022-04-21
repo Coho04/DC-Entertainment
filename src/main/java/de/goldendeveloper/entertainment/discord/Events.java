@@ -11,6 +11,7 @@ import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import de.goldendeveloper.entertainment.Main;
+import de.goldendeveloper.entertainment.Youtube;
 import de.goldendeveloper.entertainment.discord.music.GuildMusicManager;
 import de.goldendeveloper.mysql.entities.Column;
 import de.goldendeveloper.mysql.entities.Database;
@@ -32,6 +33,9 @@ import net.dv8tion.jda.api.managers.AudioManager;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.List;
 import java.util.*;
 
@@ -200,6 +204,16 @@ public class Events extends ListenerAdapter {
             String TrackUrl = e.getOption(Discord.cmdPlayOptionTrack).getAsString();
             if (e.isFromGuild()) {
                 loadAndPlay(e, TrackUrl);
+            } else {
+                e.reply("Dieser Command ist nur auf einem Server möglich!").queue();
+            }
+        } else if (cmd.equalsIgnoreCase(Discord.cmdYtsearch)) {
+            String keyWord = e.getOption(Discord.cmdPlayOptionTrack).getAsString();
+            Youtube youtube = new Youtube();
+            youtube.setKeyWord(keyWord);
+            String TrackUrl = youtube.execute();
+            if (e.isFromGuild()) {
+                loadAndPlay(e, "https://www.youtube.com/watch?v=" + TrackUrl);
             } else {
                 e.reply("Dieser Command ist nur auf einem Server möglich!").queue();
             }

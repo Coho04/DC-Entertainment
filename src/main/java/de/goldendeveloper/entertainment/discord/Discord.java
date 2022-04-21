@@ -19,6 +19,7 @@ public class Discord {
     public static String cmdPlay = "play";
     public static String cmdPlayOptionTrack = "trackurl";
     public static String cmdSkip = "skip";
+    public static String cmdYtsearch= "ytsearch";
     public static String cmdPause = "pause";
     public static String cmdVolume = "volume";
     public static String cmdVolumeOptionVolume = "volume";
@@ -52,7 +53,8 @@ public class Discord {
             bot.upsertCommand(cmdEntertainment, "Wähle aus wie du Entertaint werden möchtest!").queue();
             bot.upsertCommand(getCmdShutdown, "Fährt den Discord Bot herunter!").queue();
             bot.upsertCommand(getCmdRestart, "Startet den Discord Bot neu!").queue();
-            bot.upsertCommand(cmdPlay, "Spielt YouTube-Musik!").addOption(OptionType.STRING, cmdPlayOptionTrack, "YouTube Video Link!", true).queue();
+            bot.upsertCommand(cmdPlay, "Spielt YouTube-Musik anhand eines Links!").addOption(OptionType.STRING, cmdPlayOptionTrack, "YouTube Video Link!", true).queue();
+            bot.upsertCommand(cmdYtsearch, "Spielt YouTube-Musik anhand eines Keywords!").addOption(OptionType.STRING, cmdPlayOptionTrack, "YouTube Video Link!", true).queue();
             bot.upsertCommand(cmdVolume, "Stellt die Lautstärke ein!").addOption(OptionType.INTEGER, cmdVolumeOptionVolume, "Musik Lautstärke", true).queue();
             bot.upsertCommand(cmdSkip, "Überspringt das momentane Lied!").queue();
             bot.upsertCommand(cmdStop, "Spielt keine Musik mehr ab!").queue();
