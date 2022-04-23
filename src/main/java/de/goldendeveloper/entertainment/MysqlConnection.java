@@ -28,8 +28,10 @@ public class MysqlConnection {
     public static String DiscordTable = "DiscordServer";
     public static String columnGameBegriff = "begriff";
     public static String GameDifficulty = "difficulty";
+    public static String GameErrors = "Errors";
     public static String GameEmojiOne = "emojione";
     public static String GameHint = "hint";
+    public static String GalgenBuchstaben = "galgenbuchstaben";
     public static String GameEmojiTwo = "emojitwo";
     public static String EmojiGameActive = "Emoji";
     public static String GalgenGameActive = "Galgen";
@@ -55,9 +57,10 @@ public class MysqlConnection {
         }
         if (!db.existsTable(GalgenGameTable)) {
             db.createTable(GalgenGameTable);
+        } else {
+            db.getTable(GalgenGameTable).drop();
+            db.createTable(GalgenGameTable);
         }
-
-
 
         Table table = db.getTable(DiscordTable);
         createGame(table, DiscordID, emojiGameChannelID, galgenGameChannelID, EmojiGameActive, GalgenGameActive);

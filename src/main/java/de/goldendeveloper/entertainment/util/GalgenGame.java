@@ -19,6 +19,12 @@ public class GalgenGame {
         if (!table.existsColumn("active")) {
             table.addColumn("active", MysqlTypes.VARCHAR, 50);
         }
+        if (!table.existsColumn(MysqlConnection.GameErrors)) {
+            table.addColumn(MysqlConnection.GameErrors, MysqlTypes.VARCHAR, 50);
+        }
+        if (!table.existsColumn(MysqlConnection.GalgenBuchstaben)) {
+            table.addColumn(MysqlConnection.GalgenBuchstaben, MysqlTypes.VARCHAR, 50);
+        }
         if (!table.existsColumn(MysqlConnection.columnGameBegriff)) {
             table.addColumn(MysqlConnection.columnGameBegriff, MysqlTypes.VARCHAR, 50);
         }
@@ -103,7 +109,9 @@ public class GalgenGame {
     public static void insert(@NotNull Table table, String columnBegriff, String columnWert, String Difficulty) {
         table.insert(new Row(table, table.getDatabase())
                 .with(columnBegriff, columnWert)
+                .with(MysqlConnection.GalgenBuchstaben, "A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P,")
+                .with(MysqlConnection.GameErrors, "0")
                 .with("difficulty", Difficulty)
-                .with("active", ""));
+                .with("active", "0"));
     }
 }

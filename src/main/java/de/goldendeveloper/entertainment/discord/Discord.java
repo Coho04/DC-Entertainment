@@ -62,6 +62,7 @@ public class Discord {
             bot.upsertCommand(cmdPause, "Pausiert die Musik!").queue();
             bot.upsertCommand(cmdResume, "Spielt die Musik weiter ab!").queue();
 //            bot.upsertCommand(cmdEmojiStart, "Erstellt einen Game Channel und Startet das Game!").queue();
+            bot.upsertCommand(cmdGalgenStart, "Erstellt einen Game Channel und Startet das Game!").queue();
             bot.upsertCommand(cmdHelp, "Zeigt dir eine Liste möglicher Befehle an!").queue();
             if (!System.getProperty("os.name").split(" ")[0].equalsIgnoreCase("windows")) {
                 Online();

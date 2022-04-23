@@ -16,6 +16,7 @@ public class Main {
         discord = new Discord(config.getDiscordToken());
 
         new GalgenGame(MysqlConnection.GalgenGameTable);
+        System.out.println("Finished");
     }
 
     public static Discord getDiscord() {
