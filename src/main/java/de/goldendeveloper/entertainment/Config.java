@@ -66,7 +66,7 @@ public class Config {
                 if (list.item(i).getNodeType() == Node.ELEMENT_NODE) {
                     Element element = (Element) list.item(i);
                     String webhook = element.getElementsByTagName("Webhook").item(0).getTextContent();
-                    String token = doc.getElementsByTagName("Token").item(0).getTextContent();
+                    String token = element.getElementsByTagName("Token").item(0).getTextContent();
                     if (!webhook.isEmpty() || !webhook.isBlank()) {
                         this.DiscordWebhook = webhook;
                     }
@@ -79,7 +79,7 @@ public class Config {
             for (int i = 0; i < list.getLength(); i++) {
                 if (list.item(i).getNodeType() == Node.ELEMENT_NODE) {
                     Element element = (Element) list.item(i);
-                    String YtApiKey = doc.getElementsByTagName("ApiKey").item(0).getTextContent();
+                    String YtApiKey = element.getElementsByTagName("ApiKey").item(0).getTextContent();
                     if (!YtApiKey.isEmpty() || !YtApiKey.isBlank()) {
                         this.YtApiKey = YtApiKey;
                     }

@@ -63,19 +63,12 @@ public class Discord {
             bot.upsertCommand(cmdResume, "Spielt die Musik weiter ab!").queue();
 //            bot.upsertCommand(cmdEmojiStart, "Erstellt einen Game Channel und Startet das Game!").queue();
             bot.upsertCommand(cmdHelp, "Zeigt dir eine Liste möglicher Befehle an!").queue();
-            Online();
+            if (!System.getProperty("os.name").split(" ")[0].equalsIgnoreCase("windows")) {
+                Online();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public void sendErrorMessage(String Error) {
-        WebhookEmbedBuilder embed = new WebhookEmbedBuilder();
-        embed.setAuthor(new WebhookEmbed.EmbedAuthor(getBot().getSelfUser().getName(), getBot().getSelfUser().getAvatarUrl(), "https://Golden-Developer.de"));
-        embed.addField(new WebhookEmbed.EmbedField(false, "[ERROR]", Error));
-        embed.setColor(0xFF0000);
-        embed.setFooter(new WebhookEmbed.EmbedFooter("@Golden-Developer", getBot().getSelfUser().getAvatarUrl()));
-        new WebhookClientBuilder(Main.getConfig().getDiscordWebhook()).build().send(embed.build());
     }
 
     public JDA getBot() {

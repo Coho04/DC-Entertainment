@@ -11,6 +11,7 @@ import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import de.goldendeveloper.entertainment.Main;
+import de.goldendeveloper.entertainment.MysqlConnection;
 import de.goldendeveloper.entertainment.Youtube;
 import de.goldendeveloper.entertainment.discord.music.GuildMusicManager;
 import de.goldendeveloper.mysql.entities.Column;
@@ -33,9 +34,6 @@ import net.dv8tion.jda.api.managers.AudioManager;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.List;
 import java.util.*;
 
@@ -92,16 +90,16 @@ public class Events extends ListenerAdapter {
         } else if (cmd.equalsIgnoreCase(Discord.cmdEmojiStart)) {
             if (e.isFromGuild()) {
                 if (e.getMember().hasPermission(Permission.ADMINISTRATOR)) {
-                    if (Main.getMysql().existsDatabase(Main.dbName)) {
-                        Database db = Main.getMysql().getDatabase(Main.dbName);
-                        if (db.existsTable(Main.DiscordTable)) {
-                            Table table = db.getTable(Main.DiscordTable);
-                            if (table.existsColumn(Main.DiscordID)) {
-                                Column column = table.getColumn(Main.DiscordID);
+                    if (Main.getMysqlConnection().getMysql().existsDatabase(MysqlConnection.dbName)) {
+                        Database db = Main.getMysqlConnection().getMysql().getDatabase(MysqlConnection.dbName);
+                        if (db.existsTable(MysqlConnection.DiscordTable)) {
+                            Table table = db.getTable(MysqlConnection.DiscordTable);
+                            if (table.existsColumn(MysqlConnection.DiscordID)) {
+                                Column column = table.getColumn(MysqlConnection.DiscordID);
                                 if (column.getAll().contains(e.getGuild().getId())) {
-                                    HashMap<String, Object> map = table.getRow(table.getColumn(Main.DiscordID), e.getGuild().getId());
-                                    if (map.containsKey(Main.emojiGameChannelID)) {
-                                        String Channel = map.get(Main.emojiGameChannelID).toString();
+                                    HashMap<String, Object> map = table.getRow(table.getColumn(MysqlConnection.DiscordID), e.getGuild().getId());
+                                    if (map.containsKey(MysqlConnection.emojiGameChannelID)) {
+                                        String Channel = map.get(MysqlConnection.emojiGameChannelID).toString();
                                         if (!Channel.isEmpty() && !Channel.isBlank()) {
                                             TextChannel channel = e.getGuild().getTextChannelById(Channel);
                                             if (channel != null) {
@@ -118,8 +116,8 @@ public class Events extends ListenerAdapter {
                                     Guild guild = e.getGuild();
                                     guild.createTextChannel("emoji-quiz").queue(channel -> {
                                         table.insert(new Row(table, table.getDatabase())
-                                                .with(Main.DiscordID, e.getGuild().getId())
-                                                .with(Main.emojiGameChannelID, channel.getId())
+                                                .with(MysqlConnection.DiscordID, e.getGuild().getId())
+                                                .with(MysqlConnection.emojiGameChannelID, channel.getId())
                                         );
                                     });
                                 }
@@ -131,16 +129,16 @@ public class Events extends ListenerAdapter {
         } else if (cmd.equalsIgnoreCase(Discord.cmdGalgenStart)) {
             if (e.isFromGuild()) {
                 if (e.getMember().hasPermission(Permission.ADMINISTRATOR)) {
-                    if (Main.getMysql().existsDatabase(Main.dbName)) {
-                        Database db = Main.getMysql().getDatabase(Main.dbName);
-                        if (db.existsTable(Main.DiscordTable)) {
-                            Table table = db.getTable(Main.DiscordTable);
-                            if (table.existsColumn(Main.DiscordID)) {
-                                Column column = table.getColumn(Main.DiscordID);
+                    if (Main.getMysqlConnection().getMysql().existsDatabase(MysqlConnection.dbName)) {
+                        Database db = Main.getMysqlConnection().getMysql().getDatabase(MysqlConnection.dbName);
+                        if (db.existsTable(MysqlConnection.DiscordTable)) {
+                            Table table = db.getTable(MysqlConnection.DiscordTable);
+                            if (table.existsColumn(MysqlConnection.DiscordID)) {
+                                Column column = table.getColumn(MysqlConnection.DiscordID);
                                 if (column.getAll().contains(e.getGuild().getId())) {
-                                    HashMap<String, Object> map = table.getRow(table.getColumn(Main.DiscordID), e.getGuild().getId());
-                                    if (map.containsKey(Main.emojiGameChannelID)) {
-                                        String Channel = map.get(Main.emojiGameChannelID).toString();
+                                    HashMap<String, Object> map = table.getRow(table.getColumn(MysqlConnection.DiscordID), e.getGuild().getId());
+                                    if (map.containsKey(MysqlConnection.emojiGameChannelID)) {
+                                        String Channel = map.get(MysqlConnection.emojiGameChannelID).toString();
                                         if (!Channel.isEmpty() && !Channel.isBlank()) {
                                             TextChannel channel = e.getGuild().getTextChannelById(Channel);
                                             if (channel != null) {
@@ -157,8 +155,8 @@ public class Events extends ListenerAdapter {
                                     Guild guild = e.getGuild();
                                     guild.createTextChannel("emoji-quiz").queue(channel -> {
                                         table.insert(new Row(table, table.getDatabase())
-                                                .with(Main.DiscordID, e.getGuild().getId())
-                                                .with(Main.emojiGameChannelID, channel.getId())
+                                                .with(MysqlConnection.DiscordID, e.getGuild().getId())
+                                                .with(MysqlConnection.emojiGameChannelID, channel.getId())
                                         );
                                     });
                                 }
@@ -322,17 +320,17 @@ public class Events extends ListenerAdapter {
     @Override
     public void onMessageReceived(MessageReceivedEvent e) {
         if (e.isFromGuild()) {
-            if (Main.getMysql().existsDatabase(Main.dbName)) {
-                Database db = Main.getMysql().getDatabase(Main.dbName);
-                if (db.existsTable(Main.DiscordTable)) {
-                    Table table = db.getTable(Main.DiscordTable);
-                    if (table.existsColumn(Main.DiscordID)) {
-                        if (table.getColumn(Main.DiscordID).getAll().contains(e.getGuild().getId())) {
-                            if (table.existsColumn(Main.galgenGameChannelID)) {
-                                if (table.getColumn(Main.galgenGameChannelID).getAll().contains(e.getTextChannel().getId())) {
-                                    HashMap<String, Object> row = table.getRow(table.getColumn(Main.DiscordID), e.getGuild().getId());
-                                    if (row.containsKey(Main.galgenGameChannelID)) {
-                                        if (row.get(Main.galgenGameChannelID).toString().equalsIgnoreCase(e.getTextChannel().getId())) {
+            if (Main.getMysqlConnection().getMysql().existsDatabase(MysqlConnection.dbName)) {
+                Database db = Main.getMysqlConnection().getMysql().getDatabase(MysqlConnection.dbName);
+                if (db.existsTable(MysqlConnection.DiscordTable)) {
+                    Table table = db.getTable(MysqlConnection.DiscordTable);
+                    if (table.existsColumn(MysqlConnection.DiscordID)) {
+                        if (table.getColumn(MysqlConnection.DiscordID).getAll().contains(e.getGuild().getId())) {
+                            if (table.existsColumn(MysqlConnection.galgenGameChannelID)) {
+                                if (table.getColumn(MysqlConnection.galgenGameChannelID).getAll().contains(e.getTextChannel().getId())) {
+                                    HashMap<String, Object> row = table.getRow(table.getColumn(MysqlConnection.DiscordID), e.getGuild().getId());
+                                    if (row.containsKey(MysqlConnection.galgenGameChannelID)) {
+                                        if (row.get(MysqlConnection.galgenGameChannelID).toString().equalsIgnoreCase(e.getTextChannel().getId())) {
                                             TextChannel channel = e.getTextChannel();
                                             Message message = channel.getHistory().getMessageById(channel.getLatestMessageId());
                                             if (message != null) {
@@ -488,32 +486,32 @@ public class Events extends ListenerAdapter {
     public static String getItem(String ID) {
         Table table = null;
         switch (ID) {
-            case movie -> table = Main.getMysql().getDatabase(Main.dbName).getTable(Main.movieTName);
-            case serien -> table = Main.getMysql().getDatabase(Main.dbName).getTable(Main.serienTName);
-            case games -> table = Main.getMysql().getDatabase(Main.dbName).getTable(Main.gameTName);
-            case jokes -> table = Main.getMysql().getDatabase(Main.dbName).getTable(Main.jokeTName);
-            case fact -> table = Main.getMysql().getDatabase(Main.dbName).getTable(Main.factTName);
-            case eightBall -> table = Main.getMysql().getDatabase(Main.dbName).getTable(Main.eightBallTName);
+            case movie -> table = Main.getMysqlConnection().getMysql().getDatabase(MysqlConnection.dbName).getTable(MysqlConnection.movieTName);
+            case serien -> table = Main.getMysqlConnection().getMysql().getDatabase(MysqlConnection.dbName).getTable(MysqlConnection.serienTName);
+            case games -> table = Main.getMysqlConnection().getMysql().getDatabase(MysqlConnection.dbName).getTable(MysqlConnection.gameTName);
+            case jokes -> table = Main.getMysqlConnection().getMysql().getDatabase(MysqlConnection.dbName).getTable(MysqlConnection.jokeTName);
+            case fact -> table = Main.getMysqlConnection().getMysql().getDatabase(MysqlConnection.dbName).getTable(MysqlConnection.factTName);
+            case eightBall -> table = Main.getMysqlConnection().getMysql().getDatabase(MysqlConnection.dbName).getTable(MysqlConnection.eightBallTName);
         }
         if (table != null) {
-            return table.getRandomFromColumn(Main.columnName).toString();
+            return table.getRandomFromColumn(MysqlConnection.columnName).toString();
         }
         return "";
     }
 
     public static MessageEmbed EmojiEmbed() {
-        if (Main.getMysql().existsDatabase(Main.dbName)) {
-            Database db = Main.getMysql().getDatabase(Main.dbName);
-            if (db.existsTable(Main.GameTable)) {
-                Table table = db.getTable(Main.GameTable);
+        if (Main.getMysqlConnection().getMysql().existsDatabase(MysqlConnection.dbName)) {
+            Database db = Main.getMysqlConnection().getMysql().getDatabase(MysqlConnection.dbName);
+            if (db.existsTable(MysqlConnection.GameTable)) {
+                Table table = db.getTable(MysqlConnection.GameTable);
                 if (table.existsColumn("id")) {
                     Column id = table.getColumn("id");
                     HashMap<String, Object> row = table.getRow(id, Integer.toString(new Random().nextInt(id.getAll().size())));
                     EmbedBuilder builder = new EmbedBuilder();
                     builder.setTitle("Emoji Quiz");
-                    builder.addField("", "Gesuchter Begriff: " + row.get(Main.GameEmojiOne).toString() + " " + row.get(Main.GameEmojiTwo).toString(), true);
-                    builder.addField("Schwierigkeit: ", row.get(Main.GameDifficulty).toString(), true);
-                    builder.addField("Tipp: ", row.get(Main.GameHint).toString(), true);
+                    builder.addField("", "Gesuchter Begriff: " + row.get(MysqlConnection.GameEmojiOne).toString() + " " + row.get(MysqlConnection.GameEmojiTwo).toString(), true);
+                    builder.addField("Schwierigkeit: ", row.get(MysqlConnection.GameDifficulty).toString(), true);
+                    builder.addField("Tipp: ", row.get(MysqlConnection.GameHint).toString(), true);
                     builder.setFooter("» Dir fällt der Begriff nicht ein? Nutze den Überspringen-Button, um das Quiz zu überspringen.");
                     return builder.build();
                 }
