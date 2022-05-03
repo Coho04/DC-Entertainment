@@ -2,10 +2,7 @@ package de.goldendeveloper.entertainment.util;
 
 import de.goldendeveloper.entertainment.Main;
 import de.goldendeveloper.entertainment.MysqlConnection;
-import de.goldendeveloper.mysql.entities.Database;
-import de.goldendeveloper.mysql.entities.MysqlTypes;
-import de.goldendeveloper.mysql.entities.Row;
-import de.goldendeveloper.mysql.entities.Table;
+import de.goldendeveloper.mysql.entities.*;
 import org.jetbrains.annotations.NotNull;
 
 public class GalgenGame {
@@ -107,11 +104,13 @@ public class GalgenGame {
     }
 
     public static void insert(@NotNull Table table, String columnBegriff, String columnWert, String Difficulty) {
-        table.insert(new Row(table, table.getDatabase())
-                .with(columnBegriff, columnWert)
-                .with(MysqlConnection.GalgenBuchstaben, "A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P,")
-                .with(MysqlConnection.GameErrors, "0")
-                .with("difficulty", Difficulty)
-                .with("active", "0"));
+        table.insert(new RowBuilder()
+                .with(table.getColumn(columnBegriff), columnWert)
+                .with(table.getColumn(MysqlConnection.GalgenBuchstaben), "A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P,")
+                .with(table.getColumn(MysqlConnection.GameErrors), "0")
+                .with(table.getColumn("difficulty"), Difficulty)
+                .with(table.getColumn("active"), "0")
+                .build()
+        );
     }
 }
