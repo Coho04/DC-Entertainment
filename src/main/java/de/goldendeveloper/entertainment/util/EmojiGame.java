@@ -2,6 +2,7 @@ package de.goldendeveloper.entertainment.util;
 
 import de.goldendeveloper.entertainment.MysqlConnection;
 import de.goldendeveloper.mysql.entities.Row;
+import de.goldendeveloper.mysql.entities.RowBuilder;
 import de.goldendeveloper.mysql.entities.Table;
 import org.jetbrains.annotations.NotNull;
 
@@ -82,6 +83,12 @@ public class EmojiGame {
     }
 
     public static void insert(@NotNull Table table, String columnBegriff, String columnWert, String Difficulty, String GameDifficultyWert, String GameEmojiOne, String GameEmojiOneWert, String GameEmojiTwo, String GameEmojiTwoWert) {
-        table.insert(new Row(table, table.getDatabase()).with(columnBegriff, columnWert).with(Difficulty, GameDifficultyWert).with(GameEmojiOne, GameEmojiOneWert).with(GameEmojiTwo, GameEmojiTwoWert));
+        table.insert(new RowBuilder()
+                .with(table.getColumn(columnBegriff), columnWert)
+                .with(table.getColumn(Difficulty), GameDifficultyWert)
+                .with(table.getColumn(GameEmojiOne), GameEmojiOneWert)
+                .with(table.getColumn(GameEmojiTwo), GameEmojiTwoWert)
+                .build()
+        );
     }
 }
