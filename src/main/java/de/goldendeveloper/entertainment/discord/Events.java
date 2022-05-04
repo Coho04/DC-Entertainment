@@ -543,4 +543,33 @@ public class Events extends ListenerAdapter {
         }
         return null;
     }
+
+    public String GalgenStringBuilder(int num) {
+        String galgen = "";
+        if (num >= 8) {
+
+        }
+        if (num >= 7) {
+            galgen = galgen + ".....--------........................\n";
+        }
+        if (num >= 6) {
+            galgen = galgen + ".....|.........|..........................\n";
+        }
+        if (num >= 5) {
+            galgen = galgen + ".....|........○..........................\n";
+        }
+        if (num >= 4) {
+            galgen = galgen + ".....|....\\ ..|../.....................\n";
+        }
+        if (num >= 3) {
+            galgen = galgen + ".....|.........|..........................\n";
+        }
+        if (num >= 2) {
+            galgen = galgen + ".....|.........|...........................\n";
+        }
+        if (num >= 1) {
+            galgen = galgen + ".....|......./\\ ........................\n";
+        }
+        return galgen;
+    }
 }
