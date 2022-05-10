@@ -286,8 +286,7 @@ public class Events extends ListenerAdapter {
         String button = e.getButton().getId();
         if (button != null) {
             switch (button) {
-                case serien ->
-                        e.getInteraction().reply("Wir empfehlen dir die Serie [" + getItem(serien) + "]!").queue();
+                case serien -> e.getInteraction().reply("Wir empfehlen dir die Serie [" + getItem(serien) + "]!").queue();
                 case movie -> e.getInteraction().reply("Wir empfehlen dir den Film [" + getItem(movie) + "]!").queue();
                 case games -> e.getInteraction().reply("Wir empfehlen dir das Game [" + getItem(games) + "]!").queue();
                 case fact -> e.getInteraction().reply(getItem(fact)).queue();
@@ -518,18 +517,12 @@ public class Events extends ListenerAdapter {
     public static String getItem(String ID) {
         Table table = null;
         switch (ID) {
-            case movie ->
-                    table = Main.getMysqlConnection().getMysql().getDatabase(MysqlConnection.dbName).getTable(MysqlConnection.movieTName);
-            case serien ->
-                    table = Main.getMysqlConnection().getMysql().getDatabase(MysqlConnection.dbName).getTable(MysqlConnection.serienTName);
-            case games ->
-                    table = Main.getMysqlConnection().getMysql().getDatabase(MysqlConnection.dbName).getTable(MysqlConnection.gameTName);
-            case jokes ->
-                    table = Main.getMysqlConnection().getMysql().getDatabase(MysqlConnection.dbName).getTable(MysqlConnection.jokeTName);
-            case fact ->
-                    table = Main.getMysqlConnection().getMysql().getDatabase(MysqlConnection.dbName).getTable(MysqlConnection.factTName);
-            case eightBall ->
-                    table = Main.getMysqlConnection().getMysql().getDatabase(MysqlConnection.dbName).getTable(MysqlConnection.eightBallTName);
+            case movie -> table = Main.getMysqlConnection().getMysql().getDatabase(MysqlConnection.dbName).getTable(MysqlConnection.movieTName);
+            case serien -> table = Main.getMysqlConnection().getMysql().getDatabase(MysqlConnection.dbName).getTable(MysqlConnection.serienTName);
+            case games -> table = Main.getMysqlConnection().getMysql().getDatabase(MysqlConnection.dbName).getTable(MysqlConnection.gameTName);
+            case jokes -> table = Main.getMysqlConnection().getMysql().getDatabase(MysqlConnection.dbName).getTable(MysqlConnection.jokeTName);
+            case fact -> table = Main.getMysqlConnection().getMysql().getDatabase(MysqlConnection.dbName).getTable(MysqlConnection.factTName);
+            case eightBall -> table = Main.getMysqlConnection().getMysql().getDatabase(MysqlConnection.dbName).getTable(MysqlConnection.eightBallTName);
         }
         if (table != null) {
             return table.getColumn(MysqlConnection.columnName).getRandom().toString();
@@ -593,5 +586,34 @@ public class Events extends ListenerAdapter {
             }
         }
         return null;
+    }
+
+    public String GalgenStringBuilder(int num) {
+        String galgen = "";
+        if (num >= 8) {
+
+        }
+        if (num >= 7) {
+            galgen = galgen + ".....--------........................\n";
+        }
+        if (num >= 6) {
+            galgen = galgen + ".....|.........|..........................\n";
+        }
+        if (num >= 5) {
+            galgen = galgen + ".....|........○..........................\n";
+        }
+        if (num >= 4) {
+            galgen = galgen + ".....|....\\ ..|../.....................\n";
+        }
+        if (num >= 3) {
+            galgen = galgen + ".....|.........|..........................\n";
+        }
+        if (num >= 2) {
+            galgen = galgen + ".....|.........|...........................\n";
+        }
+        if (num >= 1) {
+            galgen = galgen + ".....|......./\\ ........................\n";
+        }
+        return galgen;
     }
 }
