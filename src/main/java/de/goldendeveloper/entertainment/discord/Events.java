@@ -12,6 +12,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import de.goldendeveloper.entertainment.Main;
 import de.goldendeveloper.entertainment.MysqlConnection;
+import de.goldendeveloper.entertainment.ServerCommunicator;
 import de.goldendeveloper.entertainment.Youtube;
 import de.goldendeveloper.entertainment.discord.music.GuildMusicManager;
 import de.goldendeveloper.mysql.entities.*;
@@ -20,6 +21,8 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.ShutdownEvent;
+import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
+import net.dv8tion.jda.api.events.guild.GuildLeaveEvent;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
@@ -205,7 +208,7 @@ public class Events extends ListenerAdapter {
             } else {
                 e.reply("Dieser Command ist nur auf einem Server möglich!").queue();
             }
-        } else if (cmd.equalsIgnoreCase(Discord.cmdYtsearch)) {
+        } else if (cmd.equalsIgnoreCase(Discord.cmdYtSearch)) {
             String keyWord = e.getOption(Discord.cmdPlayOptionTrack).getAsString();
             Youtube youtube = new Youtube();
             youtube.setKeyWord(keyWord);
@@ -357,6 +360,16 @@ public class Events extends ListenerAdapter {
                 }
             }
         }
+    }
+
+    @Override
+    public void onGuildJoin(GuildJoinEvent e) {
+        Main.getServerCommunicator().sendToServer(ServerCommunicator.action.ADD, e.getGuild().getId());
+    }
+
+    @Override
+    public void onGuildLeave(GuildLeaveEvent e) {
+        Main.getServerCommunicator().sendToServer(ServerCommunicator.action.REMOVE, e.getGuild().getId());
     }
 
     private String GalgenMessageBuilder(int num) {

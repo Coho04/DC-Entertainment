@@ -9,6 +9,10 @@
         <Token>TOKEN</Token>
         <Webhook>WEBHOOK</Webhook>
     </Discord>
+    <Server>
+        <Hostname>HOSTNAME</Hostname>
+        <Port>PORT</Port>
+    </Server>
     <YouTube>
         <ApiKey>APIKEY</ApiKey>
     </YouTube>

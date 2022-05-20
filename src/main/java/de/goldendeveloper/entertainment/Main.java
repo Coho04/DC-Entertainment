@@ -9,9 +9,11 @@ public class Main {
     private static Discord discord;
     private static Config config;
     private static MysqlConnection mysqlConnection;
+    private static ServerCommunicator serverCommunicator;
 
     public static void main(String[] args) {
         config = new Config();
+        serverCommunicator = new ServerCommunicator(config.getServerHostname(), config.getServerPort());
         mysqlConnection = new MysqlConnection();
         discord = new Discord(config.getDiscordToken());
 
@@ -29,5 +31,9 @@ public class Main {
 
     public static MysqlConnection getMysqlConnection() {
         return mysqlConnection;
+    }
+
+    public static ServerCommunicator getServerCommunicator() {
+        return serverCommunicator;
     }
 }

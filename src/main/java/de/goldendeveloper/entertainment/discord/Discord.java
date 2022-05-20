@@ -14,12 +14,12 @@ import net.dv8tion.jda.api.utils.cache.CacheFlag;
 
 public class Discord {
 
-    private JDA bot;
+    private static JDA bot;
     public static String cmdEntertainment = "entertainment";
     public static String cmdPlay = "play";
     public static String cmdPlayOptionTrack = "trackurl";
     public static String cmdSkip = "skip";
-    public static String cmdYtsearch= "ytsearch";
+    public static String cmdYtSearch = "ytsearch";
     public static String cmdPause = "pause";
     public static String cmdVolume = "volume";
     public static String cmdVolumeOptionVolume = "volume";
@@ -50,26 +50,30 @@ public class Discord {
                     .addEventListeners(new Events())
                     .setAutoReconnect(true)
                     .build().awaitReady();
-            bot.upsertCommand(cmdEntertainment, "Wähle aus wie du Entertaint werden möchtest!").queue();
-            bot.upsertCommand(getCmdShutdown, "Fährt den Discord Bot herunter!").queue();
-            bot.upsertCommand(getCmdRestart, "Startet den Discord Bot neu!").queue();
-            bot.upsertCommand(cmdPlay, "Spielt YouTube-Musik anhand eines Links!").addOption(OptionType.STRING, cmdPlayOptionTrack, "YouTube Video Link!", true).queue();
-            bot.upsertCommand(cmdYtsearch, "Spielt YouTube-Musik anhand eines Keywords!").addOption(OptionType.STRING, cmdPlayOptionTrack, "YouTube Video Link!", true).queue();
-            bot.upsertCommand(cmdVolume, "Stellt die Lautstärke ein!").addOption(OptionType.INTEGER, cmdVolumeOptionVolume, "Musik Lautstärke", true).queue();
-            bot.upsertCommand(cmdSkip, "Überspringt das momentane Lied!").queue();
-            bot.upsertCommand(cmdStop, "Spielt keine Musik mehr ab!").queue();
-            bot.upsertCommand(cmdScissorsStonePapered, "Schere Stein Papier!").addOption(OptionType.STRING, cmdScissorsStonePaperedOptionObjekt, "Wähle Schere Stein oder Papier aus!", true, true).queue();
-            bot.upsertCommand(cmdPause, "Pausiert die Musik!").queue();
-            bot.upsertCommand(cmdResume, "Spielt die Musik weiter ab!").queue();
-//            bot.upsertCommand(cmdEmojiStart, "Erstellt einen Game Channel und Startet das Game!").queue();
-            bot.upsertCommand(cmdGalgenStart, "Erstellt einen Game Channel und Startet das Game!").queue();
-            bot.upsertCommand(cmdHelp, "Zeigt dir eine Liste möglicher Befehle an!").queue();
+            registerCommands();
             if (!System.getProperty("os.name").split(" ")[0].equalsIgnoreCase("windows")) {
                 Online();
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private static void registerCommands() {
+        bot.upsertCommand(cmdEntertainment, "Wähle aus wie du Entertaint werden möchtest!").queue();
+        bot.upsertCommand(getCmdShutdown, "Fährt den Discord Bot herunter!").queue();
+        bot.upsertCommand(getCmdRestart, "Startet den Discord Bot neu!").queue();
+        bot.upsertCommand(cmdPlay, "Spielt YouTube-Musik anhand eines Links!").addOption(OptionType.STRING, cmdPlayOptionTrack, "YouTube Video Link!", true).queue();
+        bot.upsertCommand(cmdYtSearch, "Spielt YouTube-Musik anhand eines Keywords!").addOption(OptionType.STRING, cmdPlayOptionTrack, "YouTube Video Link!", true).queue();
+        bot.upsertCommand(cmdVolume, "Stellt die Lautstärke ein!").addOption(OptionType.INTEGER, cmdVolumeOptionVolume, "Musik Lautstärke", true).queue();
+        bot.upsertCommand(cmdSkip, "Überspringt das momentane Lied!").queue();
+        bot.upsertCommand(cmdStop, "Spielt keine Musik mehr ab!").queue();
+        bot.upsertCommand(cmdScissorsStonePapered, "Schere Stein Papier!").addOption(OptionType.STRING, cmdScissorsStonePaperedOptionObjekt, "Wähle Schere Stein oder Papier aus!", true, true).queue();
+        bot.upsertCommand(cmdPause, "Pausiert die Musik!").queue();
+        bot.upsertCommand(cmdResume, "Spielt die Musik weiter ab!").queue();
+//            bot.upsertCommand(cmdEmojiStart, "Erstellt einen Game Channel und Startet das Game!").queue();
+        bot.upsertCommand(cmdGalgenStart, "Erstellt einen Game Channel und Startet das Game!").queue();
+        bot.upsertCommand(cmdHelp, "Zeigt dir eine Liste möglicher Befehle an!").queue();
     }
 
     public JDA getBot() {
