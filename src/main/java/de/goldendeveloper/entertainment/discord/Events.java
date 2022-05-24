@@ -98,9 +98,9 @@ public class Events extends ListenerAdapter {
                             if (table.existsColumn(MysqlConnection.DiscordID)) {
                                 Column column = table.getColumn(MysqlConnection.DiscordID);
                                 if (column.getAll().contains(e.getGuild().getId())) {
-                                    HashMap<String, Object> map = table.getRow(table.getColumn(MysqlConnection.DiscordID), e.getGuild().getId()).get();
+                                    HashMap<String, SearchResult> map = table.getRow(table.getColumn(MysqlConnection.DiscordID), e.getGuild().getId()).get();
                                     if (map.containsKey(MysqlConnection.emojiGameChannelID)) {
-                                        String Channel = map.get(MysqlConnection.emojiGameChannelID).toString();
+                                        String Channel = map.get(MysqlConnection.emojiGameChannelID).getAsString();
                                         if (!Channel.isEmpty() && !Channel.isBlank()) {
                                             TextChannel channel = e.getGuild().getTextChannelById(Channel);
                                             if (channel != null) {
@@ -138,9 +138,9 @@ public class Events extends ListenerAdapter {
                             if (table.existsColumn(MysqlConnection.DiscordID)) {
                                 Column column = table.getColumn(MysqlConnection.DiscordID);
                                 if (column.getAll().contains(e.getGuild().getId())) {
-                                    HashMap<String, Object> map = table.getRow(table.getColumn(MysqlConnection.DiscordID), e.getGuild().getId()).get();
+                                    HashMap<String, SearchResult> map = table.getRow(table.getColumn(MysqlConnection.DiscordID), e.getGuild().getId()).get();
                                     if (map.containsKey(MysqlConnection.emojiGameChannelID)) {
-                                        String Channel = map.get(MysqlConnection.emojiGameChannelID).toString();
+                                        String Channel = map.get(MysqlConnection.emojiGameChannelID).getAsString();
                                         if (!Channel.isEmpty() && !Channel.isBlank()) {
                                             TextChannel channel = e.getGuild().getTextChannelById(Channel);
                                             if (channel != null) {
@@ -327,8 +327,8 @@ public class Events extends ListenerAdapter {
                 //Emoji Game
             } else if (table.getColumn(MysqlConnection.galgenGameChannelID).getAll().contains(e.getChannel().getId())) {
                 if (e.getMessage().getContentRaw().split(" ").length == 1) {
-                    HashMap<String, Object> row = table.getRow(table.getColumn(MysqlConnection.GalgenGameActive), "1").get();
-                    String keyWort = row.get(MysqlConnection.columnGameBegriff).toString();
+                    HashMap<String, SearchResult> row = table.getRow(table.getColumn(MysqlConnection.GalgenGameActive), "1").get();
+                    String keyWort = row.get(MysqlConnection.columnGameBegriff).getAsString();
                     if (e.getMessage().getContentRaw().toCharArray().length == 1) {
                         for (Character c : keyWort.toCharArray()) {
                             if (c.equals(e.getMessage().getContentRaw())) {
@@ -550,8 +550,8 @@ public class Events extends ListenerAdapter {
                 Table table = db.getTable(MysqlConnection.GalgenGameTable);
                 if (table.existsColumn("id")) {
                     Column id = table.getColumn("id");
-                    HashMap<String, Object> row = table.getRow(id, Integer.toString(new Random().nextInt(id.getAll().size()))).get();
-                    String keyWort = row.get(MysqlConnection.columnGameBegriff).toString();
+                    HashMap<String, SearchResult> row = table.getRow(id, Integer.toString(new Random().nextInt(id.getAll().size()))).get();
+                    String keyWort = row.get(MysqlConnection.columnGameBegriff).getAsString();
                     EmbedBuilder builder = new EmbedBuilder();
                     builder.setTitle("Galgenmännchen");
                     builder.setDescription(
@@ -587,12 +587,12 @@ public class Events extends ListenerAdapter {
                 Table table = db.getTable(MysqlConnection.GameTable);
                 if (table.existsColumn("id")) {
                     Column id = table.getColumn("id");
-                    HashMap<String, Object> row = table.getRow(id, Integer.toString(new Random().nextInt(id.getAll().size()))).get();
+                    HashMap<String, SearchResult> row = table.getRow(id, Integer.toString(new Random().nextInt(id.getAll().size()))).get();
                     EmbedBuilder builder = new EmbedBuilder();
                     builder.setTitle("Emoji Quiz");
-                    builder.addField("", "Gesuchter Begriff: " + row.get(MysqlConnection.GameEmojiOne).toString() + " " + row.get(MysqlConnection.GameEmojiTwo).toString(), false);
-                    builder.addField("Schwierigkeit: ", row.get(MysqlConnection.GameDifficulty).toString(), false);
-                    builder.addField("Tipp: ", row.get(MysqlConnection.GameHint).toString(), false);
+                    builder.addField("", "Gesuchter Begriff: " + row.get(MysqlConnection.GameEmojiOne).getAsString() + " " + row.get(MysqlConnection.GameEmojiTwo).toString(), false);
+                    builder.addField("Schwierigkeit: ", row.get(MysqlConnection.GameDifficulty).getAsString(), false);
+                    builder.addField("Tipp: ", row.get(MysqlConnection.GameHint).getAsString(), false);
                     builder.setFooter("» Dir fällt der Begriff nicht ein? Nutze den Überspringen-Button, um das Quiz zu überspringen.");
                     return builder.build();
                 }
