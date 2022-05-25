@@ -5,14 +5,14 @@
         <Password>PASSWORD</Password>
         <Port>PORT</Port>
     </MYSQL>
-    <Discord>
-        <Token>TOKEN</Token>
-        <Webhook>WEBHOOK</Webhook>
-    </Discord>
     <Server>
         <Hostname>HOSTNAME</Hostname>
         <Port>PORT</Port>
     </Server>
+    <Discord>
+        <Token>TOKEN</Token>
+        <Webhook>WEBHOOK</Webhook>
+    </Discord>
     <YouTube>
         <ApiKey>APIKEY</ApiKey>
     </YouTube>
