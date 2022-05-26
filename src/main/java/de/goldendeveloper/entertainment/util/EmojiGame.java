@@ -1,7 +1,6 @@
 package de.goldendeveloper.entertainment.util;
 
 import de.goldendeveloper.entertainment.MysqlConnection;
-import de.goldendeveloper.mysql.entities.Row;
 import de.goldendeveloper.mysql.entities.RowBuilder;
 import de.goldendeveloper.mysql.entities.Table;
 import org.jetbrains.annotations.NotNull;
@@ -14,7 +13,7 @@ public class EmojiGame {
         insert(table, MysqlConnection.columnGameBegriff, "Rasierschaum", MysqlConnection.GameDifficulty, "easy", MysqlConnection.GameEmojiOne, "", MysqlConnection.GameEmojiTwo, "");
         insert(table, MysqlConnection.columnGameBegriff, "Laderampe", MysqlConnection.GameDifficulty, "easy", MysqlConnection.GameEmojiOne, "", MysqlConnection.GameEmojiTwo, "");
         insert(table, MysqlConnection.columnGameBegriff, "Lichterkette", MysqlConnection.GameDifficulty, "easy", MysqlConnection.GameEmojiOne, "", MysqlConnection.GameEmojiTwo, "");
-        insert(table, MysqlConnection.columnGameBegriff, "Rauhfasertapete", MysqlConnection.GameDifficulty, "easy", MysqlConnection.GameEmojiOne, "", MysqlConnection.GameEmojiTwo, "");
+        insert(table, MysqlConnection.columnGameBegriff, "Raufasertapete", MysqlConnection.GameDifficulty, "easy", MysqlConnection.GameEmojiOne, "", MysqlConnection.GameEmojiTwo, "");
         insert(table, MysqlConnection.columnGameBegriff, "Tannenbaumständer", MysqlConnection.GameDifficulty, "easy", MysqlConnection.GameEmojiOne, "", MysqlConnection.GameEmojiTwo, "");
         insert(table, MysqlConnection.columnGameBegriff, "Siebträgermaschine", MysqlConnection.GameDifficulty, "easy", MysqlConnection.GameEmojiOne, "", MysqlConnection.GameEmojiTwo, "");
         insert(table, MysqlConnection.columnGameBegriff, "Lampenfassung", MysqlConnection.GameDifficulty, "easy", MysqlConnection.GameEmojiOne, "", MysqlConnection.GameEmojiTwo, "");
@@ -46,10 +45,10 @@ public class EmojiGame {
         insert(table, MysqlConnection.columnGameBegriff, "Glühwein", MysqlConnection.GameDifficulty, "easy", MysqlConnection.GameEmojiOne, "", MysqlConnection.GameEmojiTwo, "");
         insert(table, MysqlConnection.columnGameBegriff, "Osterhase", MysqlConnection.GameDifficulty, "easy", MysqlConnection.GameEmojiOne, "", MysqlConnection.GameEmojiTwo, "");
         insert(table, MysqlConnection.columnGameBegriff, "Teppichklopfer", MysqlConnection.GameDifficulty, "easy", MysqlConnection.GameEmojiOne, "", MysqlConnection.GameEmojiTwo, "");
-        insert(table, MysqlConnection.columnGameBegriff, "Schokokringel", MysqlConnection.GameDifficulty, "easy", MysqlConnection.GameEmojiOne, "", MysqlConnection.GameEmojiTwo, "");
+        insert(table, MysqlConnection.columnGameBegriff, "Schokoriegel", MysqlConnection.GameDifficulty, "easy", MysqlConnection.GameEmojiOne, "", MysqlConnection.GameEmojiTwo, "");
         insert(table, MysqlConnection.columnGameBegriff, "Vollpfosten", MysqlConnection.GameDifficulty, "easy", MysqlConnection.GameEmojiOne, "", MysqlConnection.GameEmojiTwo, "");
         insert(table, MysqlConnection.columnGameBegriff, "Sprudelwasser", MysqlConnection.GameDifficulty, "easy", MysqlConnection.GameEmojiOne, "", MysqlConnection.GameEmojiTwo, "");
-        insert(table, MysqlConnection.columnGameBegriff, "Kichstarter", MysqlConnection.GameDifficulty, "easy", MysqlConnection.GameEmojiOne, "", MysqlConnection.GameEmojiTwo, "");
+        insert(table, MysqlConnection.columnGameBegriff, "Kickstarter", MysqlConnection.GameDifficulty, "easy", MysqlConnection.GameEmojiOne, "", MysqlConnection.GameEmojiTwo, "");
         insert(table, MysqlConnection.columnGameBegriff, "Eierlikör", MysqlConnection.GameDifficulty, "easy", MysqlConnection.GameEmojiOne, "", MysqlConnection.GameEmojiTwo, "");
         insert(table, MysqlConnection.columnGameBegriff, "Neujahresgruß", MysqlConnection.GameDifficulty, "easy", MysqlConnection.GameEmojiOne, "", MysqlConnection.GameEmojiTwo, "");
         insert(table, MysqlConnection.columnGameBegriff, "Glatteis", MysqlConnection.GameDifficulty, "easy", MysqlConnection.GameEmojiOne, "", MysqlConnection.GameEmojiTwo, "");
@@ -62,7 +61,7 @@ public class EmojiGame {
         insert(table, MysqlConnection.columnGameBegriff, "Hebamme", MysqlConnection.GameDifficulty, "easy", MysqlConnection.GameEmojiOne, "", MysqlConnection.GameEmojiTwo, "");
         insert(table, MysqlConnection.columnGameBegriff, "Manschettenknopf", MysqlConnection.GameDifficulty, "easy", MysqlConnection.GameEmojiOne, "", MysqlConnection.GameEmojiTwo, "");
         insert(table, MysqlConnection.columnGameBegriff, "Schneegestöber", MysqlConnection.GameDifficulty, "easy", MysqlConnection.GameEmojiOne, "", MysqlConnection.GameEmojiTwo, "");
-        insert(table, MysqlConnection.columnGameBegriff, "Renntier", MysqlConnection.GameDifficulty, "easy", MysqlConnection.GameEmojiOne, "", MysqlConnection.GameEmojiTwo, "");
+        insert(table, MysqlConnection.columnGameBegriff, "Renter", MysqlConnection.GameDifficulty, "easy", MysqlConnection.GameEmojiOne, "", MysqlConnection.GameEmojiTwo, "");
         insert(table, MysqlConnection.columnGameBegriff, "Winterstiefel", MysqlConnection.GameDifficulty, "easy", MysqlConnection.GameEmojiOne, "", MysqlConnection.GameEmojiTwo, "");
         insert(table, MysqlConnection.columnGameBegriff, "Flussufer", MysqlConnection.GameDifficulty, "easy", MysqlConnection.GameEmojiOne, "", MysqlConnection.GameEmojiTwo, "");
         insert(table, MysqlConnection.columnGameBegriff, "Pfauenfeder", MysqlConnection.GameDifficulty, "easy", MysqlConnection.GameEmojiOne, "", MysqlConnection.GameEmojiTwo, "");
