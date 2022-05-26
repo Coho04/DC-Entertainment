@@ -71,8 +71,9 @@ public class Events extends ListenerAdapter {
         embed.addField(new WebhookEmbed.EmbedField(false, "Version", Main.getDiscord().getProjektVersion()));
         embed.setFooter(new WebhookEmbed.EmbedFooter("@Golden-Developer", Main.getDiscord().getBot().getSelfUser().getAvatarUrl()));
         embed.setTimestamp(new Date().toInstant());
-        new WebhookClientBuilder(Main.getConfig().getDiscordWebhook()).build().send(embed.build());
-        System.exit(0);
+        if (new WebhookClientBuilder(Main.getConfig().getDiscordWebhook()).build().send(embed.build()).isDone()) {
+            System.exit(0);
+        }
     }
 
     @Override
