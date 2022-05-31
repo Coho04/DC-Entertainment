@@ -61,18 +61,18 @@ public class Events extends ListenerAdapter {
 
     @Override
     public void onShutdown(@NotNull ShutdownEvent e) {
-        WebhookEmbedBuilder embed = new WebhookEmbedBuilder();
-        embed.setAuthor(new WebhookEmbed.EmbedAuthor(Main.getDiscord().getBot().getSelfUser().getName(), Main.getDiscord().getBot().getSelfUser().getAvatarUrl(), "https://Golden-Developer.de"));
-        embed.setColor(0xFF0000);
-        embed.addField(new WebhookEmbed.EmbedField(false, "[Status]", "ONLINE"));
-        embed.addField(new WebhookEmbed.EmbedField(false, "Gestartet als", Main.getDiscord().getBot().getSelfUser().getName()));
-        embed.addField(new WebhookEmbed.EmbedField(false, "Server", Integer.toString(Main.getDiscord().getBot().getGuilds().size())));
-        embed.addField(new WebhookEmbed.EmbedField(false, "Status", "\uD83D\uDD34 Gestoppt"));
-        embed.addField(new WebhookEmbed.EmbedField(false, "Version", Main.getDiscord().getProjektVersion()));
-        embed.setFooter(new WebhookEmbed.EmbedFooter("@Golden-Developer", Main.getDiscord().getBot().getSelfUser().getAvatarUrl()));
-        embed.setTimestamp(new Date().toInstant());
-        if (new WebhookClientBuilder(Main.getConfig().getDiscordWebhook()).build().send(embed.build()).isDone()) {
-            System.exit(0);
+        if (Main.getDeployment()) {
+            WebhookEmbedBuilder embed = new WebhookEmbedBuilder();
+            embed.setAuthor(new WebhookEmbed.EmbedAuthor(Main.getDiscord().getBot().getSelfUser().getName(), Main.getDiscord().getBot().getSelfUser().getAvatarUrl(), "https://Golden-Developer.de"));
+            embed.addField(new WebhookEmbed.EmbedField(false, "[Status]", "Offline"));
+            embed.addField(new WebhookEmbed.EmbedField(false, "Gestoppt als", Main.getDiscord().getBot().getSelfUser().getName()));
+            embed.addField(new WebhookEmbed.EmbedField(false, "Server", Integer.toString(Main.getDiscord().getBot().getGuilds().size())));
+            embed.addField(new WebhookEmbed.EmbedField(false, "Status", "\uD83D\uDD34 Offline"));
+            embed.addField(new WebhookEmbed.EmbedField(false, "Version", Main.getDiscord().getProjektVersion()));
+            embed.setFooter(new WebhookEmbed.EmbedFooter("@Golden-Developer", Main.getDiscord().getBot().getSelfUser().getAvatarUrl()));
+            embed.setTimestamp(new Date().toInstant());
+            embed.setColor(0xFF0000);
+            new WebhookClientBuilder(Main.getConfig().getDiscordWebhook()).build().send(embed.build()).thenRun(() -> System.exit(0));
         }
     }
 
@@ -196,8 +196,8 @@ public class Events extends ListenerAdapter {
         } else if (e.getName().equalsIgnoreCase(Discord.getCmdRestart)) {
             if (e.getUser() == zRazzer || e.getUser() == _Coho04_) {
                 try {
-                    e.getInteraction().reply("Der Discord Bot wird nun neugestartet!").queue();
-                    Process p = Runtime.getRuntime().exec("screen -AmdS GD-Entertainment java -Xms1096M -Xmx1096M -jar GD-Entertainment-1.0.jar");
+                    e.getInteraction().reply("Der Discord Bot [" + e.getJDA().getSelfUser().getName() + "] wird nun neugestartet!").queue();
+                    Process p = Runtime.getRuntime().exec("screen -AmdS " + Main.getDiscord().getProjektName() + " java -Xms1096M -Xmx1096M -jar " + Main.getDiscord().getProjektName() + "-" + Main.getDiscord().getProjektVersion() + ".jar restart");
                     p.waitFor();
                     e.getJDA().shutdown();
                 } catch (Exception ex) {
@@ -370,11 +370,13 @@ public class Events extends ListenerAdapter {
     @Override
     public void onGuildJoin(GuildJoinEvent e) {
         Main.getServerCommunicator().sendToServer(ServerCommunicator.action.ADD, e.getGuild().getId());
+        e.getJDA().getPresence().setActivity(Activity.playing("/help | " + e.getJDA().getGuilds().size() + " Servern"));
     }
 
     @Override
     public void onGuildLeave(GuildLeaveEvent e) {
         Main.getServerCommunicator().sendToServer(ServerCommunicator.action.REMOVE, e.getGuild().getId());
+        e.getJDA().getPresence().setActivity(Activity.playing("/help | " + e.getJDA().getGuilds().size() + " Servern"));
     }
 
     private String GalgenMessageBuilder(int num) {
