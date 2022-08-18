@@ -10,6 +10,8 @@ import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -27,14 +29,21 @@ public class Config {
 
     public Config() {
         ClassLoader classloader = Thread.currentThread().getContextClassLoader();
-        readXML(classloader.getResourceAsStream("Login.xml"));
+        InputStream local = classloader.getResourceAsStream("Login.xml");
+        try {
+            if (local != null && local.available() == 1) {
+                readXML(local);
+            } else {
+                File file = new File("/home/Golden-Developer/JavaBots/GD-Entertainment/config/Login.xml");
+                InputStream targetStream = new FileInputStream(file);
+                readXML(targetStream);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void readXML(InputStream inputStream) {
-        this.MysqlHostname = "138.201.202.3";
-        this.MysqlUsername = "root";
-        this.MysqlPort = 3306;
-
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         try {
             dbf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
