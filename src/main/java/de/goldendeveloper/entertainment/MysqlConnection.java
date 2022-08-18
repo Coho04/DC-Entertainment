@@ -80,7 +80,7 @@ public class MysqlConnection {
         }
         Table table = db.getTable(tableName);
         if (!table.existsColumn("name")) {
-            table.addColumn("name", MysqlTypes.VARCHAR, 250);
+            table.addColumn("name");
         }
     }
 
@@ -94,7 +94,7 @@ public class MysqlConnection {
 
         for (String clm : columns) {
             if (!table.existsColumn(clm)) {
-                table.addColumn(clm, MysqlTypes.VARCHAR, 50);
+                table.addColumn(clm);
             }
         }
     }

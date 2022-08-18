@@ -11,19 +11,19 @@ public class GalgenGame {
         Database db = Main.getMysqlConnection().getMysql().getDatabase(MysqlConnection.dbName);
         Table table = db.getTable(Table);
         if (!table.existsColumn("difficulty")) {
-            table.addColumn("difficulty", MysqlTypes.VARCHAR, 50);
+            table.addColumn("difficulty");
         }
         if (!table.existsColumn("active")) {
-            table.addColumn("active", MysqlTypes.VARCHAR, 50);
+            table.addColumn("active");
         }
         if (!table.existsColumn(MysqlConnection.GameErrors)) {
-            table.addColumn(MysqlConnection.GameErrors, MysqlTypes.VARCHAR, 50);
+            table.addColumn(MysqlConnection.GameErrors);
         }
         if (!table.existsColumn(MysqlConnection.GalgenBuchstaben)) {
-            table.addColumn(MysqlConnection.GalgenBuchstaben, MysqlTypes.VARCHAR, 50);
+            table.addColumn(MysqlConnection.GalgenBuchstaben);
         }
         if (!table.existsColumn(MysqlConnection.columnGameBegriff)) {
-            table.addColumn(MysqlConnection.columnGameBegriff, MysqlTypes.VARCHAR, 50);
+            table.addColumn(MysqlConnection.columnGameBegriff);
         }
         if (table.isEmpty()) {
             fillTable(table);

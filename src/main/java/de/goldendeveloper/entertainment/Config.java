@@ -14,6 +14,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class Config {
 
@@ -31,7 +33,8 @@ public class Config {
         ClassLoader classloader = Thread.currentThread().getContextClassLoader();
         InputStream local = classloader.getResourceAsStream("Login.xml");
         try {
-            if (local != null && local.available() == 1) {
+            Path path = Files.createTempFile("Login", ".xml");
+            if (local != null && Files.exists(path)) {
                 readXML(local);
             } else {
                 File file = new File("/home/Golden-Developer/JavaBots/GD-Entertainment/config/Login.xml");
