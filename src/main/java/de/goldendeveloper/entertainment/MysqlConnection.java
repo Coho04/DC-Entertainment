@@ -1,9 +1,9 @@
 package de.goldendeveloper.entertainment;
 
+import de.goldendeveloper.entertainment.util.CountingGame;
 import de.goldendeveloper.entertainment.util.EmojiGame;
 import de.goldendeveloper.mysql.MYSQL;
 import de.goldendeveloper.mysql.entities.Database;
-import de.goldendeveloper.mysql.entities.MysqlTypes;
 import de.goldendeveloper.mysql.entities.Table;
 
 import java.util.ArrayList;
@@ -36,18 +36,24 @@ public class MysqlConnection {
     public static String EmojiGameActive = "Emoji";
     public static String GalgenGameActive = "Galgen";
 
+    // Counting Game
+
+
     public MysqlConnection() {
         mysql = new MYSQL(Main.getConfig().getMysqlHostname(), Main.getConfig().getMysqlUsername(), Main.getConfig().getMysqlPassword(), Main.getConfig().getMysqlPort());
         if (!mysql.existsDatabase(dbName)) {
             mysql.createDatabase(dbName);
         }
         Database db = mysql.getDatabase(dbName);
-        createTables(db, serienTName);
-        createTables(db, movieTName);
-        createTables(db, jokeTName);
-        createTables(db, eightBallTName);
-        createTables(db, gameTName);
-        createTables(db, factTName);
+        createTable(db, serienTName, new String[]{"name"});
+        createTable(db, movieTName, new String[]{"name"});
+        createTable(db, jokeTName, new String[]{"name"});
+        createTable(db, eightBallTName, new String[]{"name"});
+        createTable(db, gameTName, new String[]{"name"});
+        createTable(db, factTName, new String[]{"name"});
+
+
+        createTable(db, CountingGame.TableName, new String[]{CountingGame.ChannelColumn, CountingGame.NumberColumn, CountingGame.GuildColumn});
 
         if (!db.existsTable(GameTable)) {
             db.createTable(GameTable);
@@ -74,16 +80,6 @@ public class MysqlConnection {
         System.out.println("MYSQL Fertig");
     }
 
-    private void createTables(Database db, String tableName) {
-        if (!db.existsTable(tableName)) {
-            db.createTable(tableName);
-        }
-        Table table = db.getTable(tableName);
-        if (!table.existsColumn("name")) {
-            table.addColumn("name");
-        }
-    }
-
     private void createGame(Table table, String ColumnOne, String ColumnTwo, String ColumnThree, String ColumnFour, String ColumnFive) {
         List<String> columns = new ArrayList<>();
         columns.add(ColumnOne);
@@ -95,6 +91,18 @@ public class MysqlConnection {
         for (String clm : columns) {
             if (!table.existsColumn(clm)) {
                 table.addColumn(clm);
+            }
+        }
+    }
+
+    private void createTable(Database db, String tableName, String[] columns) {
+        if (!db.existsTable(tableName)) {
+            db.createTable(tableName);
+        }
+        Table table = db.getTable(tableName);
+        for (String column : columns) {
+            if (!table.existsColumn(column)) {
+                table.addColumn(column);
             }
         }
     }

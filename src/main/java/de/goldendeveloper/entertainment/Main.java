@@ -1,6 +1,7 @@
 package de.goldendeveloper.entertainment;
 
 import de.goldendeveloper.entertainment.discord.Discord;
+import de.goldendeveloper.entertainment.util.CountingGame;
 import de.goldendeveloper.entertainment.util.GalgenGame;
 
 public class Main {
