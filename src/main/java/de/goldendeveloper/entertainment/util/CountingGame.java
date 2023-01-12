@@ -4,7 +4,7 @@ import de.goldendeveloper.entertainment.Main;
 import de.goldendeveloper.entertainment.MysqlConnection;
 import de.goldendeveloper.mysql.entities.*;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 
 
 import javax.annotation.Nullable;
@@ -104,7 +104,7 @@ public class CountingGame {
             if (db.existsTable(TableName)) {
                 Table table = db.getTable(TableName);
                 if (table.getColumn(GuildColumn).getAll().getAsString().contains(guildId)) {
-                    table.getRow(table.getColumn(GuildColumn), guildId).set(table.getColumn(GuildColumn), String.valueOf(currentNumber));
+                    table.getRow(table.getColumn(GuildColumn), guildId).set(table.getColumn(NumberColumn), String.valueOf(currentNumber));
                     this.currentNumber = currentNumber;
                 }
             }
@@ -122,5 +122,18 @@ public class CountingGame {
                 }
             }
         }
+    }
+
+    public static boolean hasCountingGame(Guild guild) {
+        if (Main.getMysqlConnection().getMysql().existsDatabase(MysqlConnection.dbName)) {
+            Database db = Main.getMysqlConnection().getMysql().getDatabase(MysqlConnection.dbName);
+            if (db.existsTable(TableName)) {
+                Table table = db.getTable(TableName);
+                if (table.getColumn(GuildColumn).getAll().getAsString().contains(guild.getId())) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

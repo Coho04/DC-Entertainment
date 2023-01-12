@@ -1,8 +1,6 @@
 package de.goldendeveloper.entertainment;
 
 import de.goldendeveloper.entertainment.discord.Discord;
-import de.goldendeveloper.entertainment.util.CountingGame;
-import de.goldendeveloper.entertainment.util.GalgenGame;
 
 public class Main {
 
@@ -26,9 +24,6 @@ public class Main {
         serverCommunicator = new ServerCommunicator(config.getServerHostname(), config.getServerPort());
         mysqlConnection = new MysqlConnection();
         discord = new Discord(config.getDiscordToken());
-
-        new GalgenGame(MysqlConnection.GalgenGameTable);
-        System.out.println("MYSQL Finished");
     }
 
     public static Discord getDiscord() {
