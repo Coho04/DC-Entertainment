@@ -5,9 +5,6 @@ import de.goldendeveloper.mysql.MYSQL;
 import de.goldendeveloper.mysql.entities.Database;
 import de.goldendeveloper.mysql.entities.Table;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class MysqlConnection {
 
     private final MYSQL mysql;
@@ -52,21 +49,6 @@ public class MysqlConnection {
             db.createTable(GalgenGameTable);
         }
         System.out.println("MYSQL Fertig");
-    }
-
-    private void createGame(Table table, String ColumnOne, String ColumnTwo, String ColumnThree, String ColumnFour, String ColumnFive) {
-        List<String> columns = new ArrayList<>();
-        columns.add(ColumnOne);
-        columns.add(ColumnTwo);
-        columns.add(ColumnThree);
-        columns.add(ColumnFour);
-        columns.add(ColumnFive);
-
-        for (String clm : columns) {
-            if (!table.existsColumn(clm)) {
-                table.addColumn(clm);
-            }
-        }
     }
 
     private void createTable(Database db, String tableName, String[] columns) {

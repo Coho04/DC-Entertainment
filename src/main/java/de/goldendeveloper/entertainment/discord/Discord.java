@@ -55,8 +55,9 @@ public class Discord {
                     .setAutoReconnect(true)
                     .build().awaitReady();
             registerCommands();
-            if (!System.getProperty("os.name").split(" ")[0].equalsIgnoreCase("windows")) {
+            if (Main.getDeployment()) {
                 Online();
+                Main.getServerCommunicator().startBot(bot);
             }
             bot.getPresence().setActivity(Activity.playing("/help | " + bot.getGuilds().size() + " Servern"));
         } catch (Exception e) {
@@ -103,6 +104,4 @@ public class Discord {
         embed.setTimestamp(new Date().toInstant());
         new WebhookClientBuilder(Main.getConfig().getDiscordWebhook()).build().send(embed.build());
     }
-
-
 }
