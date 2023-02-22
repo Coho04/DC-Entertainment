@@ -129,9 +129,7 @@ public class CountingGame {
             Database db = Main.getMysqlConnection().getMysql().getDatabase(MysqlConnection.dbName);
             if (db.existsTable(TableName)) {
                 Table table = db.getTable(TableName);
-                if (table.getColumn(GuildColumn).getAll().getAsString().contains(guild.getId())) {
-                    return true;
-                }
+                return table.getColumn(GuildColumn).getAll().getAsString().contains(guild.getId());
             }
         }
         return false;

@@ -12,7 +12,6 @@ import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import de.goldendeveloper.entertainment.Main;
 import de.goldendeveloper.entertainment.MysqlConnection;
-import de.goldendeveloper.entertainment.ServerCommunicator;
 import de.goldendeveloper.entertainment.Youtube;
 import de.goldendeveloper.entertainment.discord.music.GuildMusicManager;
 import de.goldendeveloper.entertainment.util.CountingGame;
