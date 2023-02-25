@@ -40,6 +40,7 @@ public class ServerCommunicator {
             JSONObject msg = new JSONObject();
             msg.put("name", bot.getSelfUser().getName());
             msg.put("invite", bot.getInviteUrl(Permission.ADMINISTRATOR));
+            msg.put("image", bot.getSelfUser().getAvatarUrl());
             msg.put("type", action.START);
             msg.put("commands", getCommandNameFromCommands(bot.retrieveCommands().complete()));
             msg.put("server", getGuildIDsFromGuilds(bot));
