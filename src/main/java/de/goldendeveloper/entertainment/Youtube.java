@@ -4,11 +4,10 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.youtube.YouTube;
 
-import java.io.IOException;
 import java.util.Collections;
 
-import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.services.youtube.model.*;
+import io.sentry.Sentry;
 
 import java.util.List;
 
@@ -27,12 +26,9 @@ public class Youtube {
             search.setType(Collections.singletonList("video"));
             search.setFields("items(id/kind,id/videoId,snippet/title,snippet/thumbnails/default/url)");
             search.setMaxResults((long) 25);
-        } catch (GoogleJsonResponseException e) {
-            System.err.println("There was a service error: " + e.getDetails().getCode() + " : " + e.getDetails().getMessage());
-        } catch (IOException e) {
-            System.err.println("There was an IO error: " + e.getCause() + " : " + e.getMessage());
-        } catch (Throwable t) {
-            t.printStackTrace();
+        } catch (Exception e) {
+            Sentry.captureException(e);
+            e.printStackTrace();
         }
     }
 
@@ -49,8 +45,9 @@ public class Youtube {
             if (searchResultList != null) {
                 return prettyPrint(searchResultList);
             }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            Sentry.captureException(e);
+            e.printStackTrace();
         }
         return "";
     }

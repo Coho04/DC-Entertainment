@@ -1,5 +1,6 @@
 package de.goldendeveloper.entertainment;
 
+import de.goldendeveloper.entertainment.errors.ExceptionHandler;
 import de.goldendeveloper.entertainment.util.CountingGame;
 import de.goldendeveloper.mysql.MYSQL;
 import de.goldendeveloper.mysql.entities.Database;
@@ -20,8 +21,8 @@ public class MysqlConnection {
     public static String GameTable = "EmojiGame";
     public static String DiscordTable = "DiscordServer";
 
-    public MysqlConnection() {
-        mysql = new MYSQL(Main.getConfig().getMysqlHostname(), Main.getConfig().getMysqlUsername(), Main.getConfig().getMysqlPassword(), Main.getConfig().getMysqlPort());
+    public MysqlConnection(String hostname,String username,String password,int port) {
+        mysql = new MYSQL(hostname, username, password, port, new ExceptionHandler());
         if (!mysql.existsDatabase(dbName)) {
             mysql.createDatabase(dbName);
         }

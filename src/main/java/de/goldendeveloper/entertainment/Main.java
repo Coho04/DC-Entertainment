@@ -5,7 +5,6 @@ import io.sentry.Sentry;
 
 public class Main {
 
-
     private static Discord discord;
     private static Config config;
     private static MysqlConnection mysqlConnection;
@@ -18,13 +17,14 @@ public class Main {
         if (args.length >= 1 && args[0].equalsIgnoreCase("restart")) {
             restart = true;
         }
-        if (System.getProperty("os.name").split(" ")[0].equalsIgnoreCase("windows")) {
+        String device = System.getProperty("os.name").split(" ")[0];
+        if (device.equalsIgnoreCase("windows") || device.equalsIgnoreCase("Mac")) {
             deployment = false;
         }
         config = new Config();
         Sentry(config.getSentryDNS());
         serverCommunicator = new ServerCommunicator(config.getServerHostname(), config.getServerPort());
-        mysqlConnection = new MysqlConnection();
+        mysqlConnection = new MysqlConnection(Main.getConfig().getMysqlHostname(), Main.getConfig().getMysqlUsername(), Main.getConfig().getMysqlPassword(), Main.getConfig().getMysqlPort());
         discord = new Discord(config.getDiscordToken());
     }
 

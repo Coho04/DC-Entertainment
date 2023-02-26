@@ -16,6 +16,7 @@ import de.goldendeveloper.entertainment.Youtube;
 import de.goldendeveloper.entertainment.discord.music.GuildMusicManager;
 import de.goldendeveloper.entertainment.util.CountingGame;
 import de.goldendeveloper.mysql.entities.*;
+import io.sentry.Sentry;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
@@ -121,6 +122,7 @@ public class Events extends ListenerAdapter {
                     p.waitFor();
                     e.getJDA().shutdown();
                 } catch (Exception ex) {
+                    Sentry.captureException(ex);
                     ex.printStackTrace();
                 }
             } else {
@@ -445,6 +447,10 @@ public class Events extends ListenerAdapter {
             return true;
         } catch(NumberFormatException e){
             return false;
+        } catch (Exception e) {
+            Sentry.captureException(e);
+            e.printStackTrace();
         }
+        return false;
     }
 }
