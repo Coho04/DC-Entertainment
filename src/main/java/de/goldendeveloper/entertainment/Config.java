@@ -29,6 +29,7 @@ public class Config {
     private int ServerPort;
     private String YtApiKey;
     private int MysqlPort;
+    private String sentryDNS;
 
     public Config() {
         ClassLoader classloader = Thread.currentThread().getContextClassLoader();
@@ -114,6 +115,10 @@ public class Config {
                     }
                 }
             }
+            String sentryDNS = doc.getElementsByTagName("Sentry").item(0).getTextContent();
+            if (!sentryDNS.isEmpty() || !sentryDNS.isBlank()) {
+                this.sentryDNS = sentryDNS;
+            }
         } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
         }
@@ -155,6 +160,9 @@ public class Config {
         return ServerHostname;
     }
 
+    public String getSentryDNS() {
+        return sentryDNS;
+    }
 
     public String getProjektVersion() {
         Properties properties = new Properties();

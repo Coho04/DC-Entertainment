@@ -9,6 +9,7 @@
         <Hostname>HOSTNAME</Hostname>
         <Port>PORT</Port>
     </Server>
+    <Sentry>SENTRY</Sentry>
     <Discord>
         <Token>TOKEN</Token>
         <Webhook>WEBHOOK</Webhook>
