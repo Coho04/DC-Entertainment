@@ -9,7 +9,7 @@ import de.goldendeveloper.mysql.entities.Table;
 public class MysqlConnection {
 
     private final MYSQL mysql;
-    public static String dbName = "Discord_Entertainment_Bot";
+    public static String dbName = "GD-Entertainment";
     public static String serienTName = "Serien";
     public static String movieTName = "Filme";
     public static String gameTName = "Games";
