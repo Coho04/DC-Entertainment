@@ -16,12 +16,11 @@ public class Youtube {
     private String keyWord;
     private YouTube.Search.List search;
 
-    public Youtube() {
+    public Youtube(String apiKey) {
         try {
             YouTube youtube = new YouTube.Builder(new NetHttpTransport(), new JacksonFactory(), request -> {
             }).setApplicationName("youtube-cmdline-search-sample").build();
             search = youtube.search().list(Collections.singletonList("id,snippet"));
-            String apiKey = Main.getConfig().getYtApiKey();
             search.setKey(apiKey);
             search.setType(Collections.singletonList("video"));
             search.setFields("items(id/kind,id/videoId,snippet/title,snippet/thumbnails/default/url)");
@@ -54,7 +53,7 @@ public class Youtube {
 
     private String prettyPrint(List<SearchResult> iteratorSearchResults) {
         if (iteratorSearchResults.isEmpty()) {
-            System.out.println(" There aren't any results for your query.");
+            System.out.println("There aren't any results for your query.");
         }
         SearchResult singleVideo = iteratorSearchResults.get(0);
         if (singleVideo != null) {
