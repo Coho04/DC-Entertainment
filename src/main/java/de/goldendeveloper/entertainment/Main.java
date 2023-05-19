@@ -1,80 +1,61 @@
 package de.goldendeveloper.entertainment;
 
-import de.goldendeveloper.entertainment.discord.Discord;
-import io.sentry.ITransaction;
-import io.sentry.Sentry;
-import io.sentry.SpanStatus;
+import de.goldendeveloper.dcbcore.DCBot;
+import de.goldendeveloper.dcbcore.DCBotBuilder;
+import de.goldendeveloper.dcbcore.interfaces.CommandInterface;
+import de.goldendeveloper.entertainment.discord.CustomEvents;
+import de.goldendeveloper.entertainment.discord.commands.*;
+import de.goldendeveloper.entertainment.util.AudioPlayerHelper;
+
+import java.util.LinkedList;
 
 public class Main {
 
-    private static Discord discord;
-    private static Config config;
     private static MysqlConnection mysqlConnection;
-    private static ServerCommunicator serverCommunicator;
+    private static  CustomConfig customConfig;
+    private static DCBot dcBot;
+    private static AudioPlayerHelper audioPlayerHelper;
 
-    private static Boolean restart = false;
-    private static Boolean deployment = true;
 
     public static void main(String[] args) {
-        if (args.length >= 1 && args[0].equalsIgnoreCase("restart")) {
-            restart = true;
-        }
-        String device = System.getProperty("os.name").split(" ")[0];
-        if (device.equalsIgnoreCase("windows") || device.equalsIgnoreCase("Mac")) {
-            deployment = false;
-        }
-        config = new Config();
-        Sentry(config.getSentryDNS());
-
-        ITransaction transaction = Sentry.startTransaction("Application()", "task");
-        try {
-            Application();
-        } catch (Exception e) {
-            transaction.setThrowable(e);
-            transaction.setStatus(SpanStatus.INTERNAL_ERROR);
-        } finally {
-            transaction.finish();
-        }
+        customConfig = new CustomConfig();
+        DCBotBuilder dcBotBuilder = new DCBotBuilder(args, true);
+        dcBotBuilder.registerCommands(registerCommands());
+        dcBotBuilder.registerEvents(new CustomEvents());
+        dcBot = dcBotBuilder.build();
+        audioPlayerHelper = new AudioPlayerHelper();
+        mysqlConnection = new MysqlConnection(customConfig.getMysqlHostname(), customConfig.getMysqlUsername(), customConfig.getMysqlPassword(), customConfig.getMysqlPort());
     }
 
-    public static void Application() {
-        if (getDeployment()) {
-            serverCommunicator = new ServerCommunicator(config.getServerHostname(), config.getServerPort());
-        }
-        mysqlConnection = new MysqlConnection(Main.getConfig().getMysqlHostname(), Main.getConfig().getMysqlUsername(), Main.getConfig().getMysqlPassword(), Main.getConfig().getMysqlPort());
-        discord = new Discord(config.getDiscordToken());
-    }
-
-    public static void Sentry(String dns) {
-        Sentry.init(options -> {
-            options.setDsn(dns);
-            options.setTracesSampleRate(1.0);
-            options.setEnvironment(Main.getDeployment() ? "Production" : "localhost");
-        });
-    }
-
-
-    public static Discord getDiscord() {
-        return discord;
-    }
-
-    public static Config getConfig() {
-        return config;
+    private static LinkedList<CommandInterface> registerCommands() {
+        LinkedList<CommandInterface>  commands = new LinkedList<>();
+        commands.add(new CountingGame());
+        commands.add(new DeleteCountingGame());
+        commands.add(new Entertainment());
+        commands.add(new Pause());
+        commands.add(new Play());
+        commands.add(new Resume());
+        commands.add(new ScissorsRockPaper());
+        commands.add(new Skip());
+        commands.add(new Stop());
+        commands.add(new Volume());
+        commands.add(new YtSearch());
+        return commands;
     }
 
     public static MysqlConnection getMysqlConnection() {
         return mysqlConnection;
     }
 
-    public static ServerCommunicator getServerCommunicator() {
-        return serverCommunicator;
+    public static CustomConfig getCustomConfig() {
+        return customConfig;
     }
 
-    public static Boolean getDeployment() {
-        return deployment;
+    public static DCBot getDcBot() {
+        return dcBot;
     }
 
-    public static Boolean getRestart() {
-        return restart;
+    public static AudioPlayerHelper getAudioPlayerHelper() {
+        return audioPlayerHelper;
     }
 }
