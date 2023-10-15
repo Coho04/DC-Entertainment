@@ -8,11 +8,12 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 
-public class Stop implements CommandInterface {
+public class LeaveVoice implements CommandInterface {
+
 
     @Override
     public CommandData commandData() {
-        return Commands.slash("stop", "Stoppe die Musik!");
+        return Commands.slash("leave-voice", "Verlässt den Voice Channel!");
     }
 
     @Override
@@ -21,18 +22,10 @@ public class Stop implements CommandInterface {
             GuildMusicManager musicManager = Main.getAudioPlayerHelper().getGuildAudioPlayer(e.getGuild());
             if (musicManager.getPlayer().getPlayingTrack() != null) {
                 musicManager.getPlayer().stopTrack();
-                if (e.getGuild().getSelfMember().getVoiceState() != null) {
-                    if (e.getGuild().getSelfMember().getVoiceState().inAudioChannel()) {
-                        e.getGuild().getAudioManager().closeAudioConnection();
-                        e.reply("Ich beende die Vorstellung!").queue();
-                    }
-                }
-            } else {
-                e.reply("Es wird momentan nichts abgespielt!").queue();
-                if (e.getGuild().getSelfMember().getVoiceState() != null) {
-                    if (e.getGuild().getSelfMember().getVoiceState().inAudioChannel()) {
-                        e.getGuild().getAudioManager().closeAudioConnection();
-                    }
+            }
+            if (e.getGuild().getSelfMember().getVoiceState() != null) {
+                if (e.getGuild().getSelfMember().getVoiceState().inAudioChannel()) {
+                    e.getGuild().getAudioManager().closeAudioConnection();
                 }
             }
         } else {

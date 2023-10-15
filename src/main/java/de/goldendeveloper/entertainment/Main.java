@@ -28,7 +28,8 @@ public class Main {
                 new Skip(),
                 new Stop(),
                 new Volume(),
-                new YtSearch()
+                new YtSearch(),
+                new LeaveVoice()
         );
         dcBotBuilder.registerEvents(new CustomEvents());
         dcBot = dcBotBuilder.build();
