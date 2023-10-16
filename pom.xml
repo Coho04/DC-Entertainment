@@ -79,10 +79,9 @@
     </build>
 
     <properties>
+        <java.version>18</java.version>
         <project.source.encoding>UTF-8</project.source.encoding>
         <project.target.encoding>UTF-8</project.target.encoding>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
     <repositories>
