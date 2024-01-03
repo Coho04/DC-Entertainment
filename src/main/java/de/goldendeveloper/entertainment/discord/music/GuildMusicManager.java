@@ -3,6 +3,10 @@ package de.goldendeveloper.entertainment.discord.music;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 
+/**
+ * The GuildMusicManager class represents a music manager for a guild. It contains an AudioPlayer and a TrackScheduler,
+ * and provides methods for accessing and manipulating them.
+ */
 public class GuildMusicManager {
 
     public final AudioPlayer player;
@@ -19,6 +23,9 @@ public class GuildMusicManager {
         player.addListener(scheduler);
     }
 
+    /**
+     * @return Audio player for the guild.
+     */
     public AudioPlayer getPlayer() {
         return player;
     }

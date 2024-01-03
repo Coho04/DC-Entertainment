@@ -17,6 +17,12 @@ public class Entertainment implements CommandInterface {
         return Commands.slash("entertainment", "Wähle aus wie du Unterhalten werden möchtest!");
     }
 
+    /**
+     * This method is used to run a slash command for entertainment options.
+     *
+     * @param e The SlashCommandInteractionEvent representing the interaction event.
+     * @param dcBot The DCBot instance.
+     */
     @Override
     public void runSlashCommand(SlashCommandInteractionEvent e, DCBot dcBot) {
         MessageEmbed embed = new EmbedBuilder().setTitle("Wähle aus welches Entertainment Programm du haben möchtest!").build();

@@ -1,4 +1,4 @@
-package de.goldendeveloper.entertainment.discord.commands;
+package de.goldendeveloper.entertainment.discord.commands.games;
 
 import de.goldendeveloper.dcbcore.DCBot;
 import de.goldendeveloper.dcbcore.interfaces.CommandInterface;

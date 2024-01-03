@@ -1,8 +1,8 @@
-package de.goldendeveloper.entertainment.discord.commands;
+package de.goldendeveloper.entertainment.discord.commands.games.counting;
 
 import de.goldendeveloper.dcbcore.DCBot;
 import de.goldendeveloper.dcbcore.interfaces.CommandInterface;
-import de.goldendeveloper.entertainment.util.CountingGameHelper;
+import de.goldendeveloper.entertainment.util.helpers.games.CountingGameHelper;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;

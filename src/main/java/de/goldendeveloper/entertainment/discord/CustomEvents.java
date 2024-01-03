@@ -1,11 +1,11 @@
 package de.goldendeveloper.entertainment.discord;
 
-import de.goldendeveloper.entertainment.discord.commands.ScissorsRockPaper;
+import de.goldendeveloper.entertainment.discord.commands.games.ScissorsRockPaper;
 import de.goldendeveloper.entertainment.enums.EntertainmentType;
 import de.goldendeveloper.entertainment.Main;
 import de.goldendeveloper.entertainment.MysqlConnection;
 import de.goldendeveloper.entertainment.enums.ScissorsRockPaperType;
-import de.goldendeveloper.entertainment.util.CountingGameHelper;
+import de.goldendeveloper.entertainment.util.helpers.games.CountingGameHelper;
 import de.goldendeveloper.mysql.entities.*;
 import io.sentry.Sentry;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
@@ -89,7 +89,7 @@ public class CustomEvents extends ListenerAdapter {
             return false;
         } catch (Exception e) {
             Sentry.captureException(e);
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
         return false;
     }

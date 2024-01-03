@@ -1,4 +1,4 @@
-package de.goldendeveloper.entertainment.util;
+package de.goldendeveloper.entertainment.util.helpers.games;
 
 import de.goldendeveloper.entertainment.Main;
 import de.goldendeveloper.entertainment.MysqlConnection;

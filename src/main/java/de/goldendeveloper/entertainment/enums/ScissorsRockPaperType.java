@@ -1,7 +1,5 @@
 package de.goldendeveloper.entertainment.enums;
 
-import de.goldendeveloper.entertainment.discord.commands.ScissorsRockPaper;
-
 import java.util.List;
 
 public enum ScissorsRockPaperType {

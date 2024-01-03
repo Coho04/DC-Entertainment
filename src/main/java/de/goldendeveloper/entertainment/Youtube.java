@@ -27,7 +27,7 @@ public class Youtube {
             search.setMaxResults((long) 25);
         } catch (Exception e) {
             Sentry.captureException(e);
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
@@ -37,16 +37,15 @@ public class Youtube {
 
     public String execute() {
         try {
-            SearchListResponse searchResponse;
             search.setQ(this.keyWord);
-            searchResponse = search.execute();
+            SearchListResponse searchResponse = search.execute();
             List<SearchResult> searchResultList = searchResponse.getItems();
             if (searchResultList != null) {
                 return prettyPrint(searchResultList);
             }
         } catch (Exception e) {
             Sentry.captureException(e);
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
         return "";
     }

@@ -8,6 +8,7 @@ import java.nio.Buffer;
 import java.nio.ByteBuffer;
 
 public class AudioPlayerSendHandler implements AudioSendHandler {
+
     private final AudioPlayer audioPlayer;
     private final ByteBuffer buffer;
     private final MutableAudioFrame frame;
@@ -22,17 +23,32 @@ public class AudioPlayerSendHandler implements AudioSendHandler {
         this.frame.setBuffer(buffer);
     }
 
+    /**
+     * Checks if the AudioPlayerSendHandler can provide audio frames.
+     *
+     * @return True if the AudioPlayerSendHandler can provide audio frames, false otherwise.
+     */
     @Override
     public boolean canProvide() {
         return audioPlayer.provide(frame);
     }
 
+    /**
+     * Provides a 20ms audio frame from the buffer.
+     *
+     * @return A ByteBuffer containing the 20ms audio frame.
+     */
     @Override
     public ByteBuffer provide20MsAudio() {
         ((Buffer) buffer).flip();
         return buffer;
     }
 
+    /**
+     * Checks if the AudioPlayerSendHandler supports the Opus audio format.
+     *
+     * @return True if the AudioPlayerSendHandler supports Opus, false otherwise.
+     */
     @Override
     public boolean isOpus() {
         return true;
