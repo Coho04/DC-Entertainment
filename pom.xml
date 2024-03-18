@@ -81,7 +81,8 @@
 
     <repositories>
         <repository>
-            <id>Golden-Developer</id>
+            <id>Golden-Developer-DCB-Core</id>
+            <name>DCB-Core</name>
             <url>https://nexus.golden-developer.de/repository/DCB-CORE/</url>
         </repository>
         <repository>
@@ -94,7 +95,7 @@
             <url>https://m2.dv8tion.net/releases</url>
         </repository>
         <repository>
-            <id>Golden-Developer</id>
+            <id>Golden-Developer-Maven-Public</id>
             <url>https://nexus.golden-developer.de/repository/maven-public/</url>
         </repository>
     </repositories>
