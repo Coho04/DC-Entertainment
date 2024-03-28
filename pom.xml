@@ -104,7 +104,7 @@
         <dependency>
             <groupId>de.goldendeveloper</groupId>
             <artifactId>MYSQL-Api</artifactId>
-            <version>5.7.6</version>
+            <version>5.7.8</version>
         </dependency>
         <dependency>
             <groupId>de.goldendeveloper</groupId>
