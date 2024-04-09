@@ -81,11 +81,6 @@
 
     <repositories>
         <repository>
-            <id>Golden-Developer-DCB-Core</id>
-            <name>DCB-Core</name>
-            <url>https://nexus.golden-developer.de/repository/DCB-CORE/</url>
-        </repository>
-        <repository>
             <id>jitpack</id>
             <url>https://jitpack.io</url>
         </repository>
