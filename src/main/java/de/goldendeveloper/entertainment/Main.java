@@ -5,8 +5,6 @@ import de.goldendeveloper.dcbcore.DCBotBuilder;
 import de.goldendeveloper.entertainment.discord.CustomEvents;
 import de.goldendeveloper.entertainment.discord.commands.*;
 import de.goldendeveloper.entertainment.discord.commands.games.EightBall;
-import de.goldendeveloper.entertainment.discord.commands.games.counting.CountingGame;
-import de.goldendeveloper.entertainment.discord.commands.games.counting.DeleteCountingGame;
 import de.goldendeveloper.entertainment.discord.commands.games.ScissorsRockPaper;
 import de.goldendeveloper.entertainment.discord.commands.music.*;
 import de.goldendeveloper.entertainment.util.AudioPlayerHelper;
@@ -16,7 +14,7 @@ import java.sql.SQLException;
 
 public class Main {
 
-    private static MysqlConnection mysqlConnection;
+    private static MYSQL mysql;
     private static CustomConfig customConfig;
     private static DCBot dcBot;
     private static AudioPlayerHelper audioPlayerHelper;
@@ -25,8 +23,6 @@ public class Main {
         customConfig = new CustomConfig();
         DCBotBuilder dcBotBuilder = new DCBotBuilder(args, true);
         dcBotBuilder.registerCommands(
-                new CountingGame(),
-                new DeleteCountingGame(),
                 new Entertainment(),
                 new Pause(),
                 new Play(),
@@ -42,11 +38,11 @@ public class Main {
         dcBotBuilder.registerEvents(new CustomEvents());
         dcBot = dcBotBuilder.build();
         audioPlayerHelper = new AudioPlayerHelper();
-        mysqlConnection = new MysqlConnection(customConfig.getMysqlHostname(), customConfig.getMysqlUsername(), customConfig.getMysqlPassword(), customConfig.getMysqlPort());
+        mysql = new MYSQL();
     }
 
-    public static MysqlConnection getMysqlConnection() {
-        return mysqlConnection;
+    public static MYSQL getMysql() {
+        return mysql;
     }
 
     public static CustomConfig getCustomConfig() {

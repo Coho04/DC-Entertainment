@@ -13,7 +13,6 @@ public class Volume implements CommandInterface {
 
     public static String cmdVolumeOptionVolume = "volume";
 
-
     @Override
     public CommandData commandData() {
         return Commands.slash("volume", "Ändere die Lautstärke!")

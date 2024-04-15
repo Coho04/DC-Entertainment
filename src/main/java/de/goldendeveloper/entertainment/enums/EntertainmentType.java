@@ -2,9 +2,12 @@ package de.goldendeveloper.entertainment.enums;
 
 
 import de.goldendeveloper.entertainment.Main;
-import de.goldendeveloper.entertainment.MysqlConnection;
-import de.goldendeveloper.mysql.entities.Table;
+import io.sentry.Sentry;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 public enum EntertainmentType {
@@ -41,12 +44,21 @@ public enum EntertainmentType {
         return List.of(EntertainmentType.values());
     }
 
-    public Table getMysqlTable() {
-        return Main.getMysqlConnection().getMysql().getDatabase(MysqlConnection.dbName).getTable(name);
-    }
-
     public String getItem() {
-        return getMysqlTable().getColumn(MysqlConnection.columnName).getRandom().toString();
+        try (Connection connection = Main.getMysql().getSource().getConnection()) {
+            String selectQuery = "SELECT name FROM ? GROUP BY name ORDER BY RAND() LIMIT 1;";
+            PreparedStatement statement = connection.prepareStatement(selectQuery);
+            statement.execute("USE `GD-Entertainment`");
+            statement.setString(1, value);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                return rs.getString("name");
+            }
+        } catch (SQLException exception) {
+            System.out.println(exception.getMessage());
+            Sentry.captureException(exception);
+        }
+        return null;
     }
 
     public static EntertainmentType getEntertainmentType(String value) {
