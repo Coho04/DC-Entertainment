@@ -11,10 +11,6 @@ import java.util.concurrent.TimeUnit;
 
 public class MYSQL {
 
-    public static String dbName = "GD-Entertainment";
-    public static String columnName = "Name";
-    public static String EightBallTable = "EightBall";
-
     private final HikariDataSource source;
 
     public MYSQL() {

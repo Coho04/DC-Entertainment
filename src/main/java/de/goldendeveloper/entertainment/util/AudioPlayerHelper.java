@@ -50,7 +50,7 @@ public class AudioPlayerHelper {
             public void playlistLoaded(AudioPlaylist playlist) {
                 AudioTrack firstTrack = playlist.getSelectedTrack();
                 if (firstTrack == null) {
-                    firstTrack = playlist.getTracks().get(0);
+                    firstTrack = playlist.getTracks().getFirst();
                 }
                 for (AudioTrack track : playlist.getTracks()) {
                     musicManager.scheduler.queue(track);

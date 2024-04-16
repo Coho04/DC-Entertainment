@@ -1,7 +1,7 @@
 package de.goldendeveloper.entertainment;
 
 import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.youtube.YouTube;
 
 import java.util.Collections;
@@ -18,7 +18,7 @@ public class Youtube {
 
     public Youtube(String apiKey) {
         try {
-            YouTube youtube = new YouTube.Builder(new NetHttpTransport(), new JacksonFactory(), request -> {
+            YouTube youtube = new YouTube.Builder(new NetHttpTransport(), new GsonFactory(), request -> {
             }).setApplicationName("youtube-cmdline-search-sample").build();
             search = youtube.search().list(Collections.singletonList("id,snippet"));
             search.setKey(apiKey);
@@ -54,10 +54,9 @@ public class Youtube {
         if (iteratorSearchResults.isEmpty()) {
             System.out.println("There aren't any results for your query.");
         }
-        SearchResult singleVideo = iteratorSearchResults.get(0);
+        SearchResult singleVideo = iteratorSearchResults.getFirst();
         if (singleVideo != null) {
-            ResourceId rId = singleVideo.getId();
-            return rId.getVideoId();
+            return singleVideo.getId().getVideoId();
         }
         return "";
     }
