@@ -8,9 +8,6 @@ import de.goldendeveloper.entertainment.discord.commands.games.EightBall;
 import de.goldendeveloper.entertainment.discord.commands.games.ScissorsRockPaper;
 import de.goldendeveloper.entertainment.discord.commands.music.*;
 import de.goldendeveloper.entertainment.util.AudioPlayerHelper;
-import de.goldendeveloper.mysql.exceptions.NoConnectionException;
-
-import java.sql.SQLException;
 
 public class Main {
 
@@ -19,7 +16,7 @@ public class Main {
     private static DCBot dcBot;
     private static AudioPlayerHelper audioPlayerHelper;
 
-    public static void main(String[] args) throws NoConnectionException, SQLException {
+    public static void main(String[] args) {
         customConfig = new CustomConfig();
         DCBotBuilder dcBotBuilder = new DCBotBuilder(args, true);
         dcBotBuilder.registerCommands(
