@@ -7,6 +7,11 @@ import net.dv8tion.jda.api.audio.AudioSendHandler;
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
 
+/**
+ * This class represents an AudioPlayerSendHandler.
+ * It implements the AudioSendHandler interface from the JDA library.
+ * It is used to handle sending audio data to Discord.
+ */
 public class AudioPlayerSendHandler implements AudioSendHandler {
 
     private final AudioPlayer audioPlayer;

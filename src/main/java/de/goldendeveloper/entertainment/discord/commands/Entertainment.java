@@ -10,18 +10,31 @@ import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 
+/**
+ * This class represents the Entertainment command.
+ * It implements the CommandInterface from the DCBot library.
+ */
 public class Entertainment implements CommandInterface {
 
+    /**
+     * This method is used to define the command data for the Entertainment command.
+     * It returns a CommandData object that contains the command name and description.
+     *
+     * @return CommandData object for the Entertainment command.
+     */
     @Override
     public CommandData commandData() {
         return Commands.slash("entertainment", "Wähle aus wie du Unterhalten werden möchtest!");
     }
 
     /**
-     * This method is used to run a slash command for entertainment options.
+     * This method is used to execute the Entertainment command when it is invoked as a slash command.
+     * It creates an embed message with a title and adds action rows with buttons for different entertainment options.
+     * The buttons are created with different styles and labels, and some of them have a value that corresponds to an EntertainmentType enum value.
+     * The embed message and the action rows are sent as a reply to the command interaction.
      *
-     * @param e The SlashCommandInteractionEvent representing the interaction event.
-     * @param dcBot The DCBot instance.
+     * @param e     The SlashCommandInteractionEvent object that represents the command interaction event.
+     * @param dcBot The DCBot object that represents the bot.
      */
     @Override
     public void runSlashCommand(SlashCommandInteractionEvent e, DCBot dcBot) {

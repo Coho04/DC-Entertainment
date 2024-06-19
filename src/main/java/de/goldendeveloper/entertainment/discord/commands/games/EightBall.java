@@ -15,14 +15,31 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * This class represents the EightBall game command.
+ * It implements the CommandInterface from the DCBot library.
+ */
 public class EightBall implements CommandInterface {
 
+    /**
+     * This method is used to define the command data for the EightBall command.
+     * It returns a CommandData object that contains the command name and description, and the options for the command.
+     *
+     * @return CommandData object for the EightBall command.
+     */
     @Override
     public CommandData commandData() {
         return Commands.slash("8ball", "Stelle eine Ja-oder-Nein-Frage und erhalte eine Antwort")
                 .addOption(OptionType.STRING, "frage", "Die Frage, die du dem 8Ball stellen möchtest", true);
     }
 
+    /**
+     * This method is used to execute the EightBall command when it is invoked as a slash command.
+     * It retrieves a random response from the 'eightball' table in the database and sends it as a reply to the command.
+     *
+     * @param e     The SlashCommandInteractionEvent object that represents the command interaction event.
+     * @param dcBot The DCBot object that represents the bot.
+     */
     @Override
     public void runSlashCommand(SlashCommandInteractionEvent e, DCBot dcBot) {
         String question = e.getOption("frage").getAsString();

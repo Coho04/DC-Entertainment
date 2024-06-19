@@ -9,10 +9,18 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * This class provides methods for managing a MySQL database.
+ * It contains a HikariDataSource object for connection pooling.
+ */
 public class MYSQL {
 
     private final HikariDataSource source;
 
+    /**
+     * Constructor for the MYSQL class.
+     * It initializes the HikariDataSource object, creates the database and tables if they do not exist, and logs any SQL exceptions.
+     */
     public MYSQL() {
         this.source = getConfig();
         try {
@@ -34,6 +42,11 @@ public class MYSQL {
         System.out.println("[MYSQL] Initialized MySQL!");
     }
 
+    /**
+     * This method creates a HikariDataSource object with the configuration values from the environment variables.
+     *
+     * @return The HikariDataSource object.
+     */
     private static @NotNull HikariDataSource getConfig() {
         HikariConfig config = new HikariConfig();
         config.setJdbcUrl("jdbc:mysql://" + Main.getCustomConfig().getMysqlHostname() + ":" + Main.getCustomConfig().getMysqlPort());
@@ -50,6 +63,11 @@ public class MYSQL {
         return new HikariDataSource(config);
     }
 
+    /**
+     * This method returns the HikariDataSource object.
+     *
+     * @return The HikariDataSource object.
+     */
     public HikariDataSource getSource() {
         return source;
     }

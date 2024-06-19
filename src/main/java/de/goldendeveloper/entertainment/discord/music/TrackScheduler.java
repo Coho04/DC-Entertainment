@@ -46,12 +46,12 @@ public class TrackScheduler extends AudioEventAdapter {
     /**
      * Called when a track in the audio player has ended.
      *
-     * @param player     The audio player this event is called on.
-     * @param track      The audio track that has ended.
-     * @param endReason  The reason why the track ended.
-     *                   This can be used to determine whether the next track should start automatically or not.
-     *                   If endReason.mayStartNext is true, the next track should start automatically.
-     *                   If endReason.mayStartNext is false, the next track should not start automatically.
+     * @param player    The audio player this event is called on.
+     * @param track     The audio track that has ended.
+     * @param endReason The reason why the track ended.
+     *                  This can be used to determine whether the next track should start automatically or not.
+     *                  If endReason.mayStartNext is true, the next track should start automatically.
+     *                  If endReason.mayStartNext is false, the next track should not start automatically.
      */
     @Override
     public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
