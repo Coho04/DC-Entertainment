@@ -1,13 +1,13 @@
 package de.goldendeveloper.entertainment;
 
-import de.goldendeveloper.dcbcore.DCBot;
-import de.goldendeveloper.dcbcore.DCBotBuilder;
 import de.goldendeveloper.entertainment.discord.CustomEvents;
 import de.goldendeveloper.entertainment.discord.commands.*;
 import de.goldendeveloper.entertainment.discord.commands.games.EightBall;
 import de.goldendeveloper.entertainment.discord.commands.games.ScissorsRockPaper;
 import de.goldendeveloper.entertainment.discord.commands.music.*;
 import de.goldendeveloper.entertainment.util.AudioPlayerHelper;
+import io.github.coho04.dcbcore.DCBot;
+import io.github.coho04.dcbcore.DCBotBuilder;
 
 public class Main {
 

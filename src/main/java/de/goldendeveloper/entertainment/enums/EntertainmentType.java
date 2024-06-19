@@ -1,6 +1,5 @@
 package de.goldendeveloper.entertainment.enums;
 
-
 import de.goldendeveloper.entertainment.Main;
 import io.sentry.Sentry;
 
@@ -11,6 +10,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public enum EntertainmentType {
+
     MOVIE("Film", "movie", "den"),
     SERIES("Serie", "series", "die"),
     GAMES("Game", "games", "das"),

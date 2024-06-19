@@ -3,8 +3,9 @@ package de.goldendeveloper.entertainment.enums;
 import java.util.List;
 
 public enum ScissorsRockPaperType {
+
     SCISSORS("Schere", "scissors"),
-    STONE("Stein", "stone" ),
+    STONE("Stein", "stone"),
     PAPER("Papier", "paper");
 
     private final String name;
