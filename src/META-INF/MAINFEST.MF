@@ -1,3 +1,3 @@
 Manifest-Version: 1.0
-Main-Class: de.goldendeveloper.entertainment.Main
+Main-Class: entertainment.io.github.coho04.Main
 
