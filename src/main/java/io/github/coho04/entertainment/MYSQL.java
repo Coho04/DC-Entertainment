@@ -25,8 +25,8 @@ public class MYSQL {
         this.source = getConfig();
         try {
             Statement statement = this.source.getConnection().createStatement();
-            statement.execute("CREATE DATABASE IF NOT EXISTS `GD-Entertainment`;");
-            statement.execute("USE `GD-Entertainment`;");
+            statement.execute("CREATE DATABASE IF NOT EXISTS `entertainment_db`;");
+            statement.execute("USE `entertainment_db`;");
             statement.execute("CREATE TABLE IF NOT EXISTS movie (id INT AUTO_INCREMENT NOT NULL PRIMARY KEY, name VARCHAR(255) NULL);");
             statement.execute("CREATE TABLE IF NOT EXISTS series(id INT AUTO_INCREMENT NOT NULL  PRIMARY KEY, name VARCHAR(255) NULL);");
             statement.execute("CREATE TABLE IF NOT EXISTS games(id INT AUTO_INCREMENT NOT NULL  PRIMARY KEY, name VARCHAR(255) NULL);");
