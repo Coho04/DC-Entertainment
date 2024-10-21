@@ -34,6 +34,7 @@ public class Main {
         dcBot = dcBotBuilder.build();
         audioPlayerHelper = new AudioPlayerHelper();
         mysql = new MYSQL();
+        System.out.println("Java application started successfully");
     }
 
     /**
