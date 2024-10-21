@@ -81,7 +81,7 @@ public enum EntertainmentType {
         try (Connection connection = Main.getMysql().getSource().getConnection()) {
             String selectQuery = "SELECT name FROM ? GROUP BY name ORDER BY RAND() LIMIT 1;";
             PreparedStatement statement = connection.prepareStatement(selectQuery);
-            statement.execute("USE `GD-Entertainment`");
+            statement.execute("USE `" + Main.getCustomConfig().getMysqlDatabase() + "`;");
             statement.setString(1, value);
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {

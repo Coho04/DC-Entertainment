@@ -46,7 +46,7 @@ public class EightBall implements CommandInterface {
         try (Connection connection = Main.getMysql().getSource().getConnection()) {
             String selectQuery = "SELECT name FROM eightball group by name order by rand() limit 1;";
             PreparedStatement statement = connection.prepareStatement(selectQuery);
-            statement.execute("USE `GD-Entertainment`");
+            statement.execute("USE `" + Main.getCustomConfig().getMysqlDatabase() + "`;");
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
                 EmbedBuilder eb = new EmbedBuilder();

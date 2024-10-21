@@ -53,4 +53,8 @@ public class CustomConfig extends Config {
     public String getMysqlUsername() {
         return dotenv.get("MYSQL_USERNAME");
     }
+
+    public String getMysqlDatabase() {
+        return dotenv.get("MYSQL_DATABASE");
+    }
 }
