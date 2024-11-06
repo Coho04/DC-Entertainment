@@ -1,6 +1,7 @@
 package io.github.coho04.entertainment.discord.music;
 
 import dev.arbjerg.lavalink.client.player.Track;
+import dev.arbjerg.lavalink.protocol.v4.Message;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -45,6 +46,16 @@ public class TrackScheduler {
                     this.startTrack(this.queue.poll());
                 }
         );
+    }
+
+    public void onTrackEnd(Track lastTrack, Message.EmittedEvent.TrackEndEvent.AudioTrackEndReason endReason) {
+        if (endReason.getMayStartNext()) {
+            final var nextTrack = this.queue.poll();
+
+            if (nextTrack != null) {
+                this.startTrack(nextTrack);
+            }
+        }
     }
 
     /**

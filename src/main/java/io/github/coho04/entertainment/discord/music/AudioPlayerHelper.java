@@ -1,12 +1,14 @@
 package io.github.coho04.entertainment.discord.music;
 
 import dev.arbjerg.lavalink.client.*;
+import dev.arbjerg.lavalink.client.event.TrackEndEvent;
 import io.github.coho04.entertainment.Main;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class AudioPlayerHelper {
 
@@ -16,6 +18,11 @@ public class AudioPlayerHelper {
 
     public AudioPlayerHelper() {
         this.lavalinkClient = Main.getDcBot().getDiscord().getClient();
+        lavalinkClient.on(TrackEndEvent.class).subscribe((event) -> {
+            Optional.ofNullable(musicManagers.get(event.getGuildId())).ifPresent(
+                    (mng) -> mng.scheduler.onTrackEnd(event.getTrack(), event.getEndReason())
+            );
+        });
     }
 
     public void loadAndPlay(SlashCommandInteractionEvent event, String trackUrl) {
