@@ -1,62 +1,76 @@
 package io.github.coho04.entertainment.discord.music;
 
-import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
-import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
-import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
-import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
+import dev.arbjerg.lavalink.client.player.Track;
 
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 
 /**
  * TrackScheduler is responsible for managing the audio tracks in a queue and playing them sequentially.
  */
-public class TrackScheduler extends AudioEventAdapter {
+public class TrackScheduler {
+    private final GuildMusicManager guildMusicManager;
+    public final Queue<Track> queue = new LinkedList<>();
 
-    private final AudioPlayer player;
-    private final BlockingQueue<AudioTrack> queue;
-
-    /**
-     * @param player The audio player this scheduler uses
-     */
-    public TrackScheduler(AudioPlayer player) {
-        this.player = player;
-        this.queue = new LinkedBlockingQueue<>();
+    public TrackScheduler(GuildMusicManager guildMusicManager) {
+        this.guildMusicManager = guildMusicManager;
     }
 
-    /**
-     * Add the next track to queue or play right away if nothing is in the queue.
-     *
-     * @param track The track to play or add to queue.
-     */
-    public void queue(AudioTrack track) {
-        if (!player.startTrack(track, true)) {
-            queue.offer(track);
-        }
+    public void enqueue(Track track) {
+        this.guildMusicManager.getPlayer().ifPresentOrElse(
+                (player) -> {
+                    if (player.getTrack() == null) {
+                        this.startTrack(track);
+                    } else {
+                        this.queue.offer(track);
+                    }
+                },
+                () -> {
+                    this.startTrack(track);
+                }
+        );
     }
 
+    public void enqueuePlaylist(List<Track> tracks) {
+        this.queue.addAll(tracks);
+
+        this.guildMusicManager.getPlayer().ifPresentOrElse(
+                (player) -> {
+                    if (player.getTrack() == null) {
+                        this.startTrack(this.queue.poll());
+                    }
+                },
+                () -> {
+                    this.startTrack(this.queue.poll());
+                }
+        );
+    }
 
     /**
      * Start the next track, stopping the current one if it is playing.
      */
     public void nextTrack() {
-        player.startTrack(queue.poll(), false);
+        this.guildMusicManager.getPlayer().ifPresentOrElse(
+                (player) -> {
+                    if (player.getTrack() != null) {
+                        player.stopTrack();
+                    }
+                    this.startTrack(this.queue.poll());
+                },
+                () -> {
+                    this.startTrack(this.queue.poll());
+                }
+        );
     }
 
-    /**
-     * Called when a track in the audio player has ended.
-     *
-     * @param player    The audio player this event is called on.
-     * @param track     The audio track that has ended.
-     * @param endReason The reason why the track ended.
-     *                  This can be used to determine whether the next track should start automatically or not.
-     *                  If endReason.mayStartNext is true, the next track should start automatically.
-     *                  If endReason.mayStartNext is false, the next track should not start automatically.
-     */
-    @Override
-    public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
-        if (endReason.mayStartNext) {
-            nextTrack();
-        }
+
+    private void startTrack(Track track) {
+        this.guildMusicManager.getLink().ifPresent(
+                (link) -> link.createOrUpdatePlayer()
+                        .setTrack(track)
+                        .setVolume(35)
+                        .subscribe()
+        );
     }
 }

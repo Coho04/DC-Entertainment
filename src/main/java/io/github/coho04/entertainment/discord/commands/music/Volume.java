@@ -1,9 +1,9 @@
 package io.github.coho04.entertainment.discord.commands.music;
 
-import io.github.coho04.entertainment.Main;
-import io.github.coho04.entertainment.discord.music.GuildMusicManager;
 import io.github.coho04.dcbcore.DCBot;
 import io.github.coho04.dcbcore.interfaces.CommandInterface;
+import io.github.coho04.entertainment.Main;
+import io.github.coho04.entertainment.discord.music.GuildMusicManager;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
@@ -42,9 +42,9 @@ public class Volume implements CommandInterface {
     public void runSlashCommand(SlashCommandInteractionEvent e, DCBot dcBot) {
         if (e.isFromGuild()) {
             int volume = e.getOption(cmdVolumeOptionVolume).getAsInt();
-            GuildMusicManager musicManager = Main.getAudioPlayerHelper().getGuildAudioPlayer(e.getGuild());
-            if (!musicManager.getPlayer().isPaused()) {
-                musicManager.getPlayer().setVolume(volume);
+            GuildMusicManager musicManager = Main.getAudioPlayerHelper().getMusicManager(e.getGuild().getIdLong());
+            if (musicManager.getMonoPlayer() != null) {
+                musicManager.getMonoPlayer().block().setVolume(volume).build();
                 e.reply("Die Musik wird nun mit Lautstärke " + volume + "!").queue();
             } else {
                 e.reply("Es konnte nichts Abgespielt werden!").queue();

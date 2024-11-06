@@ -1,9 +1,9 @@
 package io.github.coho04.entertainment.discord.commands.music;
 
-import io.github.coho04.entertainment.discord.music.GuildMusicManager;
-import io.github.coho04.entertainment.Main;
 import io.github.coho04.dcbcore.DCBot;
 import io.github.coho04.dcbcore.interfaces.CommandInterface;
+import io.github.coho04.entertainment.Main;
+import io.github.coho04.entertainment.discord.music.GuildMusicManager;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
@@ -36,7 +36,7 @@ public class Skip implements CommandInterface {
     public void runSlashCommand(SlashCommandInteractionEvent e, DCBot dcBot) {
         if (e.isFromGuild()) {
             assert e.getGuild() != null;
-            GuildMusicManager musicManager = Main.getAudioPlayerHelper().getGuildAudioPlayer(e.getGuild());
+            GuildMusicManager musicManager = Main.getAudioPlayerHelper().getMusicManager(e.getGuild().getIdLong());
             musicManager.scheduler.nextTrack();
             e.reply("Der nächste Song wird abgespielt!").queue();
         } else {

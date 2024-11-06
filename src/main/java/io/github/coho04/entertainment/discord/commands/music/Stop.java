@@ -1,9 +1,9 @@
 package io.github.coho04.entertainment.discord.commands.music;
 
-import io.github.coho04.entertainment.Main;
-import io.github.coho04.entertainment.discord.music.GuildMusicManager;
 import io.github.coho04.dcbcore.DCBot;
 import io.github.coho04.dcbcore.interfaces.CommandInterface;
+import io.github.coho04.entertainment.Main;
+import io.github.coho04.entertainment.discord.music.GuildMusicManager;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
@@ -38,9 +38,9 @@ public class Stop implements CommandInterface {
     @Override
     public void runSlashCommand(SlashCommandInteractionEvent e, DCBot dcBot) {
         if (e.isFromGuild() && e.getGuild() != null) {
-            GuildMusicManager musicManager = Main.getAudioPlayerHelper().getGuildAudioPlayer(e.getGuild());
-            if (musicManager.getPlayer().getPlayingTrack() != null) {
-                musicManager.getPlayer().stopTrack();
+            GuildMusicManager musicManager = Main.getAudioPlayerHelper().getMusicManager(e.getGuild().getIdLong());
+            if (musicManager != null) {
+                musicManager.stop();
                 if (e.getGuild().getSelfMember().getVoiceState() != null) {
                     if (e.getGuild().getSelfMember().getVoiceState().inAudioChannel()) {
                         e.getGuild().getAudioManager().closeAudioConnection();

@@ -1,9 +1,9 @@
 package io.github.coho04.entertainment.discord.commands.music;
 
-import io.github.coho04.entertainment.discord.music.GuildMusicManager;
-import io.github.coho04.entertainment.Main;
 import io.github.coho04.dcbcore.DCBot;
 import io.github.coho04.dcbcore.interfaces.CommandInterface;
+import io.github.coho04.entertainment.Main;
+import io.github.coho04.entertainment.discord.music.GuildMusicManager;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
@@ -52,10 +52,13 @@ public class Resume implements CommandInterface {
      * @param e The SlashCommandInteractionEvent object that represents the command interaction event.
      */
     private void resumeTrack(SlashCommandInteractionEvent e) {
-        GuildMusicManager musicManager = Main.getAudioPlayerHelper().getGuildAudioPlayer(e.getGuild());
-        if (musicManager.getPlayer().isPaused()) {
-            musicManager.getPlayer().setPaused(false);
-            e.reply("Die Musik wird weiter gespielt!").queue();
+        GuildMusicManager musicManager = Main.getAudioPlayerHelper().getMusicManager(e.getGuild().getIdLong());
+        if (musicManager != null) {
+            musicManager.getMonoPlayer()
+                    .flatMap((player) -> player.setPaused(false))
+                    .subscribe((player) -> {
+                        e.reply("Die Musik wird weiter gespielt!").queue();
+                    });
         } else {
             e.reply("Es konnte nichts Abgespielt werden!").queue();
         }

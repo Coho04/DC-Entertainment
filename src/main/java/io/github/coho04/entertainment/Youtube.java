@@ -1,12 +1,17 @@
 package io.github.coho04.entertainment;
 
+import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
+import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
 import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.api.client.json.gson.GsonFactory;
-import com.google.api.services.youtube.YouTube;
 
+import java.io.IOException;
 import java.util.Collections;
 
+import com.google.api.client.json.gson.GsonFactory;
+import com.google.api.services.youtube.YouTube;
+import com.google.api.services.youtube.YouTubeRequestInitializer;
 import com.google.api.services.youtube.model.*;
+import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager;
 import io.sentry.Sentry;
 
 import java.util.List;
@@ -28,8 +33,10 @@ public class Youtube {
      */
     public Youtube(String apiKey) {
         try {
-            YouTube youtube = new YouTube.Builder(new NetHttpTransport(), new GsonFactory(), request -> {
-            }).setApplicationName("youtube-cmdline-search-sample").build();
+
+            YouTube youtube = new YouTube.Builder(new NetHttpTransport(), new GsonFactory(), request -> {})
+                    .setApplicationName("youtube-cmdline-search-sample")
+                    .build();
             search = youtube.search().list(Collections.singletonList("id,snippet"));
             search.setKey(apiKey);
             search.setType(Collections.singletonList("video"));

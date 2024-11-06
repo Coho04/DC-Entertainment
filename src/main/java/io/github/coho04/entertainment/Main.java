@@ -5,7 +5,7 @@ import io.github.coho04.entertainment.discord.commands.games.EightBall;
 import io.github.coho04.entertainment.discord.commands.games.ScissorsRockPaper;
 import io.github.coho04.entertainment.discord.commands.music.*;
 import io.github.coho04.entertainment.discord.CustomEvents;
-import io.github.coho04.entertainment.util.AudioPlayerHelper;
+import io.github.coho04.entertainment.discord.music.AudioPlayerHelper;
 import io.github.coho04.dcbcore.DCBot;
 import io.github.coho04.dcbcore.DCBotBuilder;
 
@@ -31,6 +31,7 @@ public class Main {
         DCBotBuilder dcBotBuilder = new DCBotBuilder(args, true);
         dcBotBuilder.registerCommands(new Entertainment(), new Pause(), new Play(), new Resume(), new ScissorsRockPaper(), new Skip(), new Stop(), new Volume(), new YtSearch(), new LeaveVoice(), new EightBall());
         dcBotBuilder.registerEvents(new CustomEvents());
+        dcBotBuilder.setWithLavaLink(true);
         dcBot = dcBotBuilder.build();
         audioPlayerHelper = new AudioPlayerHelper();
         mysql = new MYSQL();
