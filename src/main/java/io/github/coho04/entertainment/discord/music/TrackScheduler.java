@@ -12,7 +12,7 @@ import java.util.Queue;
  */
 public class TrackScheduler {
     private final GuildMusicManager guildMusicManager;
-    public final Queue<Track> queue = new LinkedList<>();
+    private final Queue<Track> queue = new LinkedList<>();
 
     public TrackScheduler(GuildMusicManager guildMusicManager) {
         this.guildMusicManager = guildMusicManager;
@@ -27,9 +27,7 @@ public class TrackScheduler {
                         this.queue.offer(track);
                     }
                 },
-                () -> {
-                    this.startTrack(track);
-                }
+                () -> this.startTrack(track)
         );
     }
 
@@ -42,13 +40,11 @@ public class TrackScheduler {
                         this.startTrack(this.queue.poll());
                     }
                 },
-                () -> {
-                    this.startTrack(this.queue.poll());
-                }
+                () -> this.startTrack(this.queue.poll())
         );
     }
 
-    public void onTrackEnd(Track lastTrack, Message.EmittedEvent.TrackEndEvent.AudioTrackEndReason endReason) {
+    public void onTrackEnd(Message.EmittedEvent.TrackEndEvent.AudioTrackEndReason endReason) {
         if (endReason.getMayStartNext()) {
             final var nextTrack = this.queue.poll();
 
@@ -69,9 +65,7 @@ public class TrackScheduler {
                     }
                     this.startTrack(this.queue.poll());
                 },
-                () -> {
-                    this.startTrack(this.queue.poll());
-                }
+                () -> this.startTrack(this.queue.poll())
         );
     }
 
@@ -83,5 +77,9 @@ public class TrackScheduler {
                         .setVolume(35)
                         .subscribe()
         );
+    }
+
+    public Queue<Track> getQueue() {
+        return queue;
     }
 }

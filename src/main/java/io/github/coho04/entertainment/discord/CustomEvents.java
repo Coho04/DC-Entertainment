@@ -9,6 +9,8 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.Command;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -24,11 +26,19 @@ public class CustomEvents extends ListenerAdapter {
      */
     @Override
     public void onButtonInteraction(ButtonInteractionEvent e) {
-        String type = e.getButton().getId();
-        EntertainmentType entertainmentType = EntertainmentType.getEntertainmentType(type);
-        switch (entertainmentType) {
-            case SERIES, MOVIE,GAMES -> e.getInteraction().reply("Wir empfehlen dir " + entertainmentType.getNameWithArticle() + " [" + entertainmentType.getItem() + "]!").queue();
-            case FACTS, JOKES, EIGHTBALL -> e.getInteraction().reply(entertainmentType.getItem()).queue();
+        var buttonLabel = e.getButton().getLabel();
+        var buttonLabels = List.of("Filme", "Serien", "Games",
+                "Fakten",
+                "Jokes",
+                "Eight-Ball",
+                "P*rno");
+        if (buttonLabels.contains(buttonLabel)) {
+            String type = e.getButton().getId();
+            EntertainmentType entertainmentType = EntertainmentType.getEntertainmentType(type);
+            switch (entertainmentType) {
+                case SERIES, MOVIE,GAMES -> e.getInteraction().reply("Wir empfehlen dir " + entertainmentType.getNameWithArticle() + " [" + entertainmentType.getItem() + "]!").queue();
+                case FACTS, JOKES, EIGHTBALL -> e.getInteraction().reply(entertainmentType.getItem()).queue();
+            }
         }
     }
 

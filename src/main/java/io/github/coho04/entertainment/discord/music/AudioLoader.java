@@ -24,7 +24,7 @@ public class AudioLoader extends AbstractAudioLoadResultHandler {
 
         track.setUserData(userData);
 
-        this.mngr.scheduler.enqueue(track);
+        this.mngr.getScheduler().enqueue(track);
 
         final var trackTitle = track.getInfo().getTitle();
 
@@ -38,7 +38,7 @@ public class AudioLoader extends AbstractAudioLoadResultHandler {
                 .sendMessage("Added " + trackCount + " tracks to the queue from " + result.getInfo().getName() + "!")
                 .queue();
 
-        this.mngr.scheduler.enqueuePlaylist(result.getTracks());
+        this.mngr.getScheduler().enqueuePlaylist(result.getTracks());
     }
 
     @Override
@@ -51,7 +51,7 @@ public class AudioLoader extends AbstractAudioLoadResultHandler {
         }
         final Track firstTrack = tracks.getFirst();
         event.getHook().sendMessage("Adding to queue: " + firstTrack.getInfo().getTitle()).queue();
-        this.mngr.scheduler.enqueue(firstTrack);
+        this.mngr.getScheduler().enqueue(firstTrack);
     }
 
     @Override

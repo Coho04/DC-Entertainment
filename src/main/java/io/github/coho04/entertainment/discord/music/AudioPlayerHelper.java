@@ -15,14 +15,11 @@ public class AudioPlayerHelper {
     private final LavalinkClient lavalinkClient;
     public final Map<Long, GuildMusicManager> musicManagers = new HashMap<>();
 
-
     public AudioPlayerHelper() {
         this.lavalinkClient = Main.getDcBot().getDiscord().getClient();
-        lavalinkClient.on(TrackEndEvent.class).subscribe((event) -> {
-            Optional.ofNullable(musicManagers.get(event.getGuildId())).ifPresent(
-                    (mng) -> mng.scheduler.onTrackEnd(event.getTrack(), event.getEndReason())
-            );
-        });
+        lavalinkClient.on(TrackEndEvent.class).subscribe((event) -> Optional.ofNullable(musicManagers.get(event.getGuildId())).ifPresent(
+                (mng) -> mng.getScheduler().onTrackEnd(event.getEndReason())
+        ));
     }
 
     public void loadAndPlay(SlashCommandInteractionEvent event, String trackUrl) {

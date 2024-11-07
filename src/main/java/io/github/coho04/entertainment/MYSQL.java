@@ -5,6 +5,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import io.sentry.Sentry;
 import org.jetbrains.annotations.NotNull;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.concurrent.TimeUnit;
@@ -24,9 +25,10 @@ public class MYSQL {
     public MYSQL() {
         this.source = getConfig();
         try {
-            Statement statement = this.source.getConnection().createStatement();
+            Connection connection = this.source.getConnection();
+            Statement statement = connection.createStatement();
             statement.execute("CREATE DATABASE IF NOT EXISTS `" + Main.getCustomConfig().getMysqlDatabase() + "`;");
-            statement.execute("USE `"+ Main.getCustomConfig().getMysqlDatabase() +"`;");
+            statement.execute("USE `" + Main.getCustomConfig().getMysqlDatabase() + "`;");
             statement.execute("CREATE TABLE IF NOT EXISTS movie (id INT AUTO_INCREMENT NOT NULL PRIMARY KEY, name VARCHAR(255) NULL);");
             statement.execute("CREATE TABLE IF NOT EXISTS series(id INT AUTO_INCREMENT NOT NULL  PRIMARY KEY, name VARCHAR(255) NULL);");
             statement.execute("CREATE TABLE IF NOT EXISTS games(id INT AUTO_INCREMENT NOT NULL  PRIMARY KEY, name VARCHAR(255) NULL);");
@@ -35,6 +37,7 @@ public class MYSQL {
             statement.execute("CREATE TABLE IF NOT EXISTS eightball(id INT AUTO_INCREMENT NOT NULL PRIMARY KEY, name VARCHAR(255) NULL);");
             statement.execute("CREATE TABLE IF NOT EXISTS counting_game(id INT AUTO_INCREMENT PRIMARY KEY, channel_id LONG NOT NULL, current_number INT NULL, guild_id LONG NOT NULL);");
             statement.close();
+            connection.close();
         } catch (SQLException exception) {
             System.out.println(exception.getMessage());
             Sentry.captureException(exception);

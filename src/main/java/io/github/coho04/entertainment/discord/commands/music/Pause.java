@@ -40,9 +40,7 @@ public class Pause implements CommandInterface {
         if (e.isFromGuild()) {
             GuildMusicManager musicManager = Main.getAudioPlayerHelper().getMusicManager(e.getGuild().getIdLong());
             musicManager.getMonoPlayer().flatMap((player) -> player.setPaused(true))
-                    .subscribe((player) -> {
-                        e.reply("Die Musik wurde pausiert!").queue();
-                    });
+                    .subscribe((player) -> e.reply("Die Musik wurde pausiert!").queue());
         } else {
             e.reply("Dieser Befehl ist nur auf einem Server möglich!").queue();
         }

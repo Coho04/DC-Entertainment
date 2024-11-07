@@ -29,7 +29,7 @@ public class Main {
     public static void main(String[] args) {
         customConfig = new CustomConfig();
         DCBotBuilder dcBotBuilder = new DCBotBuilder(args, true);
-        dcBotBuilder.registerCommands(new Entertainment(), new Pause(), new Play(), new Resume(), new ScissorsRockPaper(), new Skip(), new Stop(), new Volume(), new YtSearch(), new LeaveVoice(), new EightBall());
+        dcBotBuilder.registerCommands(new Entertainment(), new Pause(),new ClearQueue(), new QueueList(), new Play(), new Resume(), new ScissorsRockPaper(), new Skip(), new Stop(), new Volume(), new YtSearch(), new LeaveVoice(), new EightBall());
         dcBotBuilder.registerEvents(new CustomEvents());
         dcBotBuilder.setWithLavaLink(true);
         dcBot = dcBotBuilder.build();

@@ -8,7 +8,8 @@ import reactor.core.publisher.Mono;
 import java.util.Optional;
 
 public class GuildMusicManager {
-    public final TrackScheduler scheduler = new TrackScheduler(this);
+
+    private final TrackScheduler scheduler = new TrackScheduler(this);
     private final long guildId;
     private final LavalinkClient lavalink;
 
@@ -18,7 +19,7 @@ public class GuildMusicManager {
     }
 
     public void stop() {
-        this.scheduler.queue.clear();
+        this.scheduler.getQueue().clear();
 
         this.getPlayer().ifPresent(
                 (player) -> player.setPaused(false)
@@ -42,5 +43,9 @@ public class GuildMusicManager {
             return Mono.just(this.getPlayer().get());
         }
         return null;
+    }
+
+    public TrackScheduler getScheduler() {
+        return scheduler;
     }
 }

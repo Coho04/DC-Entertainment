@@ -37,7 +37,7 @@ public class Skip implements CommandInterface {
         if (e.isFromGuild()) {
             assert e.getGuild() != null;
             GuildMusicManager musicManager = Main.getAudioPlayerHelper().getMusicManager(e.getGuild().getIdLong());
-            musicManager.scheduler.nextTrack();
+            musicManager.getScheduler().nextTrack();
             e.reply("Der nächste Song wird abgespielt!").queue();
         } else {
             e.reply("Dieser Command ist nur auf einem Server möglich!").queue();
