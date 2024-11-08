@@ -7,15 +7,29 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+/**
+ * Handles the loading of audio tracks and playlists for a Discord server.
+ */
 public class AudioLoader extends AbstractAudioLoadResultHandler {
     private final SlashCommandInteractionEvent event;
-    private final GuildMusicManager mngr;
+    private final GuildMusicManager manager;
 
-    public AudioLoader(SlashCommandInteractionEvent event, GuildMusicManager mngr) {
+    /**
+     * Constructs an AudioLoader.
+     *
+     * @param event   The SlashCommandInteractionEvent triggered by the command.
+     * @param manager The GuildMusicManager instance.
+     */
+    public AudioLoader(SlashCommandInteractionEvent event, GuildMusicManager manager) {
         this.event = event;
-        this.mngr = mngr;
+        this.manager = manager;
     }
 
+    /**
+     * Called when a single track is loaded.
+     *
+     * @param result The result containing the loaded track.
+     */
     @Override
     public void ontrackLoaded(@NotNull TrackLoaded result) {
         final Track track = result.getTrack();
@@ -24,43 +38,61 @@ public class AudioLoader extends AbstractAudioLoadResultHandler {
 
         track.setUserData(userData);
 
-        this.mngr.getScheduler().enqueue(track);
+        this.manager.getScheduler().enqueue(track);
 
         final var trackTitle = track.getInfo().getTitle();
 
-        event.getHook().sendMessage("Added to queue: " + trackTitle + "\nRequested by: <@" + userData.requester() + '>').queue();
+        event.getHook().sendMessage(trackTitle + " wurde der Warteschlange hinzugefügt \nAngefragt von: <@" + userData.requester() + '>').queue();
     }
 
+    /**
+     * Called when a playlist is loaded.
+     *
+     * @param result The result containing the loaded playlist.
+     */
     @Override
     public void onPlaylistLoaded(@NotNull PlaylistLoaded result) {
         final int trackCount = result.getTracks().size();
         event.getHook()
-                .sendMessage("Added " + trackCount + " tracks to the queue from " + result.getInfo().getName() + "!")
+                .sendMessage(trackCount + "Tracks wurden von " + result.getInfo().getName() + " der Warteschlange hinzugefügt!")
                 .queue();
 
-        this.mngr.getScheduler().enqueuePlaylist(result.getTracks());
+        this.manager.getScheduler().enqueuePlaylist(result.getTracks());
     }
 
+    /**
+     * Called when search results are loaded.
+     *
+     * @param result The result containing the search results.
+     */
     @Override
     public void onSearchResultLoaded(@NotNull SearchResult result) {
         final List<Track> tracks = result.getTracks();
 
         if (tracks.isEmpty()) {
-            event.getHook().sendMessage("No tracks found!").queue();
+            event.getHook().sendMessage("Keine Tracks gefunden!").queue();
             return;
         }
         final Track firstTrack = tracks.getFirst();
-        event.getHook().sendMessage("Adding to queue: " + firstTrack.getInfo().getTitle()).queue();
-        this.mngr.getScheduler().enqueue(firstTrack);
+        event.getHook().sendMessage("Zur Warteschlange hinzugefügt: " + firstTrack.getInfo().getTitle()).queue();
+        this.manager.getScheduler().enqueue(firstTrack);
     }
 
+    /**
+     * Called when no matches are found.
+     */
     @Override
     public void noMatches() {
-        event.getHook().sendMessage("No matches found for your input!").queue();
+        event.getHook().sendMessage("Keine passenden Ergebnisse für deine Eingabe gefunden").queue();
     }
 
+    /**
+     * Called when loading a track fails.
+     *
+     * @param result The result containing the failure information.
+     */
     @Override
     public void loadFailed(@NotNull LoadFailed result) {
-        event.getHook().sendMessage("Failed to load track! " + result.getException().getMessage()).queue();
+        event.getHook().sendMessage("Track konnte nicht geladen werden! " + result.getException().getMessage()).queue();
     }
 }

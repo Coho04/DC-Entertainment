@@ -27,14 +27,6 @@ public class CustomConfig extends Config {
         return dotenv.get("YT_API_KEY");
     }
 
-    public String getYTEmail() {
-        return dotenv.get("YT_EMAIL");
-    }
-
-    public String getYTPassword() {
-        return dotenv.get("YT_PASSWORD");
-    }
-
     /**
      * This method retrieves the MySQL hostname from the environment variables.
      *
@@ -62,6 +54,11 @@ public class CustomConfig extends Config {
         return dotenv.get("MYSQL_USERNAME");
     }
 
+    /**
+     * This method retrieves the MySQL database name from the environment variables.
+     *
+     * @return The MySQL database name as a string.
+     */
     public String getMysqlDatabase() {
         return dotenv.get("MYSQL_DATABASE");
     }

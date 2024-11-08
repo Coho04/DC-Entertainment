@@ -14,10 +14,20 @@ public class TrackScheduler {
     private final GuildMusicManager guildMusicManager;
     private final Queue<Track> queue = new LinkedList<>();
 
+    /**
+     * Constructs a TrackScheduler.
+     *
+     * @param guildMusicManager The GuildMusicManager instance.
+     */
     public TrackScheduler(GuildMusicManager guildMusicManager) {
         this.guildMusicManager = guildMusicManager;
     }
 
+    /**
+     * Adds a track to the queue or starts playing it if no track is currently playing.
+     *
+     * @param track The track to be added to the queue.
+     */
     public void enqueue(Track track) {
         this.guildMusicManager.getPlayer().ifPresentOrElse(
                 (player) -> {
@@ -31,6 +41,11 @@ public class TrackScheduler {
         );
     }
 
+    /**
+     * Adds a list of tracks to the queue and starts playing the first track if no track is currently playing.
+     *
+     * @param tracks The list of tracks to be added to the queue.
+     */
     public void enqueuePlaylist(List<Track> tracks) {
         this.queue.addAll(tracks);
 
@@ -44,6 +59,11 @@ public class TrackScheduler {
         );
     }
 
+    /**
+     * Handles the end of a track and starts the next track if applicable.
+     *
+     * @param endReason The reason why the track ended.
+     */
     public void onTrackEnd(Message.EmittedEvent.TrackEndEvent.AudioTrackEndReason endReason) {
         if (endReason.getMayStartNext()) {
             final var nextTrack = this.queue.poll();
@@ -69,7 +89,11 @@ public class TrackScheduler {
         );
     }
 
-
+    /**
+     * Starts playing the given track.
+     *
+     * @param track The track to be played.
+     */
     private void startTrack(Track track) {
         this.guildMusicManager.getLink().ifPresent(
                 (link) -> link.createOrUpdatePlayer()
@@ -79,6 +103,11 @@ public class TrackScheduler {
         );
     }
 
+    /**
+     * Retrieves the queue of tracks.
+     *
+     * @return The queue of tracks.
+     */
     public Queue<Track> getQueue() {
         return queue;
     }

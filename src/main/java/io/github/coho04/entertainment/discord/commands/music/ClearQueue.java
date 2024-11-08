@@ -7,13 +7,27 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 
+/**
+ * Command to clear the music queue in a Discord server.
+ */
 public class ClearQueue implements CommandInterface {
 
+    /**
+     * Provides the command data for the "clear-queue" command.
+     *
+     * @return CommandData object containing the command name and description.
+     */
     @Override
     public CommandData commandData() {
         return Commands.slash("clear-queue", "Löscht die Queue!");
     }
 
+    /**
+     * Executes the "clear-queue" command.
+     *
+     * @param e     The SlashCommandInteractionEvent triggered by the command.
+     * @param dcBot The DCBot instance.
+     */
     @Override
     public void runSlashCommand(SlashCommandInteractionEvent e, DCBot dcBot) {
         if (e.isFromGuild()) {

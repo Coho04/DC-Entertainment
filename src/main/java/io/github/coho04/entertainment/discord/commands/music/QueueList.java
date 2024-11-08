@@ -20,15 +20,29 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+/**
+ * Command to display the music queue in a Discord server.
+ */
 public class QueueList implements CommandInterface {
 
     private static final int ITEMS_PER_PAGE = 5;
 
+    /**
+     * Provides the command data for the "queue" command.
+     *
+     * @return CommandData object containing the command name and description.
+     */
     @Override
     public CommandData commandData() {
         return Commands.slash("queue", "Zeigt die Queue an!");
     }
 
+    /**
+     * Executes the "queue" command.
+     *
+     * @param e     The SlashCommandInteractionEvent triggered by the command.
+     * @param dcBot The DCBot instance.
+     */
     @Override
     public void runSlashCommand(SlashCommandInteractionEvent e, DCBot dcBot) {
         Queue<Track> queue = Main.getAudioPlayerHelper().getMusicManager(e.getGuild().getIdLong()).getScheduler().getQueue();
